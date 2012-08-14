@@ -25,7 +25,7 @@ module DOWL
      
   end
   
-  class Ontology < DOWL::DocObject
+  class Ontology < DOWL::LabelledDocObject
    
     def initialize(resource, schema)
         super(resource, schema)  
@@ -39,10 +39,6 @@ module DOWL
       return get_literal(DOWL::Namespaces::DCTERMS.title)
     end
     
-    def comment()
-      return get_literal(DOWL::Namespaces::RDFS.comment)
-    end
-        
     def created()
       return get_literal(DOWL::Namespaces::DCTERMS.created)
     end
@@ -55,6 +51,10 @@ module DOWL
       authors = []
       @schema.model.query( 
         RDF::Query::Pattern.new( @resource, DOWL::Namespaces::FOAF.maker ) ) do |statement|
+          authors << Person.new( statement.object, @schema )
+      end         
+      @schema.model.query( 
+        RDF::Query::Pattern.new( @resource, DOWL::Namespaces::DC.creator ) ) do |statement|
           authors << Person.new( statement.object, @schema )
       end         
       return authors.sort     

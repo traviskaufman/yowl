@@ -27,6 +27,10 @@ module DOWL
       if File.exists?(introduction)
         return Schema.new(model, introduction)
       end      
+      introduction = File.join(dir, "dowl/introduction.html")
+      if File.exists?(introduction)
+        return Schema.new(model, introduction)
+      end      
       return Schema.new(model)
     end       
     

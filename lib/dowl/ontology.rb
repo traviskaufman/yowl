@@ -3,25 +3,31 @@ require 'dowl'
 module DOWL
   
   class Person < DOWL::DocObject
-     def initialize(resource, schema)
-       super(resource, schema)
-     end
+    @name = nil
+    
+    def initialize(resource, schema)
+      super(resource, schema)
+    end
      
-     def uri()
-       return @resource.to_s
-     end
+    def uri()
+      return @resource.to_s
+    end
+
+    def name(name_)
+      @name = name_
+    end
      
-     def name()
-       name = get_literal(DOWL::Namespaces::FOAF.name)
-       if name == nil
-         name = uri()
-       end
-       return name
-     end
+    def name()
+      name = get_literal(DOWL::Namespaces::FOAF.name)
+      if name == nil
+        name = uri()
+      end
+      return name
+    end
      
-     def <=>(other)
-       return name() <=> other.name()
-     end
+    def <=>(other)
+      return name() <=> other.name()
+    end
      
   end
   
@@ -55,7 +61,9 @@ module DOWL
       end         
       @schema.model.query( 
         RDF::Query::Pattern.new( @resource, DOWL::Namespaces::DC.creator ) ) do |statement|
-          authors << Person.new( statement.object, @schema )
+          person = Person.new( nil, @schema )
+          person.name(statement.object)
+          authors << person
       end         
       return authors.sort     
     end

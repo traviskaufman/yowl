@@ -1,1 +1,6 @@
-Changes
+
+
+0.3
+
+- Now also finds dowl/introduction.html
+- When rdfs:label is missing the short name is used

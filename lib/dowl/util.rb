@@ -29,7 +29,7 @@ module DOWL
     def label()
       label = get_literal(DOWL::Namespaces::RDFS.label)
       if label == nil
-        return short_name ()
+        return short_name()
       end
       return label
     end

@@ -13,7 +13,7 @@ module DOWL
       return @resource.to_s
     end
 
-    def name(name_)
+    def setName(name_)
       @name = name_
     end
      
@@ -62,7 +62,7 @@ module DOWL
       @schema.model.query( 
         RDF::Query::Pattern.new( @resource, DOWL::Namespaces::DC.creator ) ) do |statement|
           person = Person.new( nil, @schema )
-          person.name(statement.object)
+          person.setName(statement.object)
           authors << person
       end         
       return authors.sort     

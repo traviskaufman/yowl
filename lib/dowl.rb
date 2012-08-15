@@ -7,7 +7,7 @@ require 'rdf/json'     # Support for RDF/JSON (.json)
 require 'rdf/trix'     # Support for TriX (.xml)
 require 'optparse'
 require 'dowl/optionsparser'
-require 'dowl/options2'
+require 'dowl/options'
 require 'dowl/util'
 require 'dowl/schema'
 require 'dowl/class'

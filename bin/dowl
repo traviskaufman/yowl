@@ -22,8 +22,9 @@ class OptionParser
       # Set a banner, displayed at the top of the help screen.
       #
       opts.banner = "Usage: " + PROGRAM + " [<options>] [<template>]"
-      opts.separator = ""
-      opts.separator = "Specific options:"
+
+      opts.separator ""
+      opts.separator "Specific options:"
 
       opts.on('-i', '--ontology FILE', 'Read FILE') do |ontology|
         options.ontologies << ontology

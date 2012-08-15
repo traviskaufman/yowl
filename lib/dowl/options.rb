@@ -19,6 +19,19 @@ module DOWL
       return true
     end
     
+    #
+    # TODO: Either we support one template per ontology or
+    # we support one template per input directory. That would
+    # then be the only way to specify input ontologies: by directory.
+    #
+    private
+    def ontology_dir
+      if @ontology_file_names[0] = nil
+        return nil
+      end
+      return File.dirname(@ontology_file_names[0])
+    end
+    
     private
     def validate_template()
       
@@ -29,7 +42,7 @@ module DOWL
         end
       end
       
-      @template_file_name = File.join(@schema.dir, "dowl/default.erb")
+      @template_file_name = File.join(ontology_dir(), "dowl/default.erb")
       if validate_template()
         return true
       end 

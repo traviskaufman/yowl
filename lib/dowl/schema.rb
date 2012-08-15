@@ -1,4 +1,4 @@
-require "rexml/document"
+require 'rexml/document'
 
 module DOWL
   
@@ -22,7 +22,7 @@ module DOWL
     private
     def Schema.read_prefixes(file)
       prefixes = {}
-      xmldoc = Document.new file.read
+      xmldoc = REXML::Document.new file.read
       xmldoc.elements.each() do |element|
         warn "elem=" + element
       end

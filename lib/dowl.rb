@@ -1,7 +1,10 @@
 require 'rubygems'
 require 'erb'
 require 'rdf'
-require 'rdf/raptor'
+require 'rdf/ntriples' # Support for N-Triples (.nt)
+require 'rdf/raptor'   # Support for RDF/XML (.rdf) and Turtle (.ttl)
+require 'rdf/json'     # Support for RDF/JSON (.json)
+require 'rdf/trix'     # Support for TriX (.xml)
 require 'dowl/util'
 require 'dowl/schema'
 require 'dowl/class'

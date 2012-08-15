@@ -51,7 +51,7 @@ module DOWL
       
       if @template_file_name != nil
         if File.exists?(@template_file_name)
-          @template = new File(@template_file_name)
+          @template = File.new(@template_file_name)
           return true
         end
       end

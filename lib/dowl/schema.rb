@@ -12,9 +12,9 @@ module DOWL
     attr_reader :dir
     
     def initialize(model, introduction=nil)
-        @model = model
-        @introduction = introduction
-        init()
+      @model = model
+      @introduction = introduction
+      init()
     end
     
     def Schema.create_from_file(file=nil)

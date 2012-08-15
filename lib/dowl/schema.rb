@@ -22,7 +22,7 @@ module DOWL
         raise "Filename should be provided"
       end
       @prefixes = {}
-      model = RDF::Graph.new(file, :prefixes => prefixes)
+      model = RDF::Graph.new(file, :prefixes => @prefixes)
       model.load!
       
       @prefixes.each_pair do |prefix, namespace|

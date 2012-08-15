@@ -2,8 +2,13 @@ module DOWL
 
   class Generator
     
-    def initialize(schema, template)
+    def initialize(schema, template, dir)
       @schema = schema
+      if dir == nil
+        @dir = Dir.pwd()
+      else
+        @dir = new Dir(dir)
+      end
       if template == nil
         @template = default_template()
       else
@@ -30,7 +35,11 @@ module DOWL
       b = binding
       schema = @schema
       introduction = @introduction
-      return @template.result(b)               
+      #
+      # TODO: Write the output in a file in the target directory
+      #
+      file = @template.result(b)
+      puts file
     end
     
   end  

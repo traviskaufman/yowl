@@ -19,6 +19,9 @@ module DOWL
       init()
     end
     
+    #
+    # Read the prefixes from the XML file using REXML
+    #
     private
     def Schema.read_prefixes(ontology_file_name)
       prefixes = {}
@@ -26,7 +29,6 @@ module DOWL
       xmldoc.doctype.entities.each() do |prefix, entity|
         namespace = entity.normalized()
         if namespace.include?('://')
-          warn "prefix " + prefix + " namepace " + namespace
           prefixes[prefix] = namespace
         end
       end

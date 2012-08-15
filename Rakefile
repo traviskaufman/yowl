@@ -1,11 +1,13 @@
 require 'rake'
-require 'rake/gempackagetask'
-require 'rake/rdoctask'
+#require 'rake/gempackagetask'
+require 'rubygems/package_task'
+#require 'rake/rdoctask'
+require 'rdoc/task'
 require 'rake/testtask'
 require 'rake/clean'
 
 NAME = "dowl"
-VER = "0.2"
+VER = "0.3"
 
 RDOC_OPTS = ['--quiet', '--title', 'dowl Reference', '--main', 'README']
 

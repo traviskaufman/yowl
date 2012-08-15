@@ -4,7 +4,8 @@ module DOWL
     
     def initialize(schema, template_file, dir)
       @schema = schema
-      @template = ERB.new(File.read(template_file))
+      @template = ERB.new(template_file.read)
+      template_file.close() # Do this more safely. We might need to keep it open to read other info from it.
       @dir = dir
       if schema.introduction
         @introduction = File.read(schema.introduction)

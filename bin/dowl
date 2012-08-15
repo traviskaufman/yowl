@@ -14,12 +14,8 @@ class OptionParser
   
     options = OpenStruct.new
     options.ontologies = []
-    options[:htmldir] = nil
-    options[:template] = nil
-    options.inplace = false
-    options.encoding = "utf8"
-    options.transfer_type = :auto
-    options.verbose = false
+    options.htmldir = nil
+    options.template = nil
 
     opts = OptionParser.new do |opts|
       #
@@ -34,11 +30,11 @@ class OptionParser
       end
  
       opts.on( '-o', '--htmldir DIR', 'Write HTML output to DIR' ) do |dir|
-        options[:htmldir] = dir
+        options.htmldir = dir
       end
 
       opts.on( '-o', '--template FILE', 'Use ERB template FILE' ) do |template|
-        options[:template] = template
+        options.template = template
       end
  
       opts.separator ""
@@ -68,4 +64,4 @@ options = OptionParser.parse(ARGV)
 pp options
 
 schema = DOWL::Schema.create_from_file(options.ontologies[0])
-DOWL::Generator.new(schema, options[:template], options[:htmldir]).run()
+DOWL::Generator.new(schema, options.template, options.htmldir).run()

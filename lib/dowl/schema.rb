@@ -1,3 +1,5 @@
+require "rexml/document"
+
 module DOWL
   
   #Utility class providing access to information about the schema, e.g. its description, lists of classes, etc
@@ -17,11 +19,22 @@ module DOWL
       init()
     end
     
+    private
+    def read_prefixes(file)
+      prefixes = {}
+      xmldoc = Document.new file.read
+      xmldoc.elements.each() do |element|
+        warn "elem=" + element
+      end
+      
+      return prefixes
+    end
+    
     def Schema.create_from_file(file=nil)
       if file == nil
         raise "Filename should be provided"
       end
-      @prefixes = {}
+      @prefixes = read_prefixes(file)
       model = RDF::Graph.new(file, :prefixes => @prefixes)
       model.load!
       

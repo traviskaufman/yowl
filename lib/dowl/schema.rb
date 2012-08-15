@@ -8,6 +8,7 @@ module DOWL
     attr_reader :datatype_properties
     attr_reader :object_properties
     attr_reader :classes
+    attr_reader :prefixes
     attr_reader :dir
     
     def initialize(model, introduction=nil)
@@ -20,15 +21,20 @@ module DOWL
       if file == nil
         raise "Filename should be provided"
       end
-      model = RDF::Graph.new(file)
+      @prefixes = {}
+      model = RDF::Graph.new(file, :prefixes => prefixes)
       model.load!
       
+      @prefixes.each_pair do |prefix, namespace|
+        warn "Prefix " + prefix + " Namespace " + namespace
+      end
+      
       @dir = File.dirname(file)
-      introduction = File.join(dir, "introduction.html")
+      introduction = File.join(@dir, "introduction.html")
       if File.exists?(introduction)
         return Schema.new(model, introduction)
       end      
-      introduction = File.join(dir, "dowl/introduction.html")
+      introduction = File.join(@dir, "dowl/introduction.html")
       if File.exists?(introduction)
         return Schema.new(model, introduction)
       end      

@@ -11,12 +11,11 @@ module DOWL
     end
     
     def Generator.default_template()
-      dir = File.dirname( __FILE__ )
-      template = default_template_file = File.join(dir, "dowl/default.erb")
+      template = default_template_file = File.join(schema.dir(), "dowl/default.erb")
       if File.exists?(template)
         return template
       end
-      template = default_template_file = File.join(dir, "default.erb")
+      template = default_template_file = File.join(File.dirname(__FILE__), "default.erb")
       if File.exists?(template)
         return template
       end

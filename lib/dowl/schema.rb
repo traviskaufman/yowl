@@ -8,6 +8,7 @@ module DOWL
     attr_reader :datatype_properties
     attr_reader :object_properties
     attr_reader :classes
+    attr_reader :dir
     
     def initialize(model, introduction=nil)
         @model = model
@@ -22,7 +23,7 @@ module DOWL
       model = RDF::Graph.new(file)
       model.load!
       
-      dir = File.dirname(file)
+      @dir = File.dirname(file)
       introduction = File.join(dir, "introduction.html")
       if File.exists?(introduction)
         return Schema.new(model, introduction)

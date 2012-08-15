@@ -1,6 +1,6 @@
 module DOWL
   
-  class OptionParser
+  class OptionsParser
   
     def self.parse(args)
     

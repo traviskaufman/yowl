@@ -4,7 +4,6 @@ require 'rubygems'
 require 'getoptlong'
 require 'dowl'
 require 'erb'
-require 'optparse'
 
 PROGRAM = File::basename $0
 

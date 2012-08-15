@@ -35,6 +35,10 @@ module DOWL
       end
       return label
     end
+    
+    def hasDifferentLabel()
+      return short_name() != label()
+    end
         
     def comment()
       return get_literal(DOWL::Namespaces::RDFS.comment)

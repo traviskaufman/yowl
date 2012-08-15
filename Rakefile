@@ -1,8 +1,8 @@
 require 'rake'
-#require 'rake/gempackagetask'
-require 'rubygems/package_task'
-#require 'rake/rdoctask'
-require 'rdoc/task'
+require 'rake/gempackagetask'
+#require 'rubygems/package_task'
+require 'rake/rdoctask'
+#require 'rdoc/task'
 require 'rake/testtask'
 require 'rake/clean'
 

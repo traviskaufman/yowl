@@ -20,7 +20,7 @@ module DOWL
     end
     
     private
-    def read_prefixes(file)
+    def Schema.read_prefixes(file)
       prefixes = {}
       xmldoc = Document.new file.read
       xmldoc.elements.each() do |element|

@@ -8,35 +8,64 @@ require 'optparse'
 
 PROGRAM = File::basename $0
 
-options = {}
-optparse = OptionParser.new do |opts|
-   #
-   # Set a banner, displayed at the top of the help screen.
-   #
-   opts.banner = "Usage: " + PROGRAM + " [<options>] [<template>]"
+class OptionParser
 
-   options[:ontology] = nil
-   opts.on( '-i', '--ontology FILE', 'Read FILE' ) do |ontology|
-     options[:ontology] = ontology
-   end
+  def self.parse(args)
+  
+    options = OpenStruct.new
+    options.ontologies = []
+    options[:htmldir] = nil
+    options[:template] = nil
+    options.inplace = false
+    options.encoding = "utf8"
+    options.transfer_type = :auto
+    options.verbose = false
+
+    opts = OptionParser.new do |opts|
+      #
+      # Set a banner, displayed at the top of the help screen.
+      #
+      opts.banner = "Usage: " + PROGRAM + " [<options>] [<template>]"
+      opts.separator = ""
+      opts.separator = "Specific options:"
+
+      opts.on('-i', '--ontology FILE', 'Read FILE') do |ontology|
+        options.ontologies << ontology
+      end
  
-   options[:htmldir] = nil
-   opts.on( '-o', '--htmldir DIR', 'Write HTML output to DIR' ) do |dir|
-     options[:htmldir] = dir
-   end
+      opts.on( '-o', '--htmldir DIR', 'Write HTML output to DIR' ) do |dir|
+        options[:htmldir] = dir
+      end
 
-   options[:template] = nil
-   opts.on( '-o', '--template FILE', 'Use ERB template FILE' ) do |template|
-     options[:template] = template
-   end
+      opts.on( '-o', '--template FILE', 'Use ERB template FILE' ) do |template|
+        options[:template] = template
+      end
  
-   # This displays the help screen, all programs are
-   # assumed to have this option.
-   opts.on( '-h', '--help', 'Display this screen' ) do
-     puts opts
-     exit
-   end
- end
+      opts.separator ""
+      opts.separator "Common options:"
 
-schema = DOWL::Schema.create_from_file(options[:ontology])
+      # No argument, shows at tail.  This will print an options summary.
+      # Try it and see!
+      opts.on_tail("-h", "--help", "Show this message") do
+        puts opts
+        exit
+      end
+
+      # Another typical switch to print the version.
+      opts.on_tail("--version", "Show version") do
+        puts OptionParser::Version.join('.')
+        exit
+      end
+      
+    end
+
+    opts.parse!(args)
+    return options
+  end  # parse()
+end  # class OptionParser
+
+options = OptionParser.parse(ARGV)
+pp options
+
+schema = DOWL::Schema.create_from_file(options.ontologies[0])
 DOWL::Generator.new(schema, options[:template], options[:htmldir]).run()

@@ -2,20 +2,24 @@ module DOWL
 
   class Generator
     
-    def initialize(schema, template=Generator.default_template())
-      @template = ERB.new(File.read(template))
+    def initialize(schema, template)
       @schema = schema
+      if template == nil
+        @template = default_template()
+      else
+        @template = ERB.new(File.read(template))
+      end
       if schema.introduction
         @introduction = File.read(schema.introduction)
       end      
     end
     
-    def Generator.default_template()
-      template = default_template_file = File.join(@schema.dir, "dowl/default.erb")
+    def default_template()
+      template = File.join(@schema.dir, "dowl/default.erb")
       if File.exists?(template)
         return template
       end
-      template = default_template_file = File.join(File.dirname(__FILE__), "default.erb")
+      template = File.join(File.dirname(__FILE__), "default.erb")
       if File.exists?(template)
         return template
       end

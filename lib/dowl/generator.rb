@@ -11,8 +11,16 @@ module DOWL
     end
     
     def Generator.default_template()
-       dir = File.dirname( __FILE__ )
-       return default_template_file = File.join(dir, "default.erb")
+      dir = File.dirname( __FILE__ )
+      template = default_template_file = File.join(dir, "dowl/default.erb")
+      if File.exists?(template)
+        return template
+      end
+      template = default_template_file = File.join(dir, "default.erb")
+      if File.exists?(template)
+        return template
+      end
+      raise "Could not find template: default.erb"
     end
     
     def run()      

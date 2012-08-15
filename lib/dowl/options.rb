@@ -13,8 +13,25 @@ module DOWL
     end
     
     def validate()
+      if ! validate_ontology_file_names()
+        return false
+      end
       if ! validate_template()
         return false
+      end
+      return true
+    end
+    
+    private
+    def validate_ontology_file_names
+      if @ontology_file_names.empty?
+        return false
+      end
+      @ontology_file_names.each() do |filename|
+        if ! File.exists?(filename)
+          warn "File does not exist: " + filename
+          return false
+        end
       end
       return true
     end
@@ -26,9 +43,6 @@ module DOWL
     #
     private
     def ontology_dir
-      if @ontology_file_names[0] = nil
-        return nil
-      end
       return File.dirname(@ontology_file_names[0])
     end
     

@@ -1,4 +1,7 @@
 module DOWL
+  #
+  # Utility class representing all specified command line options
+  #
   class Options
     
     attr_accessor :ontology_file_names
@@ -6,7 +9,7 @@ module DOWL
     attr_accessor :template_file_name
     attr_reader :template
     
-    def initialize ()
+    def initialize()
       @ontology_file_names = []
       @html_output_dir = Dir.pwd()
       @template_file_name = nil
@@ -42,33 +45,40 @@ module DOWL
     # then be the only way to specify input ontologies: by directory.
     #
     private
-    def ontology_dir
+    def ontology_dir()
       return File.dirname(@ontology_file_names[0])
+    end
+    
+    private
+    def validate_template_file_name(filename)
+      if File.exists?(filename)
+        @template_file_name = filename
+        @template = File.new(filename)
+        return true
+      end
+      return false
     end
     
     private
     def validate_template()
       
       if @template_file_name != nil
-        if File.exists?(@template_file_name)
-          @template = File.new(@template_file_name)
+        if validate_template_file_name(@template_file_name)
           return true
         end
       end
       
-      @template_file_name = File.join(ontology_dir(), "dowl/default.erb")
-      if validate_template()
+      if validate_template_file_name(File.join(ontology_dir(), "dowl/default.erb"))
         return true
-      end 
-      
-      @template_file_name = File.join(File.dirname(__FILE__), "default.erb")
-      if validate_template()
-        return true
-      end 
+      end
 
+      if validate_template_file_name(File.join(File.dirname(__FILE__), "default.erb"))
+        return true
+      end
+      
       warn "Could not find template"
       return false
     end
     
-  end
-end
+  end # End of class Options
+end # End of module DOWL

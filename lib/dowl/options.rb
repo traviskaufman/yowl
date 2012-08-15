@@ -19,11 +19,14 @@ module DOWL
       return true
     end
     
+    private
     def validate_template()
       
-      if File.exists?(@template_file_name)
-        @template = new File(@template_file_name)
-        return true
+      if @template_file_name != nil
+        if File.exists?(@template_file_name)
+          @template = new File(@template_file_name)
+          return true
+        end
       end
       
       @template_file_name = File.join(@schema.dir, "dowl/default.erb")

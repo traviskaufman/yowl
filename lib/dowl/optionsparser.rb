@@ -10,21 +10,21 @@ module DOWL
         #
         # Set a banner, displayed at the top of the help screen.
         #
-        opts.banner = "Usage: " + PROGRAM + " [<options>] [<template>]"
+        opts.banner = "Usage: " + PROGRAM + " [<options>]"
   
         opts.separator ""
         opts.separator "Specific options:"
   
         opts.on('-i', '--ontology FILE', 'Read FILE') do |ontology|
-          options.ontologies << ontology
+          options.ontology_file_names << ontology
         end
    
         opts.on( '-o', '--htmldir DIR', 'Write HTML output to DIR' ) do |dir|
-          options.htmldir = dir
+          options.html_output_dir = dir
         end
   
         opts.on( '-o', '--template FILE', 'Use ERB template FILE' ) do |template|
-          options.template = template
+          options.template_file_name = template
         end
    
         opts.separator ""

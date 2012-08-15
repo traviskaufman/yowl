@@ -20,11 +20,15 @@ module DOWL
     end
     
     private
-    def Schema.read_prefixes(file)
+    def Schema.read_prefixes(ontology_file_name)
       prefixes = {}
-      xmldoc = REXML::Document.new file.read
-      xmldoc.elements.each() do |element|
-        warn "elem=" + element
+      xmldoc = REXML::Document.new(IO.read(ontology_file_name))
+      xmldoc.doctype.entities.each() do |prefix, entity|
+        namespace = entity.normalized()
+        if namespace.include?('://')
+          warn "prefix " + prefix + " namepace " + namespace
+          prefixes[prefix] = namespace
+        end
       end
       
       return prefixes

@@ -7,7 +7,7 @@ require 'erb'
 
 PROGRAM = File::basename $0
 
-options = DOWL::OptionParser.parse(ARGV)
+options = DOWL::OptionsParser.parse(ARGV)
 
 schema = DOWL::Schema.create_from_file(options.ontologies[0])
 DOWL::Generator.new(schema, options.template, options.htmldir).run()

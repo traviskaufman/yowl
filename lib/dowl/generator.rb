@@ -20,6 +20,7 @@ module DOWL
       #
       # TODO: Write the output in a file in the target directory
       #
+      puts "Processing Template"
       file = @template.result(b)
       puts file
     end

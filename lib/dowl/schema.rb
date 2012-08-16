@@ -1,33 +1,57 @@
 require 'rexml/document'
 
 module DOWL
-  
-  #Utility class providing access to information about the schema, e.g. its description, lists of classes, etc
+  #
+  # Utility class providing access to information about the schema, e.g. its description, lists of classes, etc
+  #
   class Schema
     
     attr_reader :options
     attr_reader :model
+    attr_reader :prefixes
+    attr_reader :name
     attr_reader :introduction
     attr_reader :datatype_properties
     attr_reader :object_properties
     attr_reader :classes
-    attr_reader :prefixes
     attr_reader :dir
     attr_reader :ontology
-    attr_reader :name
     
     def initialize(options, model, prefixes)
+
       @options = options
       @model = model
       @prefixes = prefixes
       
+      @name = nil
+      
       if options.verbose
         @prefixes.each_pair do |prefix, namespace|
-          warn "Prefix " + prefix + " Namespace " + namespace
+          warn "Prefix #{prefix} Namespace #{namespace}"
         end
       end
 
-      init()
+      @classes = Hash.new
+      
+      init_classes(DOWL::Namespaces::OWL.Class)
+      init_classes(DOWL::Namespaces::RDFS.Class)
+      
+      @datatype_properties = init_properties(DOWL::Namespaces::OWL.DatatypeProperty)      
+      @object_properties = init_properties(DOWL::Namespaces::OWL.ObjectProperty)
+
+      ontology = @model.first_subject(RDF::Query::Pattern.new(nil, RDF.type, DOWL::Namespaces::OWL.Ontology))
+      if ontology
+        @ontology = Ontology.new(ontology, self)
+      else
+        warn "WARNING: Ontology not found in schema"
+      end
+      
+      if @ontology
+        prefix = prefixForNamespace(@ontology.uri())
+        if prefix
+          @name = prefix
+        end
+      end
     end
     
     #
@@ -56,38 +80,11 @@ module DOWL
         model = RDF::Graph.new(ontology_file_name, :prefixes => prefixes)
         model.load!
         
-        
         schemas << Schema.new(options, model, prefixes)
       end
       
       return schemas
     end       
-    
-    private
-    def init()
-      
-      @classes = Hash.new
-      
-      init_classes( DOWL::Namespaces::OWL.Class )
-      init_classes( DOWL::Namespaces::RDFS.Class )
-      
-      @datatype_properties = init_properties( DOWL::Namespaces::OWL.DatatypeProperty)      
-      @object_properties = init_properties( DOWL::Namespaces::OWL.ObjectProperty)
-
-      ontology = @model.first_subject(RDF::Query::Pattern.new(nil, RDF.type, DOWL::Namespaces::OWL.Ontology))
-      if ontology
-        @ontology = Ontology.new(ontology, self)
-      else
-        warn "WARNING: Ontology not found in schema"
-      end
-      
-      if @ontology
-        prefix = prefixForNamespace(@ontology.uri())
-        if prefix
-          @name = prefix
-        end
-      end
-    end
     
     public
     def prefixForNamespace(namespace_)

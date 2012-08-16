@@ -21,11 +21,7 @@ module DOWL
     end
      
     def short_name()
-      uri = @resource.to_s
-      ontology_uri = @schema.ontology.uri
-      uri = uri.gsub(ontology_uri + '#', "")
-      uri = uri.gsub(ontology_uri + '/', "")
-      return uri.gsub(ontology_uri, "")
+      return @schema.prefixedUri(@resource.to_s)
     end
      
     def label()

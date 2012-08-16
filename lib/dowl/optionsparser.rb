@@ -19,12 +19,16 @@ module DOWL
           options.ontology_file_names << ontology
         end
    
-        opts.on( '-o', '--htmldir DIR', 'Write HTML output to DIR' ) do |dir|
+        opts.on('-o', '--htmldir DIR', 'Write HTML output to DIR') do |dir|
           options.html_output_dir = dir
         end
   
-        opts.on( '-o', '--template FILE', 'Use ERB template FILE' ) do |template|
+        opts.on('-t', '--template FILE', 'Use ERB template FILE') do |template|
           options.template_file_name = template
+        end
+
+        opts.on('--introduction FILE', 'Use HTML file as introduction') do |htmlfile|
+          options.introduction_file_name = htmlfile
         end
    
         opts.separator ""
@@ -46,6 +50,7 @@ module DOWL
       end
   
       opts.parse!(args)
+      
       if ! options.validate()
         exit
       end

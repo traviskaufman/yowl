@@ -7,12 +7,17 @@ module DOWL
     attr_accessor :ontology_file_names
     attr_accessor :html_output_dir
     attr_accessor :template_file_name
+    attr_accessor :introduction_file_name
     attr_reader :template
+    attr_reader :introduction
     
     def initialize()
       @ontology_file_names = []
       @html_output_dir = Dir.pwd()
       @template_file_name = nil
+      @introduction_file_name = nil
+      @template = nil
+      @introduction = nil
     end
     
     def validate()
@@ -20,6 +25,9 @@ module DOWL
         return false
       end
       if ! validate_template()
+        return false
+      end
+      if ! validate_introduction()
         return false
       end
       return true
@@ -77,6 +85,41 @@ module DOWL
       end
       
       warn "Could not find template"
+      return false
+    end
+
+    private
+    def validate_introduction_file_name(filename)
+      if File.exists?(filename)
+        @introduction_file_name = filename
+        @introduction = File.new(filename)
+        return true
+      end
+      return false
+    end
+    
+    private
+    def validate_introduction()
+      
+      if @introduction_file_name != nil
+        if validate_introduction_file_name(@introduction_file_name)
+          return true
+        end
+      end
+      
+      if validate_introduction_file_name(File.join(ontology_dir(), "introduction.html"))
+        return true
+      end
+
+      if validate_introduction_file_name(File.join(ontology_dir(), "dowl/introduction.html"))
+        return true
+      end
+      
+      if validate_introduction_file_name(File.join(File.dirname(__FILE__), "introduction.html"))
+        return true
+      end
+      
+      warn "Could not find introduction html file"
       return false
     end
     

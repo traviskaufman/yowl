@@ -13,9 +13,9 @@ module DOWL
     attr_reader :prefixes
     attr_reader :dir
     
-    def initialize(model, introduction=nil)
+    def initialize(model, prefixes)
       @model = model
-      @introduction = introduction
+      @prefixes = prefixes
       init()
     end
     
@@ -40,24 +40,15 @@ module DOWL
       if file == nil
         raise "Filename should be provided"
       end
-      @prefixes = read_prefixes(file)
-      model = RDF::Graph.new(file, :prefixes => @prefixes)
+      prefixes = read_prefixes(file)
+      model = RDF::Graph.new(file, :prefixes => prefixes)
       model.load!
       
-      @prefixes.each_pair do |prefix, namespace|
-        warn "Prefix " + prefix + " Namespace " + namespace
-      end
+#     @prefixes.each_pair do |prefix, namespace|
+#       warn "Prefix " + prefix + " Namespace " + namespace
+#     end
       
-      @dir = File.dirname(file)
-      introduction = File.join(@dir, "introduction.html")
-      if File.exists?(introduction)
-        return Schema.new(model, introduction)
-      end      
-      introduction = File.join(@dir, "dowl/introduction.html")
-      if File.exists?(introduction)
-        return Schema.new(model, introduction)
-      end      
-      return Schema.new(model)
+      return Schema.new(model, prefixes)
     end       
     
     def init()
@@ -115,6 +106,23 @@ module DOWL
       return sorted      
     end
     
+    #
+    # Replace the namespace in the given uri with the corresponding prefix, if defined
+    #
+    def prefixedUri(uri)
+      @prefixes.each() do |prefix, namespace|
+        #
+        # Not sure whether still simplistic "algorithm" works in all cases
+        #
+        if uri.contains(namespace)
+          return uri.gsub!(namespace, prefix + ':')
+        end
+      end
+      ontology_uri = @ontology.uri
+      uri = uri.gsub(ontology_uri + '#', "")
+      uri = uri.gsub(ontology_uri + '/', "")
+      return uri.gsub(ontology_uri, "")
+    end
   end  
   
 end

@@ -2,13 +2,14 @@ module DOWL
 
   class Generator
     
-    def initialize(schema, template_file, dir)
+    def initialize(schema, template_file, introduction_file, dir)
       @schema = schema
       @template = ERB.new(template_file.read)
       template_file.close() # Do this more safely. We might need to keep it open to read other info from it.
       @dir = dir
-      if schema.introduction
-        @introduction = File.read(schema.introduction)
+      if introduction_file != nil
+        @introduction = introduction_file.read()
+        introduction_file.close()
       end      
     end
     

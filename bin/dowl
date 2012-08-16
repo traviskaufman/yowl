@@ -13,4 +13,4 @@ options = DOWL::OptionsParser.parse(ARGV)
 # TODO: Support reading multiple schemas, one for each specified ontology file name
 #
 schema = DOWL::Schema.create_from_file(options.ontology_file_names[0])
-DOWL::Generator.new(schema, options.template, options.html_output_dir).run()
+DOWL::Generator.new(schema, options.template, options.introduction, options.html_output_dir).run()

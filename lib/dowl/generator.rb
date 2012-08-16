@@ -2,8 +2,8 @@ module DOWL
 
   class Generator
     
-    def initialize(schema, options)
-      @schema = schema
+    def initialize(schemas, options)
+      @schemas = schemas
       @options = options
       begin
         @template = ERB.new(options.template.read)
@@ -20,19 +20,20 @@ module DOWL
     end
     
     def run()      
-      b = binding
-      schema = @schema
-      introduction = @introduction
-      #
-      # TODO: Write the output in a file in the target directory
-      #
-      output_file = File.join(@options.html_output_dir, @schema.name + '.html')
-      puts "Generating #{output_file}"
-      File.open(output_file, 'w') { |file|
-        file.write(@template.result(b))
-      }
+      schemas.each() do |schema|
+        introduction = @introduction
+        b = binding
+        #
+        # TODO: Write the output in a file in the target directory
+        #
+        output_file = File.join(@options.html_output_dir, schema.name + '.html')
+        if @options.verbose
+          puts "Generating #{output_file}"
+        end
+        File.open(output_file, 'w') do |file|
+          file.write(@template.result(b))
+        end
+      end
     end
-    
   end  
-  
 end

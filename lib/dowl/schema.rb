@@ -52,15 +52,21 @@ module DOWL
     end       
     
     def init()
+      
       @classes = Hash.new
+      
       init_classes( DOWL::Namespaces::OWL.Class )
       init_classes( DOWL::Namespaces::RDFS.Class )
-      ontology = @model.first_subject( RDF::Query::Pattern.new( nil, RDF.type, DOWL::Namespaces::OWL.Ontology ) )
-      if ontology
-        @ontology = Ontology.new(ontology, self)
-      end
+      
       @datatype_properties = init_properties( DOWL::Namespaces::OWL.DatatypeProperty)      
       @object_properties = init_properties( DOWL::Namespaces::OWL.ObjectProperty)
+
+      ontology = @model.first_subject(RDF::Query::Pattern.new(nil, RDF.type, DOWL::Namespaces::OWL.Ontology))
+      if ontology
+        @ontology = Ontology.new(ontology, self)
+      else
+        warn "WARNING: Ontology not found in schema"
+      end
     end
     
     def ontology()

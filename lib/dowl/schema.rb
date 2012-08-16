@@ -37,6 +37,7 @@ module DOWL
       return prefixes
     end
     
+    public
     def Schema.create_from_file(file=nil)
       if file == nil
         raise "Filename should be provided"
@@ -90,23 +91,28 @@ module DOWL
       return properties      
     end
     
+    public
     def properties()
       return @datatype_properties.merge( @object_properties )     
     end
     
+    public
     def list_properties()
       return properties().sort { |x,y| x[1] <=> y[1] }          
     end
     
+    public
     def list_datatype_properties()
       return datatype_properties().sort { |x,y| x[1] <=> y[1] }
     end
     
+    public
     def list_object_properties()
       return object_properties().sort { |x,y| x[1] <=> y[1] }
     end    
     
     #Return sorted, nested array
+    public
     def list_classes()
       sorted = classes().sort { |x,y| x[1] <=> y[1] }
       return sorted      
@@ -115,6 +121,7 @@ module DOWL
     #
     # Replace the namespace in the given uri with the corresponding prefix, if defined
     #
+    public
     def prefixedUri(uri)
       @prefixes.each() do |prefix, namespace|
         #

@@ -5,11 +5,17 @@ module DOWL
     def initialize(schema, options)
       @schema = schema
       @options = options
-      @template = ERB.new(options.template.read)
-      template_file.close() # Do this more safely. We might need to keep it open to read other info from it.
+      begin
+        @template = ERB.new(options.template.read)
+      ensure
+        options.template.close()
+      end
       if options.introduction != nil
-        @introduction = options.introduction.read()
-        options.introduction.close()
+        begin
+          @introduction = options.introduction.read()
+        ensure
+          options.introduction.close()
+        end
       end      
     end
     

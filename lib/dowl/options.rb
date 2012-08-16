@@ -10,6 +10,7 @@ module DOWL
     attr_accessor :introduction_file_name
     attr_reader :template
     attr_reader :introduction
+    attr_accessor :verbose
     
     def initialize()
       @ontology_file_names = []
@@ -18,6 +19,7 @@ module DOWL
       @introduction_file_name = nil
       @template = nil
       @introduction = nil
+      @verbose = false
     end
     
     def validate()

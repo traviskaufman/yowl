@@ -5,6 +5,7 @@ module DOWL
   #Utility class providing access to information about the schema, e.g. its description, lists of classes, etc
   class Schema
     
+    attr_reader :options
     attr_reader :model
     attr_reader :introduction
     attr_reader :datatype_properties
@@ -15,9 +16,17 @@ module DOWL
     attr_reader :ontology
     attr_reader :name
     
-    def initialize(model, prefixes)
+    def initialize(options, model, prefixes)
+      @options = options
       @model = model
       @prefixes = prefixes
+      
+      if options.verbose
+        @prefixes.each_pair do |prefix, namespace|
+          warn "Prefix " + prefix + " Namespace " + namespace
+        end
+      end
+
       init()
     end
     
@@ -39,19 +48,19 @@ module DOWL
     end
     
     public
-    def Schema.create_from_file(file=nil)
-      if file == nil
-        raise "Filename should be provided"
+    def Schema.create_from_file(options)
+      schemas = []
+      
+      options.ontology_file_names.each() do | ontology_file_name |
+        prefixes = read_prefixes(ontology_file_name)
+        model = RDF::Graph.new(ontology_file_name, :prefixes => prefixes)
+        model.load!
+        
+        
+        schemas << Schema.new(options, model, prefixes)
       end
-      prefixes = read_prefixes(file)
-      model = RDF::Graph.new(file, :prefixes => prefixes)
-      model.load!
       
-#     @prefixes.each_pair do |prefix, namespace|
-#       warn "Prefix " + prefix + " Namespace " + namespace
-#     end
-      
-      return Schema.new(model, prefixes)
+      return schemas
     end       
     
     private
@@ -86,6 +95,9 @@ module DOWL
         if namespace = namespace_
           return prefix
         end
+      end
+      if @options.verbose
+        puts "No prefix found for namespace #{namespace_}"
       end
       return nil
     end

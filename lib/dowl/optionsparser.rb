@@ -46,6 +46,10 @@ module DOWL
           puts OptionParser::Version.join('.')
           exit
         end
+
+        opts.on_tail("--verbose", "Show verbose logging") do
+          options.verbose = true
+        end
         
       end
   

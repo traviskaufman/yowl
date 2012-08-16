@@ -12,6 +12,7 @@ module DOWL
     attr_reader :classes
     attr_reader :prefixes
     attr_reader :dir
+    attr_reader :ontology
     
     def initialize(model, prefixes)
       @model = model
@@ -51,6 +52,7 @@ module DOWL
       return Schema.new(model, prefixes)
     end       
     
+    private
     def init()
       
       @classes = Hash.new
@@ -69,10 +71,7 @@ module DOWL
       end
     end
     
-    def ontology()
-      return @ontology  
-    end
-    
+    private
     def init_classes(type)
       @model.query( RDF::Query::Pattern.new( nil, RDF.type, type ) ) do |statement|
         if !statement.subject.anonymous?
@@ -82,6 +81,7 @@ module DOWL
       end      
     end
     
+    private
     def init_properties(type)
       properties = Hash.new
       @model.query( RDF::Query::Pattern.new( nil, RDF.type, type ) ) do |statement|

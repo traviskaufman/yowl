@@ -20,7 +20,7 @@ module DOWL
     end
     
     def run()      
-      schemas.each() do |schema|
+      @schemas.each() do |schema|
         introduction = @introduction
         b = binding
         #

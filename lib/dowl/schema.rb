@@ -89,7 +89,7 @@ module DOWL
     public
     def prefixForNamespace(namespace_)
       @prefixes.each() do |prefix, namespace|
-        if namespace = namespace_
+        if namespace == namespace_
           return prefix
         end
       end

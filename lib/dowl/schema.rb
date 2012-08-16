@@ -127,7 +127,7 @@ module DOWL
         #
         # Not sure whether still simplistic "algorithm" works in all cases
         #
-        if uri.contains(namespace)
+        if uri.include?(namespace)
           return uri.gsub!(namespace, prefix + ':')
         end
       end

@@ -23,8 +23,6 @@ module DOWL
       @model = model
       @prefixes = prefixes
       
-      @name = nil
-      
       if options.verbose
         @prefixes.each_pair do |prefix, namespace|
           warn "Prefix #{prefix} Namespace #{namespace}"
@@ -39,19 +37,8 @@ module DOWL
       @datatype_properties = init_properties(DOWL::Namespaces::OWL.DatatypeProperty)      
       @object_properties = init_properties(DOWL::Namespaces::OWL.ObjectProperty)
 
-      ontology = @model.first_subject(RDF::Query::Pattern.new(nil, RDF.type, DOWL::Namespaces::OWL.Ontology))
-      if ontology
-        @ontology = Ontology.new(ontology, self)
-      else
-        warn "WARNING: Ontology not found in schema"
-      end
-      
-      if @ontology
-        prefix = prefixForNamespace(@ontology.uri())
-        if prefix
-          @name = prefix
-        end
-      end
+      init_ontology()
+      init_name()
     end
     
     #
@@ -144,7 +131,40 @@ module DOWL
       sorted = classes().sort { |x,y| x[1] <=> y[1] }
       return sorted      
     end
+
+    private
+    def init_ontology()
+      ontology = @model.first_subject(RDF::Query::Pattern.new(nil, RDF.type, DOWL::Namespaces::OWL.Ontology))
+      if ontology
+        @ontology = Ontology.new(ontology, self)
+      else
+        warn "WARNING: Ontology not found in schema"
+      end
+    end
     
+    private
+    def init_name()
+      @name = nil    
+      if @ontology
+        prefix = prefixForNamespace(@ontology.uri())
+        if prefix
+          @name = prefix
+        end
+      end
+      if @name == nil and @ontology
+        puts "vann: " + DOWL::Namespaces::VANN.preferredNamespacePrefix
+        prefix = @model.first_subject(
+          RDF::Query::Pattern.new(@ontology.resource(), RDF.type, DOWL::Namespaces::VANN.preferredNamespacePrefix)
+        )
+        if prefix
+          @name = prefix.to_s()
+        end
+      end
+      if @name == nil
+        warn "WARNING: No name found for the schema"
+      end
+    end
+
     #
     # Replace the namespace in the given uri with the corresponding prefix, if defined
     #

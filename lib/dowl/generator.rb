@@ -20,9 +20,11 @@ module DOWL
       #
       # TODO: Write the output in a file in the target directory
       #
-      puts "Processing Template"
-      file = @template.result(b)
-      puts file
+      output_file = File.join(@dir, @schema.name + '.html')
+      puts "Generating #{output_file}"
+      File.open(output_file, 'w') { |file|
+        file.write(@template.result(b))
+      }
     end
     
   end  

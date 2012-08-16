@@ -13,6 +13,7 @@ module DOWL
     attr_reader :prefixes
     attr_reader :dir
     attr_reader :ontology
+    attr_reader :name
     
     def initialize(model, prefixes)
       @model = model
@@ -70,6 +71,23 @@ module DOWL
       else
         warn "WARNING: Ontology not found in schema"
       end
+      
+      if @ontology
+        prefix = prefixForNamespace(@ontology.uri())
+        if prefix
+          @name = prefix
+        end
+      end
+    end
+    
+    public
+    def prefixForNamespace(namespace_)
+      @prefixes.each() do |prefix, namespace|
+        if namespace = namespace_
+          return prefix
+        end
+      end
+      return nil
     end
     
     private

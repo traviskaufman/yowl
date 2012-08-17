@@ -16,8 +16,10 @@
 		  	<dt>Last Modified</dt>
 		  	<dd><%= schema.ontology.modified %></dd>
 		  <% end %>		  		  
-		  <dt>Authors</dt>
-		  <% schema.ontology.authors.each do |author| %><dd><a href="<%= author.uri %>"><%= author.name %></a></dd><%end%>
+		  <% if schema.ontology.hasAuthors %>		  	
+            <dt>Authors</dt>
+            <% schema.ontology.authors.each do |author| %><dd><a href="<%= author.uri %>"><%= author.name %></a></dd><%end%>
+		  <% end %>		  		  
 		</dl>
 		
 		<h1>Abstract</h1>

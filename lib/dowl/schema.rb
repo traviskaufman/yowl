@@ -138,7 +138,7 @@ module DOWL
       if ontology
         @ontology = Ontology.new(ontology, self)
       else
-        warn "WARNING: Ontology not found in schema"
+        raise "ERROR: Ontology not found in schema"
       end
     end
     

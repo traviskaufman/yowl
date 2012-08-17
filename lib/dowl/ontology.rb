@@ -25,7 +25,7 @@ module DOWL
       if dctermsAbstract
         return dctermsAbstract
       end
-      return super.comment
+      return super
     end
     
     def created()

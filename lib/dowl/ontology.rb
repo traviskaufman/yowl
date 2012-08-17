@@ -20,6 +20,14 @@ module DOWL
       return get_literal(DOWL::Namespaces::DC.title)
     end
     
+    def comment()
+      dctermsAbstract = get_literal(DOWL::Namespaces::DCTERMS.abstract)
+      if dctermsAbstract
+        return dctermsAbstract
+      end
+      return super.comment
+    end
+    
     def created()
       dctermsCreated = get_literal(DOWL::Namespaces::DCTERMS.created)
       if dctermsCreated

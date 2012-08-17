@@ -155,11 +155,9 @@ module DOWL
         #
         # Searching for vann:preferredNamespacePrefix to use as the name for the schema
         #
-        prefix = @model.first_object(
-          RDF::Query::Pattern.new(@ontology.resource, DOWL::Namespaces::VANN.preferredNamespacePrefix, nil)
-        )
-        if prefix and prefix.literal?
-          @name = prefix.to_s()
+        prefix = @ontology.get_literal(DOWL::Namespaces::VANN.preferredNamespacePrefix)
+        if prefix
+          @name = prefix
           if @options.verbose
             puts "Found vann:preferredNamespacePrefix: #{prefix}"
           end
@@ -167,7 +165,7 @@ module DOWL
           # Add the found prefix to the collection of prefixes/namespaces
           # (perhaps we should search for vann:preferredNamespaceUri to make it complete)
           #
-          prefixes[@name] = @ontology.resource.to_s
+          prefixes[@name] = @ontology.uri
         else
           warn "WARNING: vann:preferredNamespacePrefix not found"
         end

@@ -34,20 +34,17 @@ module DOWL
         opts.separator ""
         opts.separator "Common options:"
   
-        # No argument, shows at tail.  This will print an options summary.
-        # Try it and see!
-        opts.on_tail("-h", "--help", "Show this message") do
+        opts.on_tail("-?", "-h", "--help", "Show this message") do
           puts opts
           exit
         end
   
-        # Another typical switch to print the version.
-        opts.on_tail("--version", "Show version") do
+        opts.on_tail("-V", "--version", "Show version") do
           puts OptionParser::Version.join('.')
           exit
         end
 
-        opts.on_tail("--verbose", "Show verbose logging") do
+        opts.on_tail("-v", "--verbose", "Show verbose logging") do
           options.verbose = true
         end
         

@@ -20,7 +20,7 @@ module DOWL
           puts "Generating #{output_file}"
         end
         File.open(output_file, 'w') do |file|
-          file.write(@template.result(b))
+          file.write(@ontology_template.result(b))
         end
       end
     end
@@ -35,7 +35,7 @@ module DOWL
         puts "Generating #{@options.index_html_file}"
       end
       File.open(@options.index_html_file, 'w') do |file|
-        file.write(@template.result(b))
+        file.write(@index_template.result(b))
       end
     end
     

@@ -27,7 +27,7 @@ module DOWL
     
     private
     def generateIndexHtmlFile()
-      if @options.index_file_name == nil
+      if @options.index_file_name == nil or @index_template == nil
         return
       end
       b = binding

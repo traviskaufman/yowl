@@ -5,27 +5,16 @@ module DOWL
     def initialize(schemas, options)
       @schemas = schemas
       @options = options
-      begin
-        @template = ERB.new(options.template.read)
-      ensure
-        options.template.close()
-      end
-      if options.introduction != nil
-        begin
-          @introduction = options.introduction.read()
-        ensure
-          options.introduction.close()
-        end
-      end      
+      @ontology_template = @options.ontology_template
+      @index_template = @options.index_template
+      @introduction = @options.introduction
     end
     
-    def run()      
+    private
+    def generateOntologyHtmlFiles()
       @schemas.each() do |schema|
         introduction = @introduction
         b = binding
-        #
-        # TODO: Write the output in a file in the target directory
-        #
         output_file = File.join(@options.html_output_dir, schema.name + '.html')
         if @options.verbose
           puts "Generating #{output_file}"
@@ -34,6 +23,26 @@ module DOWL
           file.write(@template.result(b))
         end
       end
+    end
+    
+    private
+    def generateIndexHtmlFile()
+      if @options.index_html_file == nil
+        return
+      end
+      b = binding
+      if @options.verbose
+        puts "Generating #{@options.index_html_file}"
+      end
+      File.open(@options.index_html_file, 'w') do |file|
+        file.write(@template.result(b))
+      end
+    end
+    
+    public
+    def run()
+      generateOntologyHtmlFiles()
+      generateIndexHtmlFile()      
     end
   end  
 end

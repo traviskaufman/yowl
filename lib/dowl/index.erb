@@ -1,0 +1,15 @@
+<html>
+	<head>
+		<title>Ontologies</title>
+	</head>
+	<body>
+		Here's a list of all ontologies:
+		<table>
+		<%schemas.each do |schema| %>
+		  <tr>
+		  	<td><%schema.ontology.short_name%></td>
+		  </tr>
+		<%end%>
+		</table>		
+	</body>
+</html>

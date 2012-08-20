@@ -22,9 +22,13 @@ module DOWL
         opts.on('-o', '--htmldir DIR', 'Write HTML output to DIR') do |dir|
           options.html_output_dir = dir
         end
+
+        opts.on('--index FILE', 'Generate an index.html file named FILE') do |index|
+          options.index_file_name = index
+        end
   
         opts.on('-t', '--template FILE', 'Use ERB template FILE') do |template|
-          options.template_file_name = template
+          options.ontology_template_file_name = template
         end
 
         opts.on('--introduction FILE', 'Use HTML file as introduction') do |htmlfile|

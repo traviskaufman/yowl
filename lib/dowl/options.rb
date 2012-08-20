@@ -6,19 +6,25 @@ module DOWL
     
     attr_accessor :ontology_file_names
     attr_accessor :html_output_dir
-    attr_accessor :template_file_name
+    attr_accessor :index_file_name
+    attr_accessor :ontology_template_file_name
+    attr_accessor :index_template_file_name
     attr_accessor :introduction_file_name
-    attr_reader :template
-    attr_reader :introduction
+    attr_reader :ontology_template_file
+    attr_reader :index_template_file
+    attr_reader :introduction_file
     attr_accessor :verbose
     
     def initialize()
       @ontology_file_names = []
       @html_output_dir = Dir.pwd()
-      @template_file_name = nil
+      @index_file_name = nil
+      @ontology_template_file_name = nil
+      @index_template_file_name = nil
       @introduction_file_name = nil
-      @template = nil
-      @introduction = nil
+      @ontology_template_file = nil
+      @index_template_file = nil
+      @introduction_file = nil
       @verbose = false
     end
     
@@ -26,7 +32,10 @@ module DOWL
       if ! validate_ontology_file_names()
         return false
       end
-      if ! validate_template()
+      if ! validate_ontology_template()
+        return false
+      end
+      if ! validate_index_template()
         return false
       end
       if ! validate_introduction()
@@ -60,41 +69,93 @@ module DOWL
     end
     
     private
-    def validate_template_file_name(filename)
+    def validate_ontology_template_file_name(filename)
       if File.exists?(filename)
-        @template_file_name = filename
-        @template = File.new(filename)
+        @ontology_template_file_name = filename
+        @ontology_template_file = File.new(filename)
+        return true
+      end
+      return false
+    end
+
+    private
+    def validate_index_template_file_name(filename)
+      if File.exists?(filename)
+        @index_template_file_name = filename
+        @index_template_file = File.new(filename)
         return true
       end
       return false
     end
     
     private
-    def validate_template()
+    def validate_ontology_template()
       
-      if @template_file_name != nil
-        if validate_template_file_name(@template_file_name)
+      if @ontology_template_file_name != nil
+        if validate_ontology_template_file_name(@ontology_template_file_name)
           return true
         end
       end
       
-      if validate_template_file_name(File.join(ontology_dir(), "dowl/default.erb"))
+      if validate_ontology_template_file_name(File.join(ontology_dir(), "dowl/default.erb"))
         return true
       end
 
-      if validate_template_file_name(File.join(File.dirname(__FILE__), "default.erb"))
+      if validate_ontology_template_file_name(File.join(File.dirname(__FILE__), "default.erb"))
         return true
       end
       
-      warn "Could not find template"
+      warn "Could not find ontology template"
       return false
+    end
+    
+    public
+    def ontology_template()
+      begin
+        return ERB.new(@ontology_template_file.read)
+      ensure
+        @ontology_template_file.close()
+      end
+    end
+
+    private
+    def validate_index_template()
+      
+      if @index_template_file_name != nil
+        if validate_index_template_file_name(@index_template_file_name)
+          return true
+        end
+      end
+      
+      if validate_index_template_file_name(File.join(ontology_dir(), "dowl/index.erb"))
+        return true
+      end
+  
+      if validate_index_template_file_name(File.join(File.dirname(__FILE__), "index.erb"))
+        return true
+      end
+      
+      warn "Could not find index template"
+      return false
+    end
+      
+    public
+    def index_template()
+      if @index_template == nil
+        return nil
+      end
+      begin
+        return ERB.new(@index_template.read)
+      ensure
+        @index_template.close()
+      end
     end
 
     private
     def validate_introduction_file_name(filename)
       if File.exists?(filename)
         @introduction_file_name = filename
-        @introduction = File.new(filename)
+        @introduction_file = File.new(filename)
         return true
       end
       return false
@@ -123,6 +184,18 @@ module DOWL
       
       warn "Could not find introduction html file"
       return false
+    end
+    
+    public
+    def introduction()
+      if @introduction == nil
+        return nil
+      end
+      begin
+        return @introduction_file.read()
+      ensure
+        @introduction_file.close()
+      end
     end
     
   end # End of class Options

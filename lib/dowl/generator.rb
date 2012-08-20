@@ -27,14 +27,14 @@ module DOWL
     
     private
     def generateIndexHtmlFile()
-      if @options.index_html_file == nil
+      if @options.index_file_name == nil
         return
       end
       b = binding
       if @options.verbose
-        puts "Generating #{@options.index_html_file}"
+        puts "Generating #{@options.index_file_name}"
       end
-      File.open(@options.index_html_file, 'w') do |file|
+      File.open(@options.index_file_name, 'w') do |file|
         file.write(@index_template.result(b))
       end
     end

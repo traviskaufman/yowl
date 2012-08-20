@@ -40,7 +40,7 @@ module DOWL
   
         opts.on_tail("-?", "-h", "--help", "Show this message") do
           puts opts
-          exit
+          return nil
         end
   
         opts.on_tail("-V", "--version", "Show version") do
@@ -57,7 +57,8 @@ module DOWL
       opts.parse!(args)
       
       if ! options.validate()
-        exit
+        puts opts
+        return nil
       end
       return options
     end  # parse()

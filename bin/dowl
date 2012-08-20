@@ -8,5 +8,7 @@ require 'erb'
 PROGRAM = File::basename $0
 
 options = DOWL::OptionsParser.parse(ARGV)
-schemas = DOWL::Schema.create_from_file(options)
-DOWL::Generator.new(schemas, options).run()
+if options
+  schemas = DOWL::Schema.create_from_file(options)
+  DOWL::Generator.new(schemas, options).run()
+end

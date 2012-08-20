@@ -168,6 +168,8 @@ module DOWL
         if validate_introduction_file_name(@introduction_file_name)
           return true
         end
+        warn "ERROR: Could not find #{@introduction_file_name}"
+        return false
       end
       
       if validate_introduction_file_name(File.join(ontology_dir(), "introduction.html"))
@@ -182,8 +184,7 @@ module DOWL
         return true
       end
       
-      warn "Could not find introduction html file"
-      return false
+      return true
     end
     
     public

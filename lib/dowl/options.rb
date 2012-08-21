@@ -10,22 +10,22 @@ module DOWL
     attr_accessor :ontology_template_file_name
     attr_accessor :index_template_file_name
     attr_accessor :introduction_file_name
-    attr_reader :ontology_template_file
-    attr_reader :index_template_file
+    attr_reader :ontology_template
+    attr_reader :index_template
     attr_reader :introduction_file
     attr_accessor :verbose
     
     def initialize()
+      @verbose = false
       @ontology_file_names = []
       @html_output_dir = Dir.pwd()
       @index_file_name = nil
       @ontology_template_file_name = nil
       @index_template_file_name = nil
       @introduction_file_name = nil
-      @ontology_template_file = nil
-      @index_template_file = nil
-      @introduction_file = nil
-      @verbose = false
+      @ontology_template = nil
+      @index_template = nil
+      @introduction = nil
     end
     
     def validate()
@@ -70,9 +70,16 @@ module DOWL
     
     private
     def validate_ontology_template_file_name(filename)
+      if verbose()
+        puts "Checking ontology template #{filename}"
+      end
       if File.exists?(filename)
-        @ontology_template_file_name = filename
-        @ontology_template_file = File.new(filename)
+        File.open(filename) do |file|
+          @ontology_template = ERB.new(file.read)
+        end
+        if verbose()
+          puts "Found and read ontology template #{filename}"
+        end
         return true
       end
       return false
@@ -81,11 +88,15 @@ module DOWL
     private
     def validate_index_template_file_name(filename)
       if verbose()
-        puts "Checking index template file name #{filename}"
+        puts "Checking index template #{filename}"
       end
       if File.exists?(filename)
-        @index_template_file_name = filename
-        @index_template_file = File.new(filename)
+        File.open(filename) do |file|
+          @index_template = ERB.new(file.read)
+        end
+        if verbose()
+          puts "Found and read index template #{filename}"
+        end
         return true
       end
       return false
@@ -98,6 +109,8 @@ module DOWL
         if validate_ontology_template_file_name(@ontology_template_file_name)
           return true
         end
+        warn "ERROR: Could not find ontology template #{ontology_template_file_name}"
+        return false
       end
       
       if validate_ontology_template_file_name(File.join(ontology_dir(), "dowl/default.erb"))
@@ -112,15 +125,6 @@ module DOWL
       return false
     end
     
-    public
-    def ontology_template()
-      begin
-        return ERB.new(@ontology_template_file.read)
-      ensure
-        @ontology_template_file.close()
-      end
-    end
-
     private
     def validate_index_template()
       
@@ -143,24 +147,19 @@ module DOWL
       warn "Could not find index template"
       return false
     end
-      
-    public
-    def index_template()
-      if @index_template == nil
-        return nil
-      end
-      begin
-        return ERB.new(@index_template.read)
-      ensure
-        @index_template.close()
-      end
-    end
-
+    
     private
     def validate_introduction_file_name(filename)
+      if verbose()
+        puts "Checking introduction template #{filename}"
+      end
       if File.exists?(filename)
-        @introduction_file_name = filename
-        @introduction_file = File.new(filename)
+        File.open(filename) do |file|
+          @introduction = file.read
+        end
+        if verbose()
+          puts "Found and read introduction template #{filename}"
+        end
         return true
       end
       return false
@@ -190,18 +189,6 @@ module DOWL
       end
       
       return true
-    end
-    
-    public
-    def introduction()
-      if @introduction == nil
-        return nil
-      end
-      begin
-        return @introduction_file.read()
-      ensure
-        @introduction_file.close()
-      end
     end
     
   end # End of class Options

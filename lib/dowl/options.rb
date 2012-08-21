@@ -13,7 +13,7 @@ module DOWL
     attr_reader :ontology_template_file
     attr_reader :index_template_file
     attr_reader :introduction_file
-    attr_accessor :verbose?
+    attr_accessor :verbose
     
     def initialize()
       @ontology_file_names = []

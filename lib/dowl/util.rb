@@ -18,6 +18,10 @@ module DOWL
       return @schema.prefixedUri(uri)
     end
     
+    def to_s()
+      return short_name()
+    end    
+    
     def get_literal(property)
       return @schema.model.first_value(RDF::Query::Pattern.new(@resource, property))
     end

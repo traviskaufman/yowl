@@ -9,10 +9,6 @@ module DOWL
       super(resource, schema)
     end
     
-    def uri
-      return @resource.uri.to_s
-    end
-    
     def sub_class_of()
       parent = @schema.model.first_value( 
         RDF::Query::Pattern.new( @resource, DOWL::Namespaces::RDFS.subClassOf ) )
@@ -34,10 +30,6 @@ module DOWL
          links << statement.object.to_s
        end
        return links
-    end
-    
-    def to_s
-      return short_name
     end
     
     def sub_classes()

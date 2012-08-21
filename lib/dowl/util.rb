@@ -13,6 +13,10 @@ module DOWL
     def uri() 
       return @resource.to_s
     end    
+
+    def short_name()
+      return @schema.prefixedUri(uri)
+    end
     
     def get_literal(property)
       return @schema.model.first_value(RDF::Query::Pattern.new(@resource, property))
@@ -25,11 +29,7 @@ module DOWL
     def initialize(resource, schema)
        super(resource, schema)
     end
-     
-    def short_name()
-      return @schema.prefixedUri(uri)
-    end
-     
+    
     def label()
       label = get_literal(DOWL::Namespaces::RDFS.label)
       return label.nil? ? short_name() : label

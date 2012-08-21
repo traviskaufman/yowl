@@ -63,7 +63,7 @@ module DOWL
       schemas = []
         
       options.ontology_file_names.each() do | ontology_file_name |
-        if @options.verbose
+        if options.verbose
           puts "Parsing #{ontology_file_name}"
         end
         prefixes = read_prefixes(ontology_file_name)

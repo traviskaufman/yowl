@@ -45,7 +45,8 @@ module DOWL
     end
     
     def hasComment()
-      return ! comment().empty?
+      comment = comment()
+      return commit != nil and ! comment.empty?
     end
     
     def status()      

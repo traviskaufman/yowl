@@ -38,10 +38,11 @@ module DOWL
         puts "Not generating index since index template not specified."
         return
       end
-      b = binding
       if @options.verbose
         puts "Generating #{@options.index_file_name}"
       end
+      schemas = @schemas
+      b = binding
       File.open(@options.index_file_name, 'w') do |file|
         file.write(@index_template.result(b))
       end

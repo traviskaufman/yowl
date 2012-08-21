@@ -25,7 +25,7 @@ module DOWL
       
       if options.verbose
         @prefixes.each_pair do |prefix, namespace|
-          puts "Prefix #{prefix} Namespace #{namespace}"
+          puts " PREFIX #{prefix}: #{namespace}"
         end
       end
 

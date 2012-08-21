@@ -76,17 +76,21 @@ module DOWL
       return schemas
     end       
     
+    #
+    # Return the prefix and the corresponding namespace for the given namespace,
+    # where various forms of the given namespace are tried, like <ns>, <ns>/ and <ns>#.
+    # When no namespace could be found, return two nils.
     public
     def prefixForNamespace(namespace_)
       @prefixes.each() do |prefix, namespace|
-        if namespace == namespace_
-          return prefix
+        if (namespace == namespace_ or namespace + '/' == namespace_ or namespace + '#' == namespace_)
+          return prefix, namespace
         end
       end
       if @options.verbose
         puts "No prefix found for namespace #{namespace_}"
       end
-      return nil
+      return nil, nil
     end
     
     private
@@ -149,7 +153,7 @@ module DOWL
     def init_name()
       @name = nil    
       if @ontology
-        prefix = prefixForNamespace(@ontology.uri())
+        prefix, ns = prefixForNamespace(@ontology.uri())
         if prefix
           @name = prefix
         end
@@ -188,6 +192,12 @@ module DOWL
         #
         # Not sure whether still simplistic "algorithm" works in all cases
         #
+        if uri.include?(namespace + '#')
+          return uri.gsub!(namespace + '#', prefix + ':')
+        end
+        if uri.include?(namespace + '/')
+          return uri.gsub!(namespace + '/', prefix + ':')
+        end
         if uri.include?(namespace)
           return uri.gsub!(namespace, prefix + ':')
         end

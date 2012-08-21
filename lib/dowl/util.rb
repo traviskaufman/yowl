@@ -8,6 +8,7 @@ module DOWL
     def initialize(resource, schema)
       @resource = resource
       @schema = schema
+      puts "*** #{@resource.to_s} ***"
     end  
     
     def uri() 

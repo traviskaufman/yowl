@@ -34,7 +34,7 @@ module DOWL
       @schemas.each() do |schema|
         ontologies << schema.ontology
       end
-      return ontologies
+      return ontologies.sort { |x,y| x.short_name <=> y.short_name }
     end
     
     private

@@ -5,15 +5,16 @@
 	<body>
 		Here's a list of all ontologies:
 		<table border=1>
-		<% schemas.each do |schema| %>
-		  <tr>
-			<td><%= schema.ontology.short_name %></td>
-		  	<td><%= schema.ontology.title %></td>
-		  </tr>
-			<% ch
-		  <tr>
-			<td colspan="2"><% schema.ontology.label %></td>
-		  </tr>
+		<% ontologies.each do |ontology| %>
+			<tr>
+				<td><a href="<%= ontology.uri %>"><%= ontology.short_name %></a></td>
+				<td><%= ontology.title %></td>
+			</tr>
+			<% if ontology.hasComment %>
+				<tr>
+					<td colspan="2"><% schema.ontology.comment %></td>
+				</tr>
+			<% end %>
 		<% end %>
 		</table>		
 	</body>

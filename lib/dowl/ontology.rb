@@ -8,10 +8,6 @@ module DOWL
         super(resource, schema)  
     end
     
-    def uri() 
-        return @resource.to_s
-    end
-    
     def title()
       dctermsTitle = get_literal(DOWL::Namespaces::DCTERMS.title)
       if dctermsTitle

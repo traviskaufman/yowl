@@ -8,6 +8,10 @@ module DOWL
       @schema = schema
     end  
     
+    def uri() 
+        return @resource.to_s
+    end    
+    
     def get_literal(property)
       return @schema.model.first_value(RDF::Query::Pattern.new( @resource, property ) )
     end
@@ -38,6 +42,10 @@ module DOWL
         
     def comment()
       return get_literal(DOWL::Namespaces::RDFS.comment)
+    end
+    
+    def hasComment()
+      return ! comment().empty?
     end
     
     def status()      

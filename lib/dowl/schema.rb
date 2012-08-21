@@ -23,7 +23,7 @@ module DOWL
       @model = model
       @prefixes = prefixes
       
-      if options.verbose?
+      if options.verbose
         @prefixes.each_pair do |prefix, namespace|
           puts "Prefix #{prefix} Namespace #{namespace}"
         end
@@ -63,7 +63,7 @@ module DOWL
       schemas = []
         
       options.ontology_file_names.each() do | ontology_file_name |
-        if @options.verbose?
+        if @options.verbose
           puts "Parsing #{ontology_file_name}"
         end
         prefixes = read_prefixes(ontology_file_name)
@@ -83,7 +83,7 @@ module DOWL
           return prefix
         end
       end
-      if @options.verbose?
+      if @options.verbose
         puts "No prefix found for namespace #{namespace_}"
       end
       return nil
@@ -161,7 +161,7 @@ module DOWL
         prefix = @ontology.get_literal(DOWL::Namespaces::VANN.preferredNamespacePrefix)
         if prefix
           @name = prefix
-          if @options.verbose?
+          if @options.verbose
             puts "Found vann:preferredNamespacePrefix: #{prefix}"
           end
           #

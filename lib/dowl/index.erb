@@ -4,12 +4,17 @@
 	</head>
 	<body>
 		Here's a list of all ontologies:
-		<table>
-		<%schemas.each do |schema| %>
+		<table border=1>
+		<% schemas.each do |schema| %>
 		  <tr>
-		  	<td><%schema.ontology.short_name%></td>
+			<td><%= schema.ontology.short_name %></td>
+		  	<td><%= schema.ontology.title %></td>
 		  </tr>
-		<%end%>
+			<% ch
+		  <tr>
+			<td colspan="2"><% schema.ontology.label %></td>
+		  </tr>
+		<% end %>
 		</table>		
 	</body>
 </html>

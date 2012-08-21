@@ -30,7 +30,12 @@ module DOWL
     
     private
     def generateIndexHtmlFile()
-      if @options.index_file_name == nil or @index_template == nil
+      if @options.index_file_name == nil
+        puts "Not generating index since index file name not specified."
+        return
+      end
+      if @index_template == nil
+        puts "Not generating index since index template not specified."
         return
       end
       b = binding

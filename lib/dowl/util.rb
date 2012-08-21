@@ -1,19 +1,21 @@
 module DOWL
   
   class DocObject
+    
     attr_reader :resource
-    attr_reader :schema  
+    attr_reader :schema
+    
     def initialize(resource, schema)
       @resource = resource
       @schema = schema
     end  
     
     def uri() 
-        return @resource.to_s
+      return @resource.to_s
     end    
     
     def get_literal(property)
-      return @schema.model.first_value(RDF::Query::Pattern.new( @resource, property ) )
+      return @schema.model.first_value(RDF::Query::Pattern.new(@resource, property))
     end
     
   end
@@ -25,15 +27,12 @@ module DOWL
     end
      
     def short_name()
-      return @schema.prefixedUri(@resource.to_s)
+      return @schema.prefixedUri(uri)
     end
      
     def label()
       label = get_literal(DOWL::Namespaces::RDFS.label)
-      if label == nil
-        return short_name()
-      end
-      return label
+      return label.nil? ? short_name() : label
     end
     
     def hasDifferentLabel()

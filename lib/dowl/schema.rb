@@ -184,6 +184,7 @@ module DOWL
     public
     def prefixedUri(uri)
       @prefixes.each() do |prefix, namespace|
+        puts "uri=#{uri} prefix=#{prefix} ns=#{namespace}"
         #
         # Not sure whether still simplistic "algorithm" works in all cases
         #

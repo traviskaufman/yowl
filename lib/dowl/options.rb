@@ -25,7 +25,7 @@ module DOWL
       @ontology_template_file = nil
       @index_template_file = nil
       @introduction_file = nil
-      @verbose? = false
+      @verbose = false
     end
     
     def validate()

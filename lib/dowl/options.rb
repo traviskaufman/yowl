@@ -12,7 +12,7 @@ module DOWL
     attr_accessor :introduction_file_name
     attr_reader :ontology_template
     attr_reader :index_template
-    attr_reader :introduction_file
+    attr_reader :introduction
     attr_accessor :verbose
     
     def initialize()

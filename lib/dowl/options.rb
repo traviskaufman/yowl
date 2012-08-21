@@ -80,6 +80,9 @@ module DOWL
 
     private
     def validate_index_template_file_name(filename)
+      if verbose()
+        puts "Checking index template file name #{filename}"
+      end
       if File.exists?(filename)
         @index_template_file_name = filename
         @index_template_file = File.new(filename)
@@ -125,6 +128,8 @@ module DOWL
         if validate_index_template_file_name(@index_template_file_name)
           return true
         end
+        warn "ERROR: Could not find index template #{index_template_file_name}"
+        return false
       end
       
       if validate_index_template_file_name(File.join(ontology_dir(), "dowl/index.erb"))

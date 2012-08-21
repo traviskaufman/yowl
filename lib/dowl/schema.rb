@@ -172,7 +172,12 @@ module DOWL
           # Add the found prefix to the collection of prefixes/namespaces
           # (perhaps we should search for vann:preferredNamespaceUri to make it complete)
           #
-          prefixes[@name] = @ontology.uri
+          ns = @ontology.get_literal(DOWL::Namespaces::VANN.preferredNamespaceUri)
+          if ns
+            prefixes[@name] = ns
+          else
+            prefixes[@name] = @ontology.ns
+          end
         else
           warn "WARNING: vann:preferredNamespacePrefix not found"
         end

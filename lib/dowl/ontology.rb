@@ -8,6 +8,12 @@ module DOWL
         super(resource, schema)  
     end
     
+    def ns()
+      uri = uri()
+      lastChar = uri[-1,1] 
+      return (lastChar == '/' or lastChar == '#') ? uri : uri + '#'
+    end
+    
     def title()
       dctermsTitle = get_literal(DOWL::Namespaces::DCTERMS.title)
       if dctermsTitle

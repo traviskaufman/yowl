@@ -49,7 +49,7 @@ module DOWL
         end
 
         opts.on_tail("-v", "--verbose", "Show verbose logging") do
-          options.verbose? = true
+          options.verbose(true)
         end
         
       end

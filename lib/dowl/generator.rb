@@ -29,6 +29,15 @@ module DOWL
     end
     
     private
+    def ontologies()
+      ontologies = []
+      @schemas.each() do |schema|
+        ontologies << schema.ontology
+      end
+      return ontologies
+    end
+    
+    private
     def generateIndexHtmlFile()
       if @options.index_file_name == nil
         puts "Not generating index since index file name not specified."
@@ -42,6 +51,7 @@ module DOWL
         puts "Generating #{@options.index_file_name}"
       end
       schemas = @schemas
+      ontologies = ontologies()
       b = binding
       File.open(@options.index_file_name, 'w') do |file|
         file.write(@index_template.result(b))

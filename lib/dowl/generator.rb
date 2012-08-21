@@ -13,10 +13,13 @@ module DOWL
     private
     def generateOntologyHtmlFiles()
       @schemas.each() do |schema|
+        if @options.verbose?
+          puts "Generating documentation for ontology #{schema.ontology.title}"
+        end
         introduction = @introduction
         b = binding
         output_file = File.join(@options.html_output_dir, schema.name + '.html')
-        if @options.verbose
+        if @options.verbose?
           puts "Generating #{output_file}"
         end
         File.open(output_file, 'w') do |file|
@@ -31,7 +34,7 @@ module DOWL
         return
       end
       b = binding
-      if @options.verbose
+      if @options.verbose?
         puts "Generating #{@options.index_file_name}"
       end
       File.open(@options.index_file_name, 'w') do |file|

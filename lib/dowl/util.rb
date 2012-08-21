@@ -46,7 +46,7 @@ module DOWL
     
     def hasComment()
       comment = comment()
-      return comment and !comment.empty?
+      return (comment and not comment.empty?)
     end
     
     def status()      

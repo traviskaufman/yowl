@@ -186,6 +186,16 @@ module DOWL
         raise "ERROR: No name found for the schema"
       end
     end
+    
+    private
+    def isUriMatch(uri, prefix, namespace, postfix)
+      tmp = "#{uri}#{postfix}"
+      puts "uri=#{tmp} prefix=#{prefix} ns=#{namespace}"
+      if tmp.include?(namespace)
+        return true, tmp.gsub!(tmp, "#{prefix}:")
+      end
+      return false, nil
+    end
 
     #
     # Replace the namespace in the given uri with the corresponding prefix, if defined
@@ -193,18 +203,17 @@ module DOWL
     public
     def prefixedUri(uri)
       @prefixes.each() do |prefix, namespace|
-        puts "uri=#{uri} prefix=#{prefix} ns=#{namespace}"
-        #
-        # Not sure whether still simplistic "algorithm" works in all cases
-        #
-        if uri.include?(namespace + '#')
-          return uri.gsub!(namespace + '#', prefix + ':')
+        isMatch, result = isUriMatch(uri, prefix, namespace, '#')
+        if isMatch 
+          return result
         end
-        if uri.include?(namespace + '/')
-          return uri.gsub!(namespace + '/', prefix + ':')
+        isMatch, result = isUriMatch(uri, prefix, namespace, '/')
+        if isMatch 
+          return result
         end
-        if uri.include?(namespace)
-          return uri.gsub!(namespace, prefix + ':')
+        isMatch, result = isUriMatch(uri, prefix, namespace, '')
+        if isMatch
+          return result
         end
       end
       ontology_uri = @ontology.uri

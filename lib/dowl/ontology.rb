@@ -30,7 +30,7 @@ module DOWL
       return super
     end
     
-    def hasComment()
+    def hasComment?
       comment = comment()
       return (comment and not comment.empty?)
     end

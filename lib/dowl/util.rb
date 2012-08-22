@@ -54,7 +54,7 @@ module DOWL
       return get_literal(DOWL::Namespaces::RDFS.comment)
     end
     
-    def hasComment()
+    def hasComment?
       comment = comment()
       return (comment and not comment.empty?)
     end

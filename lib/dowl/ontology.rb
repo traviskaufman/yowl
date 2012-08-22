@@ -54,7 +54,10 @@ module DOWL
       @schema.model.query( 
         RDF::Query::Pattern.new(@resource, DOWL::Namespaces::FOAF.maker)
       ) do |statement|
-        authors << Person.new(statement.object, @schema)
+        uri = statement.object
+        if (uri and uri.uri?)
+          authors << Person.new(uri, @schema)
+        end
       end
       #
       # Also scan for dc:creator and dc:contributor

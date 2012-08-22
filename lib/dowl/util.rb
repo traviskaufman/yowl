@@ -8,13 +8,17 @@ module DOWL
     def initialize(resource, schema)
       @resource = resource
       @schema = schema
-      if not @resource.uri?
+      if (@resource and not @resource.uri?)
         raise "ERROR: Instantiating an object with a non-URI resource"
       end
     end  
     
     def uri() 
-      return @resource.to_s
+      return @resource ? @resource.to_s : nil
+    end
+    
+    def hasUri?
+      return @resource ? true : false
     end    
 
     def short_name()
@@ -26,7 +30,7 @@ module DOWL
     end    
     
     def get_literal(property)
-      return @schema.model.first_value(RDF::Query::Pattern.new(@resource, property))
+      return hasUri? ? @schema.model.first_value(RDF::Query::Pattern.new(@resource, property)) : nil
     end
     
   end

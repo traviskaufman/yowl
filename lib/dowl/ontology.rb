@@ -30,6 +30,11 @@ module DOWL
       return super
     end
     
+    def hasComment()
+      comment = comment()
+      return (comment and not comment.empty?)
+    end
+    
     def created()
       dctermsCreated = get_literal(DOWL::Namespaces::DCTERMS.created)
       if dctermsCreated
@@ -81,6 +86,10 @@ module DOWL
     
     def hasAuthors()
       return authors.empty?
+    end
+    
+    def numberOfClasses()
+      return @schema.classes.size()
     end
     
   end

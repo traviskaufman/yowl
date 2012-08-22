@@ -8,7 +8,9 @@ module DOWL
     def initialize(resource, schema)
       @resource = resource
       @schema = schema
-      puts "*** #{@resource.to_s} ***"
+      if not @resource.uri?
+        raise "ERROR: Instantiating an object with a non-URI resource"
+      end
     end  
     
     def uri() 

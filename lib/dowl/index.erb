@@ -5,14 +5,20 @@
 	<body>
 		Here's a list of all ontologies:
 		<table border=1>
+		<tr>
+			<th>PREFIX</th>
+			<th>Namespace</th>
+			<th>Ontology Name</th>
+		</tr>
 		<% ontologies.each do |ontology| %>
 			<tr>
 				<td><a href="<%= ontology.uri %>"><%= ontology.short_name %></a></td>
+				<td><a href="<%= ontology.uri %>"><%= ontology.ns %></a></td>
 				<td><%= ontology.title %></td>
 			</tr>
 			<% if ontology.hasComment %>
 				<tr>
-					<td colspan="2"><% ontology.comment %></td>
+					<td colspan="3"><% ontology.comment %></td>
 				</tr>
 			<% end %>
 		<% end %>

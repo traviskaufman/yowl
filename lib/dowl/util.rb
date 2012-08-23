@@ -62,7 +62,7 @@ module DOWL
     def status()      
       return get_literal(DOWL::Namespaces::VS.status)
     end
-         
+
     def <=>(other)
       return label().downcase <=> other.label().downcase
     end    

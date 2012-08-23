@@ -2,15 +2,6 @@ require 'dowl'
 
 module DOWL
 
-  class Import < DOWL::LabelledDocObject
-   
-    def initialize(resource, schema)
-      super(resource, schema)
-      puts "Found owl:import #{uri}"
-    end
-
-  end
-
   class Ontology < DOWL::LabelledDocObject
    
     def initialize(resource, schema)
@@ -111,4 +102,13 @@ module DOWL
     end
     
   end
+
+  class Import < DOWL::LabelledDocObject
+   
+    def initialize(resource, schema)
+      super(resource, schema)
+    end
+
+  end
+  
 end

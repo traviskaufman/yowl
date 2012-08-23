@@ -97,8 +97,8 @@ module DOWL
     def init_classes(type)
       @model.query( RDF::Query::Pattern.new( nil, RDF.type, type ) ) do |statement|
         if !statement.subject.anonymous?
-            cls = DOWL::Class.new(statement.subject, self)
-            @classes[ statement.subject.to_s ] = cls                    
+          cls = DOWL::Class.new(statement.subject, self)
+          @classes[ statement.subject.to_s ] = cls                    
         end
       end      
     end
@@ -213,13 +213,16 @@ module DOWL
           return prefix
         end
         if uri.include?(namespace)
-          return uri.gsub(namespace, '#{prefix}:')
+          if namespace == @ontology.ns
+            return uri.gsub(namespace, '')
+          end
+          return uri.gsub(namespace, "#{prefix}:")
         end
       end
       ontology_uri = @ontology.uri
-      uri = uri.gsub(ontology_uri + '#', "")
-      uri = uri.gsub(ontology_uri + '/', "")
-      return uri.gsub(ontology_uri, "")
+      uri = uri.gsub(ontology_uri + '#', '')
+      uri = uri.gsub(ontology_uri + '/', '')
+      return uri.gsub(ontology_uri, '')
     end
   end  
   

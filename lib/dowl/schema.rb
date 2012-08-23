@@ -36,7 +36,7 @@ module DOWL
       
       @datatype_properties = init_properties(DOWL::Namespaces::OWL.DatatypeProperty)      
       @object_properties = init_properties(DOWL::Namespaces::OWL.ObjectProperty)
-
+      
       init_ontology()
       init_name()
     end
@@ -95,10 +95,10 @@ module DOWL
     
     private
     def init_classes(type)
-      @model.query( RDF::Query::Pattern.new( nil, RDF.type, type ) ) do |statement|
+      @model.query(RDF::Query::Pattern.new(nil, RDF.type, type)) do |statement|
         if !statement.subject.anonymous?
           cls = DOWL::Class.new(statement.subject, self)
-          @classes[ statement.subject.to_s ] = cls                    
+          @classes[statement.subject.to_s] = cls                    
         end
       end      
     end
@@ -106,8 +106,8 @@ module DOWL
     private
     def init_properties(type)
       properties = Hash.new
-      @model.query( RDF::Query::Pattern.new( nil, RDF.type, type ) ) do |statement|
-        properties[ statement.subject.to_s] = DOWL::Property.new(statement.subject, self)
+      @model.query(RDF::Query::Pattern.new(nil, RDF.type, type)) do |statement|
+        properties[statement.subject.to_s] = DOWL::Property.new(statement.subject, self)
       end      
       return properties      
     end
@@ -187,16 +187,6 @@ module DOWL
       end
     end
     
-    private
-    def isUriMatch(uri, prefix, namespace, postfix)
-      tmp = "#{uri}#{postfix}"
-      puts "uri=#{tmp} prefix=#{prefix} ns=#{namespace}"
-      if tmp.include?(namespace)
-        return true, tmp.gsub!(tmp, "#{prefix}:")
-      end
-      return false, nil
-    end
-
     #
     # Replace the namespace in the given uri with the corresponding prefix, if defined
     #

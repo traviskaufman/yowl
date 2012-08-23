@@ -2,6 +2,17 @@ require 'dowl'
 
 module DOWL
 
+  class Import < DOWL::LabelledDocObject
+   
+    def initialize(resource, schema)
+        super(resource, schema)  
+    end
+    
+    def importedOntologyUri
+      return get_literal(DOWL::Namespaces::RDF.resource)
+    end
+  end
+
   class Ontology < DOWL::LabelledDocObject
    
     def initialize(resource, schema)
@@ -89,6 +100,14 @@ module DOWL
     
     def numberOfProperties()
       return @schema.properties.size()
+    end
+    
+    def imports()
+      @schema.model.query( 
+        RDF::Query::Pattern.new(@resource, DOWL::Namespaces::OWL.imports)
+      ) do |statement|
+        imports << Import.new(statement.object, @schema)
+      end
     end
     
   end

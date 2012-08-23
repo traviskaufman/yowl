@@ -31,17 +31,25 @@
 		<% end %>
 		
 		<div id="overview">
+		    
+		    <h2>Imports</h2>
+		    <ul>
+		    <% schema.ontology.imports.each() do |import| %>
+		      <li><%= import.importedOntologyUri.to_s %></li>
+		    <% end %>
+		    
 			<h2>Overview Of Terms</h2>		
 			<p>An alphabetical index of the ontology terms, divided into classes, properties and individuals. All the terms are hyperlinked to their 
 			detailed description for quick reference.
 			</p>
 			
-			<p><strong>Classes</strong>:
+			<h3>Classes</h3>
 			 <% schema.list_classes().each do |key,val| %>
 			 | <a href="#class_<%= val.short_name %>"><%= val.short_name %></a>
 			 <% end %>		
 			</p>
-			<p><strong>Properties</strong>:
+			
+			<h3>Properties</h3>
 			 <% schema.list_properties().each do |key,val| %>
 			 | <a href="#prop_<%= val.short_name %>"><%= val.short_name %></a>
 			 <% end %>

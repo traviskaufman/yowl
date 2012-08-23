@@ -144,12 +144,9 @@ module DOWL
       allClasses = classes().collect() do |uri,klass|
         klass
       end
-      allClasses = allClasses.to_set
-      nonRootClasses = Set.new
-      allClasses.each() do |klass|
-        nonRootClasses.merge(klass.sub_classes())
+      allClasses.to_set.delete_if() do |klass|
+        klass.hasSuperClassesInSchema?
       end
-      return allClasses.subtract(nonRootClasses)
     end
       
 

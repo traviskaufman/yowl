@@ -11,7 +11,8 @@ module DOWL
     
     def sub_class_of()
       parent = @schema.model.first_value( 
-        RDF::Query::Pattern.new( @resource, DOWL::Namespaces::RDFS.subClassOf ) )
+        RDF::Query::Pattern.new(@resource, DOWL::Namespaces::RDFS.subClassOf)
+      )
       if parent
         uri = parent.to_s
         if @schema.classes[uri]
@@ -30,6 +31,30 @@ module DOWL
          links << statement.object.to_s
        end
        return links
+    end
+    
+    def super_classes()
+      list = []
+    
+      @schema.model.query(
+        RDF::Query::Pattern.new(nil, DOWL::Namespaces::RDFS.subClassOf, @resource)
+      ) do |statement|
+          list << DOWL::Class.new(statement.subject, @schema)
+      end
+      return list
+    end    
+
+    def hasSuperClasses?
+      return ! super_classes.empty?()
+    end
+    
+    def hasSuperClassesInSchema?
+      super_classes.each() do |klass|
+        if @schema.classes[klass.uri]
+          return true
+        end
+      end
+      return false
     end
     
     def sub_classes()

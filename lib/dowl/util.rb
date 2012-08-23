@@ -47,7 +47,7 @@ module DOWL
     end
     
     def hasDifferentLabel?
-      return short_name().gsub!("*:", "") != label()
+      return short_name().gsub!("/.:/", '') != label()
     end
         
     def comment()

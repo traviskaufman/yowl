@@ -146,7 +146,7 @@ module DOWL
       allClasses.each() do |klass|
         nonRootClasses.merge(klass.sub_classes)
       end
-      return allClasses.subtract(nonRootClasses)
+      return allClasses - nonRootClasses
     end
       
 

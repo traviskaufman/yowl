@@ -46,8 +46,8 @@ module DOWL
       return label.nil? ? short_name() : label
     end
     
-    def hasDifferentLabel()
-      return short_name() != label()
+    def hasDifferentLabel?
+      return short_name().gsub!("*:", "") != label()
     end
         
     def comment()

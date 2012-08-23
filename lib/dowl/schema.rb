@@ -203,17 +203,17 @@ module DOWL
     public
     def prefixedUri(uri)
       @prefixes.each() do |prefix, namespace|
-        isMatch, result = isUriMatch(uri, prefix, namespace, '#')
-        if isMatch 
-          return result
+        if uri == namespace
+          return prefix
         end
-        isMatch, result = isUriMatch(uri, prefix, namespace, '/')
-        if isMatch 
-          return result
+        if "#{uri}/" == namespace
+          return prefix
         end
-        isMatch, result = isUriMatch(uri, prefix, namespace, '')
-        if isMatch
-          return result
+        if "#{uri}#" == namespace
+          return prefix
+        end
+        if uri.include?(namespace)
+          return uri.gsub(namespace, '#{prefix}:')
         end
       end
       ontology_uri = @ontology.uri

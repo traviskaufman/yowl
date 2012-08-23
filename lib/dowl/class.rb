@@ -42,6 +42,10 @@ module DOWL
       return list
     end
     
+    def hasSubClasses?
+      return ! sub_classes.empty?()
+    end
+    
   end
   
   

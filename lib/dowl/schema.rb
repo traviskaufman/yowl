@@ -138,6 +138,17 @@ module DOWL
       sorted = classes().sort { |x,y| x[1] <=> y[1] }
       return sorted      
     end
+    
+    public
+    def root_classes()
+      allClasses = list_classes()
+      nonRootClasses = Set.new
+      allClasses.each() do |klass|
+        nonRootClasses.merge(klass.sub_classes)
+      end
+      return allClasses.subtract(nonRootClasses)
+    end
+      
 
     private
     def init_ontology()

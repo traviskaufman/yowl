@@ -40,18 +40,19 @@
 			<li><a href="<%= import.uri %>"><%= import.uri %></a></li>
 		<% end %>
 		</ul>
- 
+
 		<h2>Classes - Overview</h2>
-		 <% schema.list_classes().each do |key,val| %>
+		<% schema.list_classes().each do |key,val| %>
 		 | <a href="#class_<%= val.short_name %>"><%= val.short_name %></a>
-		 <% end %>		
+		<% end %>		
 		</p>
 		
 		<h2>Properties - Overview</h2>
-		 <% schema.list_properties().each do |key,val| %>
+		<% schema.list_properties().each do |key,val| %>
 		 | <a href="#prop_<%= val.short_name %>"><%= val.short_name %></a>
-		 <% end %>
+		<% end %>
 		</p>				
+
 		
 		<h2>Classes</h2>
 			
@@ -96,7 +97,7 @@
    				<% end %>
    			</div>
   		<%end%>		
-		
+	
 		<h2>Object Properties</h2>
 	
    		<% schema.list_object_properties().each do |t| %>
@@ -154,7 +155,7 @@
 	   				<% end %>		   				
    				</table>	   				
 				<% if t[1].hasComment? %>
-   					<p><%= t[1].comment %> </p>
+   					<p><%= t[1].comment %></p>
 				<% end %>
    				<% if t[1].see_alsos.length > 0 %>
 	   				<p><em>Further Reading:</em></p>
@@ -166,6 +167,7 @@
    				<% end %>
    			</div>
   		<%end%>		
+	
 					
 		<h2>Datatype Properties</h2>
 	
@@ -174,10 +176,10 @@
    				<h4>Property: <%= t[1].short_name %></h4>
    				<table>
 					<% if t[1].hasDifferentLabel %>
-						<tr><td class="label">Label</td><td><%= t[1].label %> </ts></tr>	   				
+   						<tr><td class="label">Label</td><td><%= t[1].label %> </ts></tr>
 					<% end %>
 					<% if t[1].status %>
-		   				<tr><td class="label">Status</td><td><%= t[1].status %> </ts></tr>
+	   					<tr><td class="label">Status</td><td><%= t[1].status %> </ts></tr>
 					<% end %>
 	   				<% if t[1].sub_property_of %>
 	   					<% if t[1].sub_property_of.class.to_s == "String" %>	   				
@@ -224,8 +226,8 @@
 	   				<% end %>				
    				</table>	   				
 				<% if t[1].hasComment? %>
-	   				<p><%= t[1].comment %></p>
-   				<% end %>
+   					<p><%= t[1].comment %></p>
+				<% end %>
    				<% if t[1].see_alsos.length > 0 %>
 	   				<p><em>Further Reading:</em></p>
 	   				<ul>	   			
@@ -235,7 +237,6 @@
    					</ul>
    				<% end %>
    			</div>
-  		<% end %>		
-	</div>
-</body>
+  		<%end%>		
+	</body>
 </html>

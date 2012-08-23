@@ -60,7 +60,7 @@
    			<div class="term" id="class_<%= t[1].short_name %>">	   			
    				<h4>Class: <%= t[1].short_name %></h4>
    				<table>
-				<% if t[1].hasDifferentLabel %>
+				<% if t[1].hasDifferentLabel? %>
    					<tr><td class="label">Label</td><td><%= t[1].label %> </ts></tr>
 				<% end %>
 				<% if t[1].status %>
@@ -104,7 +104,7 @@
    			<div class="term" id="prop_<%= t[1].short_name %>">
    				<h4>Property: <%= t[1].short_name %></h4>
    				<table>
-					<% if t[1].hasDifferentLabel %>
+					<% if t[1].hasDifferentLabel? %>
    						<tr><td class="label">Label</td><td><%= t[1].label %> </ts></tr>
 					<% end %>
 					<% if t[1].status %>
@@ -175,7 +175,7 @@
    			<div class="term" id="prop_<%= t[1].short_name %>">
    				<h4>Property: <%= t[1].short_name %></h4>
    				<table>
-					<% if t[1].hasDifferentLabel %>
+					<% if t[1].hasDifferentLabel? %>
    						<tr><td class="label">Label</td><td><%= t[1].label %> </ts></tr>
 					<% end %>
 					<% if t[1].status %>

@@ -141,12 +141,15 @@ module DOWL
     
     public
     def root_classes()
-      allClasses = list_classes()
+      allClasses = classes().collect() do |uri,klass|
+        klass
+      end
+      allClasses = allClasses.to_set
       nonRootClasses = Set.new
       allClasses.each() do |klass|
-        nonRootClasses.merge(klass.sub_classes)
+        nonRootClasses.merge(klass.sub_classes())
       end
-      return allClasses - nonRootClasses
+      return allClasses.subtract(nonRootClasses)
     end
       
 

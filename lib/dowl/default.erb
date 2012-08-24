@@ -47,13 +47,6 @@ ul.class {
 		</ul>
 
 		<h2>Classes - Overview</h2>
-		<% schema.list_classes().each do |key,val| %>
-		 | <a href="#class_<%= val.short_name %>"><%= val.short_name %></a>
-		<% end %>		
-<p>root classes:</p>
-		<% schema.root_classes().each do |klass| %>
-		 | <a href="#class_<%= klass.short_name %>"><%= klass.short_name %></a>
-		<% end %>		
 <%
 def doClass(klass)
   name = klass.short_name 

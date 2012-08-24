@@ -1,6 +1,11 @@
 <html>
 	<head>
 		<title><%= schema.ontology.title %></title>
+		<style>
+ul.class {
+  font-size: smaller ;
+}		
+		</style>
 	</head>
 	<body>
 		<h1><%= schema.ontology.title %></h1>
@@ -45,7 +50,26 @@
 		<% schema.list_classes().each do |key,val| %>
 		 | <a href="#class_<%= val.short_name %>"><%= val.short_name %></a>
 		<% end %>		
-		</p>
+<%
+def doClass(klass)
+  name = klass.short_name 
+  result = "\n<li><a href=\"#{name}\">#{name}</a></li>"
+  subclasses = klass.sub_classes()
+  if ! subclasses.empty?() 
+    result += "\n<ul>"
+    subclasses.each do |subclass|
+      result += doClass(subclass)
+    end
+    result += "\n</ul>"
+  end
+  return result
+end
+%>
+		<ul class="class">
+        <% schema.root_classes().each do |klass| %>
+          <%= doClass(klass) %>
+        <% end %>
+        </ul>
 		
 		<h2>Properties - Overview</h2>
 		<% schema.list_properties().each do |key,val| %>

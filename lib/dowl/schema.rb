@@ -144,11 +144,10 @@ module DOWL
       allClasses = classes().collect() do |uri,klass|
         klass
       end
-      allClasses.to_set.delete_if() do |klass|
+      return allClasses.to_set.delete_if() do |klass|
         klass.hasSuperClassesInSchema?
       end
     end
-      
 
     private
     def init_ontology()

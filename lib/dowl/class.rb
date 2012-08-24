@@ -40,10 +40,22 @@ module DOWL
       @schema.model.query(
         RDF::Query::Pattern.new(@resource, DOWL::Namespaces::RDFS.subClassOf)
       ) do |statement|
+        #
+        # Only look at statements like these:
+        #
+        # <rdfs:subClassOf rdf:resource="<uri>"/>
+        #
+        # And ignore statements like these:
+        #
+        # <rdfs:subClassOf>
+        #   <owl:Restriction>
+        #     <owl:onProperty rdf:resource="<uri>"/>
+        #     <owl:allValuesFrom rdf:resource="<uri>"/>
+        #   </owl:Restriction>
+        # </rdfs:subClassOf>
+        #
         if statement.object.uri?
           list << DOWL::Class.new(statement.object, @schema)
-        else
-          puts "WARNING: Found rdfs:subClassOf triple of #{uri} without a valid subject: #{statement.object.inspect}"
         end
       end
       return list

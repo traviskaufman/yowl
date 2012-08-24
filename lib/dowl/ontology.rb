@@ -79,8 +79,8 @@ module DOWL
       return authors.sort     
     end
     
-    def hasAuthors()
-      return authors.empty?
+    def hasAuthors?
+      return ! authors.empty?
     end
     
     def numberOfClasses()

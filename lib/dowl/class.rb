@@ -61,8 +61,9 @@ module DOWL
       list = []
         
       @schema.model.query(
-        RDF::Query::Pattern.new( nil, DOWL::Namespaces::RDFS.subClassOf, @resource) ) do |statement|
-          list << DOWL::Class.new(statement.subject, @schema)
+        RDF::Query::Pattern.new(nil, DOWL::Namespaces::RDFS.subClassOf, @resource)
+      ) do |statement|
+        list << DOWL::Class.new(statement.subject, @schema)
       end
       return list
     end

@@ -27,7 +27,8 @@ module DOWL
     def see_alsos()
        links = []
        @schema.model.query( 
-         RDF::Query::Pattern.new( @resource, DOWL::Namespaces::RDFS.seeAlso ) ) do |statement|
+         RDF::Query::Pattern.new(@resource, DOWL::Namespaces::RDFS.seeAlso)
+       ) do |statement|
          links << statement.object.to_s
        end
        return links
@@ -37,9 +38,9 @@ module DOWL
       list = []
     
       @schema.model.query(
-        RDF::Query::Pattern.new(nil, DOWL::Namespaces::RDFS.subClassOf, @resource)
+        RDF::Query::Pattern.new(@resource, DOWL::Namespaces::RDFS.subClassOf, nil)
       ) do |statement|
-          list << DOWL::Class.new(statement.subject, @schema)
+          list << DOWL::Class.new(statement.object, @schema)
       end
       return list
     end    

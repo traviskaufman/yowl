@@ -38,9 +38,13 @@ module DOWL
       list = []
     
       @schema.model.query(
-        RDF::Query::Pattern.new(@resource, DOWL::Namespaces::RDFS.subClassOf, nil)
+        RDF::Query::Pattern.new(@resource, DOWL::Namespaces::RDFS.subClassOf)
       ) do |statement|
+        if statement.object.uri?
           list << DOWL::Class.new(statement.object, @schema)
+        else
+          puts "WARNING: Found rdfs:subClassOf triple without a valid subject: #{statement.object.inspect}"
+        end
       end
       return list
     end    

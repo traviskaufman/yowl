@@ -11,7 +11,8 @@ module DOWL
     def see_alsos()
        links = []
        @schema.model.query(
-         RDF::Query::Pattern.new( @resource, DOWL::Namespaces::RDFS.seeAlso ) ) do |statement|
+         RDF::Query::Pattern.new(@resource, DOWL::Namespaces::RDFS.seeAlso)
+       ) do |statement|
          links << statement.object.to_s
        end       
        return links
@@ -19,7 +20,8 @@ module DOWL
         
     def sub_property_of()
       parent = @schema.model.first_value(
-        RDF::Query::Pattern.new( @resource, DOWL::Namespaces::RDFS.subPropertyOf) )
+        RDF::Query::Pattern.new(@resource, DOWL::Namespaces::RDFS.subPropertyOf)
+      )
       if parent
         uri = parent.to_s
         if @schema.properties[uri]
@@ -33,7 +35,9 @@ module DOWL
         
     def range()
       ranges = []
-      @schema.model.query(RDF::Query::Pattern.new( @resource, DOWL::Namespaces::RDFS.range ) ) do |statement|
+      @schema.model.query(
+        RDF::Query::Pattern.new(@resource, DOWL::Namespaces::RDFS.range)
+      ) do |statement|
         ranges << statement.object
       end  
       classes = []
@@ -52,7 +56,9 @@ module DOWL
 
     def domain()
       domains = []
-      @schema.model.query(RDF::Query::Pattern.new( @resource, DOWL::Namespaces::RDFS.domain ) ) do |statement|
+      @schema.model.query(
+        RDF::Query::Pattern.new(@resource, DOWL::Namespaces::RDFS.domain)
+      ) do |statement|
         domains << statement.object
       end  
       classes = []
@@ -72,8 +78,10 @@ module DOWL
     
     def sub_properties()
       list = []
-      @schema.model.query(RDF::Query::Pattern.new( nil, DOWL::Namespaces::RDFS.subPropertyOf, @resource ) ) do |statement|
-        list << DOWL::Property.new( statement.subject, @schema )
+      @schema.model.query(
+        RDF::Query::Pattern.new(nil, DOWL::Namespaces::RDFS.subPropertyOf, @resource)
+      ) do |statement|
+        list << DOWL::Property.new(statement.subject, @schema)
       end
       return list
     end            

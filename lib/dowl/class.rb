@@ -43,7 +43,7 @@ module DOWL
         if statement.object.uri?
           list << DOWL::Class.new(statement.object, @schema)
         else
-          puts "WARNING: Found rdfs:subClassOf triple without a valid subject: #{statement.object.inspect}"
+          puts "WARNING: Found rdfs:subClassOf triple of #{uri} without a valid subject: #{statement.object.inspect}"
         end
       end
       return list
@@ -70,7 +70,7 @@ module DOWL
       ) do |statement|
         list << DOWL::Class.new(statement.subject, @schema)
       end
-      return list
+      return list.sort { |x,y| x <=> y }  
     end
     
     def hasSubClasses?

@@ -24,8 +24,9 @@ module DOWL
         puts "Generating documentation for ontology #{schema.ontology.title}"
       end
       introduction = @introduction
+      svg_url = "#{schema.name}.svg"
       b = binding
-      output_file = File.join(@options.html_output_dir, schema.name + '.html')
+      output_file = File.join(@options.html_output_dir, '#{schema.name}.html')
       if @options.verbose
         puts "Generating #{output_file}"
       end
@@ -36,8 +37,8 @@ module DOWL
 
     private
     def generateOntologyDotFiles(schema)
-      output_file_dot = File.join(@options.html_output_dir, schema.name + '.dot')
-      output_file_svg = File.join(@options.html_output_dir, schema.name + '.svg')
+      output_file_dot = File.join(@options.html_output_dir, '#{schema.name}.dot')
+      output_file_svg = File.join(@options.html_output_dir, '#{schema.name}.svg')
       #
       # Serializing RDF statements into a Graphviz file
       #

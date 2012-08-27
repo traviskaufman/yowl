@@ -1,6 +1,11 @@
 <html>
 	<head>
 		<title>Ontologies</title>
+		<style>
+body, td {
+  font-family: arial,sans-serif;
+}
+		</style>
 	</head>
 	<body>
 		<table border="0" width="100%">
@@ -14,8 +19,8 @@
 		</tr>
 		<% ontologies.each do |ontology| %>
 			<tr>
-				<td><a href="<%= ontology.uri %>"><%= ontology.short_name %></a></td>
-				<td><a href="<%= ontology.uri %>"><%= ontology.ns %></a></td>
+				<td><a href="<%= ontology.relativeHtmlUrl %>"><%= ontology.short_name %></a></td>
+				<td><a href="<%= ontology.relativeHtmlUrl %>"><%= ontology.ns %></a></td>
 				<td><%= ontology.title %></td>
 				<td align="right"><%= ontology.numberOfClasses %></td>
 				<td align="right"><%= ontology.numberOfProperties %></td>

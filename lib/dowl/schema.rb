@@ -76,6 +76,11 @@ module DOWL
       return prefixes
     end
     
+    public
+    def uri
+      return @ontology.nil? ? @ontology.uri : nil
+    end
+    
     #
     # Return the prefix and the corresponding namespace for the given namespace,
     # where various forms of the given namespace are tried, like <ns>, <ns>/ and <ns>#.

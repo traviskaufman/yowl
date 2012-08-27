@@ -4,6 +4,7 @@
 		<style>
 body, td {
   font-family: arial,sans-serif;
+  font-size: 80% ;
 }
 		</style>
 	</head>
@@ -19,8 +20,8 @@ body, td {
 		</tr>
 		<% ontologies.each do |ontology| %>
 			<tr>
-				<td><a href="<%= ontology.relativeHtmlUrl %>"><%= ontology.short_name %></a></td>
-				<td><a href="<%= ontology.relativeHtmlUrl %>"><%= ontology.ns %></a></td>
+				<td><a href="/ontology/<%= ontology.resourceNameHtml %>"><%= ontology.short_name %></a></td>
+				<td><a href="/ontology/<%= ontology.resourceNameHtml %>"><%= ontology.ns %></a></td>
 				<td><%= ontology.title %></td>
 				<td align="right"><%= ontology.numberOfClasses %></td>
 				<td align="right"><%= ontology.numberOfProperties %></td>

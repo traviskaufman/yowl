@@ -8,9 +8,9 @@ module DOWL
       super(resource, schema)
     end
     
-    def relativeHtmlUrl
+    def resourceNameHtml
       
-      return "ontology/#{@schema.name}.html"
+      return "#{@schema.name}.html"
     end
 
   end

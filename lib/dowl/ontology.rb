@@ -14,12 +14,12 @@ module DOWL
       return (lastChar == '/' or lastChar == '#') ? uri : uri + '#'
     end
     
-    def relativeHtmlUrl
+    def resourceNameHtml
       
       return "ontology/#{@schema.name}.html"
     end
     
-    def relativeSvgUrl
+    def resourceNameSvg
       
       return "ontology/#{@schema.name}.svg"
     end

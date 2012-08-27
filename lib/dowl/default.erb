@@ -2,6 +2,9 @@
 	<head>
 		<title><%= schema.ontology.title %></title>
 		<style>
+body, td {
+  font-family: arial,sans-serif;
+}
 ul.class {
   font-size: smaller ;
 }		
@@ -12,7 +15,7 @@ ul.class {
 		
 		<dl>
 			<dt>Latest Version</dt>
-				<dd><a href="<%= schema.ontology.uri %>"><%= schema.ontology.ns %></a></dd>
+				<dd><a href="<%= relativeHtmlUrl %>"><%= schema.ontology.ns %></a></dd>
 		  	<% if schema.ontology.created %>
 		  		<dt>Created</dt>
 		  			<dd><%= schema.ontology.created %></dd>
@@ -28,7 +31,7 @@ ul.class {
 				<% end %>
 		  	<% end %>
 		  	<dt>See Also</td>
-		  	    <dd><a href="<%= svg_url %>">Graph Diagram</a></dd>
+		  	    <dd><a href="<%= relativeSvgUrl %>">Graph Diagram</a></dd>
 		</dl>
 	
 		<% if schema.ontology.hasComment? %>	
@@ -44,7 +47,7 @@ ul.class {
 		<p>The direct imports</p>
 		<ul>
 		<% schema.ontology.imports.each() do |import| %>
-			<li><a href="<%= import.uri %>"><%= import.uri %></a></li>
+			<li><a href="<%= import.relativeHtmlUrl %>"><%= import.uri %></a></li>
 		<% end %>
 		</ul>
 

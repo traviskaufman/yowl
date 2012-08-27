@@ -24,9 +24,10 @@ module DOWL
         puts "Generating documentation for ontology #{schema.ontology.title}"
       end
       introduction = @introduction
-      svg_url = "#{schema.name}.svg"
+      relative_url_html = "#{schema.name}.html"
+      relative_url_svg  = "#{schema.name}.svg"
       b = binding
-      output_file = File.join(@options.html_output_dir, "#{schema.name}.html")
+      output_file = File.join(@options.html_output_dir, relative_url_html)
       if @options.verbose
         puts "Generating #{output_file}"
       end

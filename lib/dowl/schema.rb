@@ -17,9 +17,11 @@ module DOWL
     attr_reader :dir
     attr_reader :ontology
     
-    def initialize(options, model, prefixes)
+    private
+    def initialize(repository, model, prefixes)
 
-      @options = options
+      @repository = repository
+      @options = repository.options
       @model = model
       @prefixes = prefixes
       
@@ -41,6 +43,16 @@ module DOWL
       init_name()
     end
     
+    public
+    def Schema.fromFile(ontology_file_name, repository)
+      
+      prefixes = Schema::read_prefixes(ontology_file_name)
+      model = RDF::Graph.new(ontology_file_name, :prefixes => prefixes)
+      model.load!
+      
+      return Schema.new(repository, model, prefixes)
+    end
+
     #
     # Read the prefixes from the XML file using REXML
     #
@@ -57,24 +69,6 @@ module DOWL
       
       return prefixes
     end
-    
-    public
-    def Schema.create_from_file(options)
-      schemas = []
-        
-      options.ontology_file_names.each() do | ontology_file_name |
-        if options.verbose
-          puts "Parsing #{ontology_file_name}"
-        end
-        prefixes = read_prefixes(ontology_file_name)
-        model = RDF::Graph.new(ontology_file_name, :prefixes => prefixes)
-        model.load!
-        
-        schemas << Schema.new(options, model, prefixes)
-      end
-      
-      return schemas
-    end       
     
     #
     # Return the prefix and the corresponding namespace for the given namespace,

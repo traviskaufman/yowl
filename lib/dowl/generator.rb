@@ -3,8 +3,8 @@ module DOWL
   class Generator
     
     def initialize(schemas, options)
-      @schemas = schemas
       @options = options
+      @repository = Repository.new(schemas, options)
       @ontology_template = @options.ontology_template
       @index_template = @options.index_template
       @introduction = @options.introduction
@@ -12,7 +12,7 @@ module DOWL
     
     private
     def generateOntologyHtmlFiles()
-      @schemas.each() do |schema|
+      @repository.schemas.each() do |schema|
         generateOntologyHtmlFile(schema)
         generateOntologyDotFiles(schema)
       end
@@ -23,8 +23,12 @@ module DOWL
       if @options.verbose
         puts "Generating documentation for ontology #{schema.ontology.title}"
       end
+      
       introduction = @introduction
+      repository = @repository
+      
       b = binding
+      
       output_file = File.join(@options.html_output_dir, "#{schema.name}.html")
       if @options.verbose
         puts "Generating #{output_file}"
@@ -50,16 +54,8 @@ module DOWL
     end
     
     private
-    def ontologies()
-      ontologies = []
-      @schemas.each() do |schema|
-        ontologies << schema.ontology
-      end
-      return ontologies.sort { |x,y| x.short_name <=> y.short_name }
-    end
-    
-    private
     def generateIndexHtmlFile()
+      
       if @options.index_file_name == nil
         puts "Not generating index since index file name not specified."
         return
@@ -71,9 +67,13 @@ module DOWL
       if @options.verbose
         puts "Generating #{@options.index_file_name}"
       end
-      schemas = @schemas
-      ontologies = ontologies()
+      
+      repository = @repository
+      schemas = @repository.schemas
+      ontologies = @repository.ontologies()
+      
       b = binding
+      
       File.open(@options.index_file_name, 'w') do |file|
         file.write(@index_template.result(b))
       end

@@ -9,6 +9,6 @@ PROGRAM = File::basename $0
 
 options = DOWL::OptionsParser.parse(ARGV)
 if options
-  schemas = DOWL::Schema.create_from_file(options)
-  DOWL::Generator.new(schemas, options).run()
+  repository = DOWL::Repository.new(options)
+  DOWL::Generator.new(repository, options).run()
 end

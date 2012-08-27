@@ -29,7 +29,11 @@ module DOWL
       if dctermsTitle
         return dctermsTitle
       end 
-      return get_literal(DOWL::Namespaces::DC.title)
+      dcTitle = get_literal(DOWL::Namespaces::DC.title)
+      if dcTitle
+        return dcTitle
+      end
+      return short_name() # We have to have a title
     end
     
     def comment()

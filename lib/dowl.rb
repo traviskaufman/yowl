@@ -18,6 +18,7 @@ require 'dowl/ontology'
 require 'dowl/import'
 require 'dowl/person'
 require 'dowl/generator'
+require 'dowl/repository'
 
 module DOWL
       

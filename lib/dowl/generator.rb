@@ -36,15 +36,17 @@ module DOWL
 
     private
     def generateOntologyDotFiles(schema)
-      output_file = File.join(@options.html_output_dir, schema.name + '.dot')
+      output_file_dot = File.join(@options.html_output_dir, schema.name + '.dot')
+      output_file_svg = File.join(@options.html_output_dir, schema.name + '.svg')
       #
       # Serializing RDF statements into a Graphviz file
       #
-      RDF::Writer.open(output_file) do |writer|
+      RDF::Writer.open(output_file_dot) do |writer|
         schema.model.each_statement do |statement|
           writer << statement
         end
       end
+      GraphViz.parse(output_file_dot).output(:svg => output_file_svg)
     end
     
     private

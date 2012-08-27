@@ -1,4 +1,4 @@
-	<html>
+<html>
 	<head>
 		<title><%= schema.ontology.title %></title>
 		<style>
@@ -10,14 +10,14 @@ h2 {
   border-top: 1px black solid;
   padding-left: 1cm ;
 }
-body.p {
+div.section {
   padding-left: 1cm ;
 }
 		</style>
 	</head>
 	<body>
 		<h1><%= schema.ontology.title %></h1>
-		<p>
+		<div class="section">
 			<dl>
 				<dt>Latest Version</dt>
 					<dd><a href="../ontology/<%= schema.ontology.resourceNameHtml %>"><%= schema.ontology.ns %></a></dd>
@@ -31,31 +31,31 @@ body.p {
 			  	<% end %>		  		  
 		  		<% if schema.ontology.hasAuthors? %>		  	
 					<dt>Authors & Contributors</dt>
-					<% schema.ontology.authors.each do |author| %>
+					<% schema.ontology.authors.each() do |author| %>
 						<dd><a href="<%= author.uri %>"><%= author.name %></a></dd>
 					<% end %>
 		  		<% end %>
 		  		<dt>See Also</td>
 		  	    	<dd><a href="../ontology/<%= schema.ontology.resourceNameSvg %>">Graph Diagram</a></dd>
 			</dl>
-		</p>
+		</div>
 	
 		<% if schema.ontology.hasComment? %>	
 			<h2>Abstract</h2>
-			<p id="abstract">
+			<div class="section" id="abstract">
 				<%= schema.ontology.comment %>
-			</p>
+			</div>
 		<% end %>
 		
 		<% if introduction %>
-			<p id="introduction">
+			<div class="section" id="introduction">
 				<%= introduction %>
-			</p>
+			</div>
 		<% end %>
 		
 		<h2>Imports</h2>
-		<p>The direct imports</p>
-		<p>
+		<div class="section">
+			The direct imports
 			<ul>
 			<% schema.ontology.imports.each() do |import| %>
 				<% if repository.knowsImport(import) %>
@@ -65,9 +65,10 @@ body.p {
 				<% end %>
 			<% end %>
 			</ul>
-		</p>
+		</div>
 
 		<h2>Classes - Overview</h2>
+		<div class="section">
 <%
 def doClass(klass)
   name = klass.short_name 
@@ -83,24 +84,23 @@ def doClass(klass)
   return result
 end
 %>
-		<p>
 			<ul class="class">
         	<% schema.root_classes().each do |klass| %>
           		<%= doClass(klass) %>
         	<% end %>
         	</ul>
-        </p>
+        </div>
 		
 		<h2>Properties - Overview</h2>
-		<p>
+		<div class="section">
 			<% schema.list_properties().each do |key,val| %>
 		 	| <a href="#prop_<%= val.short_name %>"><%= val.short_name %></a>
 			<% end %>
-		</p>				
+		</div>				
 
 		
 		<h2>Classes</h2>
-		<p>			
+		<div class="section">
    			<%schema.list_classes().each do |t| %>
    				<div class="term" id="class_<%= t[1].short_name %>">	   			
    					<h4>Class: <%= t[1].short_name %></h4>
@@ -152,10 +152,10 @@ end
    					<% end %>
    				</div>
   			<%end%>
-  		</p>		
+  		</div>	
 	
 		<h2>Object Properties</h2>
-		<p>
+		<div class="section">
 	   		<% schema.list_object_properties().each do |t| %>
    				<div class="term" id="prop_<%= t[1].short_name %>">
    					<h4>Property: <%= t[1].short_name %></h4>
@@ -225,10 +225,10 @@ end
    					<% end %>
    				</div>
   			<%end%>
-  		</p>		
+  		</div>	
 	
 		<h2>Datatype Properties</h2>
-		<p>	
+		<div class="section">
    		<%schema.list_datatype_properties().each do |t| %>
    			<div class="term" id="prop_<%= t[1].short_name %>">
    				<h4>Property: <%= t[1].short_name %></h4>
@@ -296,6 +296,6 @@ end
    				<% end %>
    			</div>
   		<%end%>	
-  		</p>	
+  		</div>	
 	</body>
 </html>

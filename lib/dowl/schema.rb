@@ -78,7 +78,7 @@ module DOWL
     
     public
     def uri
-      return @ontology.nil? ? @ontology.uri : nil
+      return @ontology.nil? ? nil : @ontology.uri
     end
     
     #

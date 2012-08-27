@@ -15,6 +15,7 @@ require 'dowl/schema'
 require 'dowl/class'
 require 'dowl/property'
 require 'dowl/ontology'
+require 'dowl/import'
 require 'dowl/person'
 require 'dowl/generator'
 

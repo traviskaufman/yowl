@@ -59,7 +59,13 @@ module DOWL
     private
     def Schema.read_prefixes(ontology_file_name)
       prefixes = {}
-      xmldoc = REXML::Document.new(IO.read(ontology_file_name))
+      xmldoc = nil
+      begin
+        xmldoc = REXML::Document.new(IO.read(ontology_file_name))
+      rescue REXML::ParseException => bang
+        warn "ERROR: Error while parsing prefixes from #{ontology_file_name} (only works for RDF/XML format)"
+        return prefixes
+      end
       xmldoc.doctype.entities.each() do |prefix, entity|
         namespace = entity.normalized()
         if namespace.include?('://')
@@ -162,7 +168,7 @@ module DOWL
           @name = prefix
         end
       end
-      if @name == nil and @ontology
+      if (@name.nil? and not @ontology.nil?)
         #
         # Searching for vann:preferredNamespacePrefix to use as the name for the schema
         #
@@ -186,7 +192,10 @@ module DOWL
           warn "WARNING: vann:preferredNamespacePrefix not found"
         end
       end
-      if @name == nil
+      if (@name.nil? and not @ontology.nil?)
+        @name = @ontology.escaped_short_name()
+      end
+      if (@name.nil? or @name.empty?())
         raise "ERROR: No name found for the schema"
       end
     end

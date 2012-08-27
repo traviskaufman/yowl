@@ -2,9 +2,9 @@ module DOWL
 
   class Generator
     
-    def initialize(schemas, options)
+    def initialize(repository, options)
       @options = options
-      @repository = Repository.new(schemas, options)
+      @repository = repository
       @ontology_template = @options.ontology_template
       @index_template = @options.index_template
       @introduction = @options.introduction
@@ -45,6 +45,9 @@ module DOWL
       #
       # Serializing RDF statements into a Graphviz file
       #
+      if @options.verbose
+        puts "Generating #{output_file_dot}"
+      end
       RDF::Writer.open(output_file_dot) do |writer|
         schema.model.each_statement do |statement|
           writer << statement

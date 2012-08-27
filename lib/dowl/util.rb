@@ -13,7 +13,7 @@ module DOWL
       end
     end  
     
-    def uri() 
+    def uri 
       return @resource ? @resource.to_s : nil
     end
     
@@ -22,7 +22,19 @@ module DOWL
     end    
 
     def short_name()
-      return @schema.prefixedUri(uri)
+      str = @schema.prefixedUri(uri)
+      if (str.nil? or str.empty?())
+        return uri
+      end
+      return str
+    end
+
+    def escaped_short_name()
+      str = short_name()
+      str = str.gsub("://", "_")
+      str = str.gsub(".", "_")
+      str = str.gsub("/", "_")
+      return str
     end
     
     def to_s()

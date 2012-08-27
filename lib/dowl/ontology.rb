@@ -16,12 +16,12 @@ module DOWL
     
     def resourceNameHtml
       
-      return "ontology/#{@schema.name}.html"
+      return "#{@schema.name}.html"
     end
     
     def resourceNameSvg
       
-      return "ontology/#{@schema.name}.svg"
+      return "#{@schema.name}.svg"
     end
     
     def title()

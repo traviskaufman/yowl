@@ -4,7 +4,7 @@ INSTALLATION
 
 dowl is available as a gem, so you can just do:
 
-[sudo] gem install rdf rdf-raptor ffi dowl
+[sudo] gem install rdf rdf-raptor ffi ruby-graphviz dowl
 
 To install from a source simply do:
 

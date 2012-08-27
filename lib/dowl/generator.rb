@@ -13,17 +13,36 @@ module DOWL
     private
     def generateOntologyHtmlFiles()
       @schemas.each() do |schema|
-        if @options.verbose
-          puts "Generating documentation for ontology #{schema.ontology.title}"
-        end
-        introduction = @introduction
-        b = binding
-        output_file = File.join(@options.html_output_dir, schema.name + '.html')
-        if @options.verbose
-          puts "Generating #{output_file}"
-        end
-        File.open(output_file, 'w') do |file|
-          file.write(@ontology_template.result(b))
+        generateOntologyHtmlFile(schema)
+        generateOntologyDotFiles(schema)
+      end
+    end
+    
+    private
+    def generateOntologyHtmlFile(schema)
+      if @options.verbose
+        puts "Generating documentation for ontology #{schema.ontology.title}"
+      end
+      introduction = @introduction
+      b = binding
+      output_file = File.join(@options.html_output_dir, schema.name + '.html')
+      if @options.verbose
+        puts "Generating #{output_file}"
+      end
+      File.open(output_file, 'w') do |file|
+        file.write(@ontology_template.result(b))
+      end
+    end
+
+    private
+    def generateOntologyDotFiles(schema)
+      output_file = File.join(@options.html_output_dir, schema.name + '.dot')
+      #
+      # Serializing RDF statements into a Graphviz file
+      #
+      RDF::Writer.open(output_file) do |writer|
+        schema.model.each_statement do |statement|
+          writer << statement
         end
       end
     end

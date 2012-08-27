@@ -5,6 +5,7 @@ require 'rdf/ntriples' # Support for N-Triples (.nt)
 require 'rdf/raptor'   # Support for RDF/XML (.rdf) and Turtle (.ttl)
 require 'rdf/json'     # Support for RDF/JSON (.json)
 require 'rdf/trix'     # Support for TriX (.xml)
+require 'rdf/raptor'
 require 'optparse'
 require 'dowl/optionsparser'
 require 'dowl/options'

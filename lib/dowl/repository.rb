@@ -18,7 +18,7 @@ module DOWL
         if options.verbose
           puts "Parsing #{ontology_file_name}"
         end
-        schema = Schema.fromFile(ontology_file_name, repository)
+        schema = Schema.fromFile(ontology_file_name, self)
         if schema
           schemas << schema
         end

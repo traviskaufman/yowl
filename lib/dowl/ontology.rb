@@ -16,12 +16,12 @@ module DOWL
     
     def relativeHtmlUrl
       
-      return "#{@schema.name}.html"
+      return "ontology/#{@schema.name}.html"
     end
     
     def relativeSvgUrl
       
-      return "#{@schema.name}.svg"
+      return "ontology/#{@schema.name}.svg"
     end
     
     def title()

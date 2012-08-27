@@ -10,7 +10,7 @@ module DOWL
     
     def relativeHtmlUrl
       
-      return "#{@schema.name}.html"
+      return "ontology/#{@schema.name}.html"
     end
 
   end

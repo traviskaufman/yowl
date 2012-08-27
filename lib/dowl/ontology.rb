@@ -14,6 +14,16 @@ module DOWL
       return (lastChar == '/' or lastChar == '#') ? uri : uri + '#'
     end
     
+    def relativeHtmlUrl
+      
+      return "#{@schema.name}.html"
+    end
+    
+    def relativeSvgUrl
+      
+      return "#{@schema.name}.svg"
+    end
+    
     def title()
       dctermsTitle = get_literal(DOWL::Namespaces::DCTERMS.title)
       if dctermsTitle
@@ -103,12 +113,4 @@ module DOWL
     
   end
 
-  class Import < DOWL::LabelledDocObject
-   
-    def initialize(resource, schema)
-      super(resource, schema)
-    end
-
-  end
-  
 end

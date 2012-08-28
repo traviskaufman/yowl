@@ -255,12 +255,12 @@ module DOWL
           superClassNode = nodes[superClass.uri]
           if superClassNode
             if @options.verbose
-              puts "  - Processing super class #{superClassNode.short_name}"
+              puts "  - Processing super class #{superClass.short_name}"
             end
             g.add_edges(nodes[classID], superClassNode)
           else
             if @options.verbose
-              puts "  - Processing super class #{superClassNode.short_name}, not found"
+              puts "  - Processing super class #{superClass.short_name}, not found"
             end
           end
         end

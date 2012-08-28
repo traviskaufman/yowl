@@ -64,24 +64,30 @@ module DOWL
       g = GraphViz.new(:G, :type => :digraph)
       nodes = {}
       ontologies.each() do |ontology|
-        node = g.add_nodes(ontology.escaped_short_name)
+        nodeID = ontology.escaped_uri
+        node = g.add_nodes(nodeID)
         node.URL = ontology.uri.to_s
-        nodes[ontology.escaped_short_name] = node
+        nodes[nodeID] = node
       end
       ontologies.each() do |ontology|
         if @options.verbose
-          puts "- Processing ontology #{ontology.escaped_short_name}"
+          puts "- Processing ontology #{ontology.escaped_uri}"
         end
         ontology.imports.each() do |import|
-          if @options.verbose
-            puts "  - Processing import #{import.escaped_short_name}"
-          end
-          importNode = nodes[import.escaped_short_name]
+          importNode = nodes[import.escaped_uri]
           if importNode
-            g.add_edges(nodes[ontology.escaped_short_name], importNode)
+            if @options.verbose
+              puts "  - Processing import #{import.escaped_uri}"
+            end
+            g.add_edges(nodes[ontology.escaped_uri], importNode)
+          else
+            if @options.verbose
+              puts "  - Processing import #{import.escaped_uri}, not found"
+            end
           end
         end
       end
+      puts g.output(:dot => nil)
       return g.output(:svg => String)      
     end
     

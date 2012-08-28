@@ -1,6 +1,7 @@
+<!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF8">
+		<meta charset="utf-8" />
 		<title>Ontologies</title>
 		<style>
 body, td {
@@ -31,6 +32,7 @@ td.title {
 			<th align="left">Ontology Name</th>
 			<th align="right"># Classes</th>
 			<th align="right"># Properties</th>
+			<th align="right"># Imports</th>
 			<th align="right">Modified</th>
 		</tr>
 		<% ontologies.each do |ontology| %>
@@ -40,12 +42,13 @@ td.title {
 				<td class="title"><%= ontology.title %></td>
 				<td align="right"><%= ontology.numberOfClasses %></td>
 				<td align="right"><%= ontology.numberOfProperties %></td>
+				<td align="right"><%= ontology.imports.size %><td>
 				<td align="right"><%= ontology.modified %></td>
 			</tr>
 			<% if ontology.hasComment? %>
 				<tr>
 					<td colspan="2">&nbsp;</td>
-					<td colspan="4"><%= ontology.comment %></td>
+					<td colspan="5"><%= ontology.comment %></td>
 				</tr>
 			<% end %>
 		<% end %>

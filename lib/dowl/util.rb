@@ -37,6 +37,14 @@ module DOWL
       return str
     end
     
+    def escaped_uri()
+      str = uri.to_s
+      str = str.gsub("://", "__")
+      str = str.gsub(".", "_")
+      str = str.gsub("/", "_")
+      return str
+    end
+    
     def to_s()
       return short_name()
     end    

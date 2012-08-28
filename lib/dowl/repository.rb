@@ -56,5 +56,23 @@ module DOWL
       return schema.nil? ? '' : schema.name
     end
     
+    public
+    def ontologiesAsSvg
+      g = GraphViz.new(:G, :type => :digraph)
+      nodes = {}
+      ontologies.each() do |ontology|
+        nodes[ontology.escaped_short_name] = g.add_nodes(ontology.escaped_short_name)
+      end
+      ontologies.each() do |ontology|
+        ontology.imports.each() do |import|
+          importNode = nodes[import.escaped_short_name]
+          if importNode
+            g.add_edges(nodes[ontology.escaped_short_name], importNode)
+          end
+        end
+      end
+      return g.output(:svg => String)      
+    end
+    
   end
 end

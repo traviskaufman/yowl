@@ -9,22 +9,30 @@ body, td {
 tr.header {
   border-bottom: 1px black solid;
 }
+td.prefix {
+  white-space: nowrap;
+  width: 1%;
+}
+td.namespace {
+  white-space: nowrap;
+  width: 1%;
+}
 		</style>
 	</head>
 	<body>
 		<table border="0" width="100%">
 		<tr class="header">
-			<th>PREFIX</th>
-			<th>Namespace</th>
-			<th>Ontology Name</th>
+			<th align="left">PREFIX</th>
+			<th align="left">Namespace</th>
+			<th align="left">Ontology Name</th>
 			<th align="right"># Classes</th>
 			<th align="right"># Properties</th>
 			<th align="right">Modified</th>
 		</tr>
 		<% ontologies.each do |ontology| %>
 			<tr>
-				<td width="1%"><a href="./ontology/<%= ontology.resourceNameHtml %>"><%= ontology.short_name %></a></td>
-				<td width="1%"><a href="./ontology/<%= ontology.resourceNameHtml %>"><%= ontology.ns %></a></td>
+				<td class="prefix"><a href="./ontology/<%= ontology.resourceNameHtml %>"><%= ontology.short_name %></a></td>
+				<td class="namespace"><a href="./ontology/<%= ontology.resourceNameHtml %>"><%= ontology.ns %></a></td>
 				<td><%= ontology.title %></td>
 				<td align="right"><%= ontology.numberOfClasses %></td>
 				<td align="right"><%= ontology.numberOfProperties %></td>

@@ -232,7 +232,19 @@ module DOWL
       uri = uri.gsub(ontology_uri + '/', '')
       return uri.gsub(ontology_uri, '')
     end
-    
+
+    private
+    def classDiagramAddNode(nodes, graph, klass)
+      if @options.verbose
+        puts "- Processing class #{klass.short_name}"
+      end
+      node = graph.add_nodes(klass.escaped_uri)
+      node.URL = "#class_#{klass.short_name}"
+      node.label = klass.short_name
+      nodes[klass.uri] = node
+      return nodes
+    end
+        
     public
     def classDiagramAsSvg
       if @options.verbose
@@ -240,19 +252,29 @@ module DOWL
       end
 
       g = GraphvizUtility.setDefaults(GraphViz.new(:G, :type => :digraph))
+      sg = g.subgraph() { |sg|
+        sg[:rank => "same"]
+      }
       
       nodes = {}
-      classes().each() do |classID, klass|
-        node = g.add_nodes(klass.escaped_uri)
-        node.URL = "#class_#{klass.short_name}"
-        node.label = klass.short_name
-        nodes[klass.uri] = node
+      allClasses = classes().collect() do |uri,klass|
+        klass
       end
-      classes().each() do |classID, klass|
+      rootClasses = root_classes()
+      
+      rootClasses.each() do |klass|
+        allClasses = allClasses.delete(klass)
+        nodes = classDiagramAddNode(nodes, sg, klass)
+      end
+      allClasses.each() do |klass|
+        nodes = classDiagramAddNode(nodes, g, klass)
+      end
+      allClasses.each() do |klass|
         if @options.verbose
-          puts "- Processing class #{classID}"
+          puts "- Processing class #{klass.short_name}"
         end
-        klass.super_classes().each() do |superClass|
+        superClasses = klass.super_classes() 
+        superClasses.each() do |superClass|
           superClassNode = nodes[superClass.uri]
           if superClassNode
             if @options.verbose
@@ -265,7 +287,9 @@ module DOWL
             end
           end
         end
+
       end
+      
 #     puts g.output(:dot => nil)
       return GraphvizUtility.embeddableSvg(g)
     end

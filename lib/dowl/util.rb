@@ -89,4 +89,36 @@ module DOWL
     
   end
   
+  class GraphvizUtility
+  
+  	def GraphvizUtility.setDefaults(g)
+  	  
+      g[:rankdir] = "BT"
+        
+      g.node[:peripheries] = 0
+      g.node[:style] = "rounded,filled"
+      g.node[:fillcolor] = "#0861DD" 
+      g.node[:fontcolor] = "white"
+      g.node[:fontname] = "Verdana" 
+      g.node[:shape] = "box"
+      g.node[:fontsize] = 10
+      g.node[:fixedsize] = true
+      g.node[:width] = 1.3
+      g.node[:height] = 0.6
+        
+      g.edge[:fontname] = "Verdana"
+      g.edge[:fontsize] = 8
+      g.edge[:fontcolor] = "#0861DD"
+      g.edge[:labeldistance] = 2
+        
+      return g
+  	end
+  	
+  	def GraphvizUtility.embeddableSvg(g)
+  	  svg = g.output(:svg => String)
+      index = svg.index("<svg")
+      return index ? svg[index..-1] : svg
+    end
+  end
+  
 end

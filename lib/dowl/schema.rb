@@ -236,7 +236,7 @@ module DOWL
     public
     def classDiagramAsSvg
       if @options.verbose
-        puts "Generating SVG Class Diagram for #{short_name}"
+        puts "Generating SVG Class Diagram for #{name}"
       end
       g = GraphViz.new(:G, :type => :digraph)
       g[:rankdir] = "BT"

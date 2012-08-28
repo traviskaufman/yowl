@@ -240,6 +240,21 @@ module DOWL
       end
       g = GraphViz.new(:G, :type => :digraph)
       g[:rankdir] = "BT"
+      g[:rankdir] = "BT"
+      g.node[:peripheries] = 0
+      g.node[:style] = "rounded,filled"
+      g.node[:fillcolor] = "#0861DD" 
+      g.node[:fontcolor] = "white"
+      g.node[:fontname] = "Ariel" 
+      g.node[:shape] = "box"
+      g.node[:fontsize] = 8
+      g.node[:fixedsize] = true
+      g.node[:width] = 1.3
+      g.node[:height] = 0.6
+      g.edge[:fontname] = "Ariel"
+      g.edge[:fontsize] = 8
+      g.edge[:fontcolor] = "#0861DD"
+      g.edge[:labeldistance] = 2
       nodes = {}
       classes().each() do |classID, klass|
         node = g.add_nodes(klass.escaped_uri)
@@ -265,8 +280,10 @@ module DOWL
           end
         end
       end
-      puts g.output(:dot => nil)
-      return g.output(:svg => String)      
+#     puts g.output(:dot => nil)
+      svg = g.output(:svg => String)
+      index = svg.index("<svg")
+      return index ? svg[index..-1] : svg
     end
 
   end  

@@ -62,11 +62,13 @@ module DOWL
         puts "Generating SVG for Ontology Import Diagram"
       end
       g = GraphViz.new(:G, :type => :digraph)
+      g[:rankdir] = "BT"
       nodes = {}
       ontologies.each() do |ontology|
         nodeID = ontology.escaped_uri
         node = g.add_nodes(nodeID)
-        node.URL = ontology.uri.to_s
+        node.URL = "../ontology/#{ontology.resourceNameHtml}"
+        node.label = ontology.short_name
         nodes[nodeID] = node
       end
       ontologies.each() do |ontology|

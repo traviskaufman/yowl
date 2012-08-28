@@ -58,13 +58,24 @@ module DOWL
     
     public
     def ontologiesAsSvg
+      if @options.verbose
+        puts "Generating SVG for Ontology Import Diagram"
+      end
       g = GraphViz.new(:G, :type => :digraph)
       nodes = {}
       ontologies.each() do |ontology|
-        nodes[ontology.escaped_short_name] = g.add_nodes(ontology.escaped_short_name)
+        node = g.add_nodes(ontology.escaped_short_name)
+        node.URL = ontology.uri.to_s
+        nodes[ontology.escaped_short_name] = node
       end
       ontologies.each() do |ontology|
+        if @options.verbose
+          puts "- Processing ontology #{ontology.escaped_short_name}"
+        end
         ontology.imports.each() do |import|
+          if @options.verbose
+            puts "  - Processing import #{import.escaped_short_name}"
+          end
           importNode = nodes[import.escaped_short_name]
           if importNode
             g.add_edges(nodes[ontology.escaped_short_name], importNode)

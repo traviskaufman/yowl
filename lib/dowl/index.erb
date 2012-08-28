@@ -6,11 +6,14 @@ body, td {
   font-family: arial,sans-serif;
   font-size: 80% ;
 }
+tr.header {
+  border-bottom: 1px black solid;
+}
 		</style>
 	</head>
 	<body>
 		<table border="0" width="100%">
-		<tr>
+		<tr class="header">
 			<th>PREFIX</th>
 			<th>Namespace</th>
 			<th>Ontology Name</th>
@@ -20,8 +23,8 @@ body, td {
 		</tr>
 		<% ontologies.each do |ontology| %>
 			<tr>
-				<td><a href="./ontology/<%= ontology.resourceNameHtml %>"><%= ontology.short_name %></a></td>
-				<td><a href="./ontology/<%= ontology.resourceNameHtml %>"><%= ontology.ns %></a></td>
+				<td width="1%"><a href="./ontology/<%= ontology.resourceNameHtml %>"><%= ontology.short_name %></a></td>
+				<td width="1%"><a href="./ontology/<%= ontology.resourceNameHtml %>"><%= ontology.ns %></a></td>
 				<td><%= ontology.title %></td>
 				<td align="right"><%= ontology.numberOfClasses %></td>
 				<td align="right"><%= ontology.numberOfProperties %></td>
@@ -29,7 +32,8 @@ body, td {
 			</tr>
 			<% if ontology.hasComment? %>
 				<tr>
-					<td colspan="6"><%= ontology.comment %></td>
+					<td colspan="2">&nbsp;</td>
+					<td colspan="4"><%= ontology.comment %></td>
 				</tr>
 			<% end %>
 		<% end %>

@@ -249,7 +249,7 @@ module DOWL
       end
       classes().each() do |classID, klass|
         if @options.verbose
-          puts "- Processing class #{classId}"
+          puts "- Processing class #{classID}"
         end
         klass.super_classes().each() do |superClass|
           superClassNode = nodes[superClass.uri]
@@ -257,7 +257,7 @@ module DOWL
             if @options.verbose
               puts "  - Processing super class #{superClassNode.short_name}"
             end
-            g.add_edges(nodes[klass.uri], superClassNode)
+            g.add_edges(nodes[classID], superClassNode)
           else
             if @options.verbose
               puts "  - Processing super class #{superClassNode.short_name}, not found"

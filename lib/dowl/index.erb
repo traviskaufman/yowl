@@ -1,12 +1,13 @@
 <html>
 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF8">
 		<title>Ontologies</title>
 		<style>
 body, td {
   font-family: arial,sans-serif;
   font-size: 80% ;
 }
-tr.header {
+th {
   border-bottom: 1px black solid;
 }
 td.prefix {
@@ -16,6 +17,9 @@ td.prefix {
 td.namespace {
   white-space: nowrap;
   width: 1%;
+}
+td.title {
+  font-weight: bold;
 }
 		</style>
 	</head>
@@ -33,7 +37,7 @@ td.namespace {
 			<tr>
 				<td class="prefix"><a href="./ontology/<%= ontology.resourceNameHtml %>"><%= ontology.short_name %></a></td>
 				<td class="namespace"><a href="./ontology/<%= ontology.resourceNameHtml %>"><%= ontology.ns %></a></td>
-				<td><%= ontology.title %></td>
+				<td class="title"><%= ontology.title %></td>
 				<td align="right"><%= ontology.numberOfClasses %></td>
 				<td align="right"><%= ontology.numberOfProperties %></td>
 				<td align="right"><%= ontology.modified %></td>

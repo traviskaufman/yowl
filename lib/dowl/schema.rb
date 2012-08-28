@@ -232,6 +232,43 @@ module DOWL
       uri = uri.gsub(ontology_uri + '/', '')
       return uri.gsub(ontology_uri, '')
     end
+    
+    public
+    def classDiagramAsSvg
+      if @options.verbose
+        puts "Generating SVG Class Diagram for #{short_name}"
+      end
+      g = GraphViz.new(:G, :type => :digraph)
+      g[:rankdir] = "BT"
+      nodes = {}
+      classes().each() do |classID, klass|
+        node = g.add_nodes(klass.escaped_uri)
+        node.URL = "#class_#{klass.short_name}"
+        node.label = klass.short_name
+        nodes[klass.uri] = node
+      end
+      classes().each() do |classID, klass|
+        if @options.verbose
+          puts "- Processing class #{classId}"
+        end
+        klass.super_classes().each() do |superClass|
+          superClassNode = nodes[superClass.uri]
+          if superClassNode
+            if @options.verbose
+              puts "  - Processing super class #{superClassNode.short_name}"
+            end
+            g.add_edges(nodes[klass.uri], superClassNode)
+          else
+            if @options.verbose
+              puts "  - Processing super class #{superClassNode.short_name}, not found"
+            end
+          end
+        end
+      end
+      puts g.output(:dot => nil)
+      return g.output(:svg => String)      
+    end
+
   end  
-  
+
 end

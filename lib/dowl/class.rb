@@ -143,7 +143,7 @@ module DOWL
         
       query = RDF::Query.new do
         pattern [:property, DOWL::Namespaces::RDFS.domain, @resource]
-        pattern [:property, DOWL::Namespaces::RDF.type, DOWL::Namespaces::OWL.ObjectProperty]
+        pattern [:property, RDF.type, DOWL::Namespaces::OWL.ObjectProperty]
         pattern [:property, DOWL::Namespaces::RDFS.range, :range]
       end
       solution = query.execute(@schema.model)
@@ -156,8 +156,9 @@ module DOWL
       end
       
       solution.each do |solution|
+        property = solution[:property]
         range = solution[:range]
-        puts " - Found Association from #{short_name} to #{range}"
+        puts " - Found Association from #{short_name} to #{range.to_s}: #{property.to_s}"
         rangeClass = Class.withUri(range, @schema)
         puts "   - Found this class for it: #{rangeClass}"
         if rangeClass

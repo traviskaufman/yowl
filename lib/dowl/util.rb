@@ -115,6 +115,7 @@ module DOWL
   	end
   	
   	def GraphvizUtility.embeddableSvg(g)
+  	  warn "Generated Dot is:\n#{g.to_dot}"
   	  svg = g.output(:svg => String)
       index = svg.index("<svg")
       return index ? svg[index..-1] : svg

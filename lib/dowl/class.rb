@@ -96,8 +96,12 @@ module DOWL
         pattern [:property, DOWL::Namespaces::RDFS.domain, @resource]
         pattern [:property, DOWL::Namespaces::RDFS.range, :range]
       end
-    
-      query.execute(@schema.model).each do |solution|
+      solution = query.execute(@schema.model)
+      puts "Found #{solution.count} solutions"
+      solution.distinct!
+      puts "Found #{solution.count} distinct solutions"
+      
+      solution.each do |solution|
         range = solution[:range]
         puts "Found Association from #{short_name} to #{range}"
         rangeClass = @schema.classes[range.to_s]

@@ -4,15 +4,14 @@ module DOWL
     include Comparable
     
     attr_reader :resource
-    attr_reader :super_classes
     attr_reader :sub_classes
     attr_reader :associations
     
     def initialize(resource, schema)
       super(resource, schema)
-      init_super_classes()
-      init_sub_classes()
-      init_associations()
+      @super_classes = nil
+      @sub_classes = nil
+      @associations = nil
     end
     
     public
@@ -26,8 +25,12 @@ module DOWL
        return links
     end
     
-    private
-    def init_super_classes()
+    public
+    def super_classes()
+      if not @super_classes.nil?
+        return @super_classes
+      end
+      
       @super_classes = []
     
       @schema.model.query(
@@ -51,16 +54,17 @@ module DOWL
           @super_classes << DOWL::Class.new(statement.object, @schema)
         end
       end
+      return @super_classes
     end    
 
     public
     def hasSuperClasses?
-      return ! @super_classes.empty?()
+      return ! super_classes.empty?()
     end
     
     public
     def hasSuperClassesInSchema?
-      @super_classes.each() do |klass|
+      super_classes.each() do |klass|
         if @schema.classes[klass.uri]
           return true
         end
@@ -68,8 +72,11 @@ module DOWL
       return false
     end
     
-    private
-    def init_sub_classes()
+    public
+    def sub_classes()
+      if not @sub_classes.nil?
+        return @sub_classes
+      end
       @sub_classes = []
         
       @schema.model.query(
@@ -77,16 +84,20 @@ module DOWL
       ) do |statement|
         @sub_classes << DOWL::Class.new(statement.subject, @schema)
       end
-      @sub_classes.sort! { |x,y| x <=> y }  
+      @sub_classes.sort! { |x,y| x <=> y }
+      return @sub_classes  
     end
     
     public
     def hasSubClasses?
-      return ! @sub_classes.empty?()
+      return ! sub_classes.empty?()
     end
     
-    private
-    def init_associations()
+    public
+    def associations()
+      if not @associations.nil?
+        return @associations
+      end
       @associations = []
         
       if @options.verbose
@@ -115,6 +126,7 @@ module DOWL
           @associations << DOWL::Association.new(solution[:property], @schema, self, rangeClass)
         end
       end
+      return @associations
     end
     
   end

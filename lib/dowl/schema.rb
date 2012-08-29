@@ -240,7 +240,14 @@ module DOWL
       end
       node = graph.add_nodes(klass.escaped_uri)
       node.URL = "#class_#{klass.short_name}"
-      node.label = klass.short_name
+      name = klass.short_name
+      prefix = name[/(.*)\s*:/]
+      nonPrefixedName = name[/\s*:(.*)/]
+      if prefix and nonPrefixedName
+        node.label = "#{nonPrefixedName}\n(#{prefix})"
+      else
+        node.label = name
+      end 
       nodes[klass.uri] = node
       return nodes
     end

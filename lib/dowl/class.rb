@@ -70,7 +70,9 @@ module DOWL
         if statement.object.uri?
           superClass = Class.withUri(statement.object, @schema)
           if superClass
-            @super_classes << superClass
+            if superClass != self
+              @super_classes << superClass
+            end
           else
             warn "WARNING: Could not find super class #{statement.object.to_s}"
           end
@@ -108,8 +110,10 @@ module DOWL
         RDF::Query::Pattern.new(nil, DOWL::Namespaces::RDFS.subClassOf, @resource)
       ) do |statement|
         subClass = Class.withUri(statement.object, @schema)
-        if (subClass and subClass != self)
-          @sub_classes << subClass
+        if subClass
+          if subClass != self
+            @sub_classes << subClass
+          end
         else
           warn "WARNING: Could not find sub class of #{short_name} with uri #{statement.object.to_s}"
         end
@@ -133,7 +137,7 @@ module DOWL
       end
       @associations = []
         
-      if @options.verbose
+      if @schema.options.verbose
         puts "Searching for associations of class #{short_name}"
       end
         
@@ -142,11 +146,11 @@ module DOWL
         pattern [:property, DOWL::Namespaces::RDFS.range, :range]
       end
       solution = query.execute(@schema.model)
-      if @options.verbose
+      if @schema.options.verbose
         puts " - Found #{solution.count} solutions"
       end
       solution.distinct!
-      if @options.verbose
+      if @schema.options.verbose
         puts " - Found #{solution.count} distinct solutions"
       end
       

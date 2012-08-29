@@ -3,9 +3,12 @@ require 'dowl'
 module DOWL
 
   class Ontology < DOWL::LabelledDocObject
+    
+    attr_reader :authors
    
     def initialize(resource, schema)
         super(resource, schema)  
+        init_authors()
     end
     
     def ns()
@@ -60,8 +63,8 @@ module DOWL
       return get_literal(DOWL::Namespaces::DC.rights)
     end
     
-    def authors()      
-      authors = []
+    def init_authors()      
+      @authors = []
       #
       # First find the Authors by searching for foaf:maker
       #
@@ -79,22 +82,21 @@ module DOWL
       @schema.model.query( 
         RDF::Query::Pattern.new(@resource, DOWL::Namespaces::DC.creator)
       ) do |statement|
-          person = Person.new( nil, @schema )
+          person = Person.new(nil, @schema )
           person.setName(statement.object)
           authors << person
       end         
       @schema.model.query( 
         RDF::Query::Pattern.new(@resource, DOWL::Namespaces::DC.contributor)
       ) do |statement|
-          person = Person.new( nil, @schema )
+          person = Person.new(nil, @schema )
           person.setName(statement.object)
           authors << person
       end         
-      return authors.sort     
     end
     
     def hasAuthors?
-      return ! authors.empty?
+      return ! @authors.empty?
     end
     
     def numberOfClasses()

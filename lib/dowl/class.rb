@@ -120,27 +120,27 @@ module DOWL
         rangeClass = @schema.classes[range.to_s]
         puts "   - Found this class for it: #{rangeClass}"
         if rangeClass
-          @associations << DOWL::Association.new(self, rangeClass, solution[:property])
+          @associations << DOWL::Association.new(solution[:property], @schema, self, rangeClass)
         end
       end
     end
     
   end
   
-  class Association 
+  class Association < DOWL::LabelledDocObject 
     
     attr_reader :domainClass
     attr_reader :rangeClass
     attr_reader :property
     
-    def initialize(domainClass, rangeClass, property)
+    def initialize(resource, schema, domainClass, rangeClass)
+      super(resource, schema)
       @domainClass = domainClass
       @rangeClass = rangeClass
-      @property = property
     end
     
     def label
-      return @property.to_s
+      return short_name
     end
   end
   

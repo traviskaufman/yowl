@@ -22,11 +22,7 @@ module DOWL
     end    
 
     def short_name()
-      str = @schema.prefixedUri(uri)
-      if (str.nil? or str.empty?())
-        return uri
-      end
-      return str
+      return @schema.prefixedUri(uri)
     end
 
     def escaped_short_name()

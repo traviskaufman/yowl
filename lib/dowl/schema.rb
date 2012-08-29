@@ -207,6 +207,13 @@ module DOWL
     #
     public
     def prefixedUri(uri)
+      if uri.nil?
+        raise "ERROR: Passed nil to Schema:prefixedUri()"
+      end
+      uri = uri.to_s()
+      if uri.empty?
+        raise "ERROR: Passed empty string to Schema:prefixedUri()"
+      end
       @prefixes.each() do |prefix, namespace|
         if uri == namespace
           return prefix

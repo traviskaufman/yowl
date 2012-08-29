@@ -307,7 +307,7 @@ module DOWL
           domainClassNode = nodes[klass.uri]
           klass.associations().each() do |association|
             edge = g.add_edges(domainClassNode, nodes[association.rangeClass.uri])
-            edge.label = association.label
+            #edge.label = association.label
           end
         end
       end

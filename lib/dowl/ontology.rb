@@ -22,11 +22,6 @@ module DOWL
       return "#{@schema.name}.html"
     end
     
-    def resourceNameSvg
-      
-      return "#{@schema.name}.svg"
-    end
-    
     def title()
       dctermsTitle = get_literal(DOWL::Namespaces::DCTERMS.title)
       if dctermsTitle

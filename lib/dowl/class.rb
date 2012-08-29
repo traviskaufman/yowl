@@ -143,6 +143,7 @@ module DOWL
         
       query = RDF::Query.new do
         pattern [:property, DOWL::Namespaces::RDFS.domain, @resource]
+        pattern [:property, DOWL::Namespaces::RDFS.type, DOWL::Namespaces::OWL.ObjectProperty]
         pattern [:property, DOWL::Namespaces::RDFS.range, :range]
       end
       solution = query.execute(@schema.model)

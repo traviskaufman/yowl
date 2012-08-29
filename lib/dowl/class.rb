@@ -27,6 +27,7 @@ module DOWL
       end
       klass = Class.new(resource, schema)
       schema.classes[resource.to_s] = klass
+      puts "Created class #{klass.uri}"
       return klass
     end
     
@@ -86,7 +87,7 @@ module DOWL
     public
     def hasSuperClassesInSchema?
       super_classes.each() do |klass|
-        if @schema.classes[klass.uri]
+        if @schema.classes.include?(klass.uri)
           return true
         end
       end

@@ -15,21 +15,7 @@ module DOWL
       init_associations()
     end
     
-    def sub_class_of()
-      parent = @schema.model.first_value( 
-        RDF::Query::Pattern.new(@resource, DOWL::Namespaces::RDFS.subClassOf)
-      )
-      if parent
-        uri = parent.to_s
-        if @schema.classes[uri]
-          return @schema.classes[uri]
-        else
-          return uri
-        end
-      end
-      return nil
-    end
-   
+    public
     def see_alsos()
        links = []
        @schema.model.query( 
@@ -40,6 +26,7 @@ module DOWL
        return links
     end
     
+    private
     def init_super_classes()
       @super_classes = []
     
@@ -66,10 +53,12 @@ module DOWL
       end
     end    
 
+    public
     def hasSuperClasses?
       return ! @super_classes.empty?()
     end
     
+    public
     def hasSuperClassesInSchema?
       @super_classes.each() do |klass|
         if @schema.classes[klass.uri]
@@ -79,6 +68,7 @@ module DOWL
       return false
     end
     
+    private
     def init_sub_classes()
       @sub_classes = []
         
@@ -90,10 +80,12 @@ module DOWL
       @sub_classes.sort! { |x,y| x <=> y }  
     end
     
+    public
     def hasSubClasses?
       return ! @sub_classes.empty?()
     end
     
+    private
     def init_associations()
       @associations = []
         

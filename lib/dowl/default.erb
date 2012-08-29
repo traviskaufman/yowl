@@ -18,8 +18,16 @@ h2 {
 div.section {
   padding-left: 1cm ;
 }
-div.column {
-  float: left;
+table.classinfo {
+  width: 100%;
+}
+table.classinfo td {
+  padding: 0px;
+}
+table.classinfo td.classhierarchy {
+  width: 20%;
+  border-right: 1px black solid;
+  padding-right: 10px;
 }
       </style>
 	</head>
@@ -101,16 +109,20 @@ end
 
 		<h2>Classes - Overview</h2>
 		<div class="section">
-			<div class="column" style="margin-right:10px;">
-				<ul class="class">
-       			<% schema.root_classes().each do |klass| %>
-       				<%= doClass(klass) %>
-       			<% end %>
-       			</ul>
-       			<%# Ensure that there's no space between the end-div and begin-div below!! %>
-       		</div><div class="column">
-				<%= schema.classDiagramAsSvg %>
-			</div>
+			<table class="classinfo">
+				<tr>
+					<td class="classhierarchy">
+						<ul class="class">
+       						<% schema.root_classes().each do |klass| %>
+			       				<%= doClass(klass) %>
+       						<% end %>
+       					</ul>
+       				</td>
+       				<td>
+						<%= schema.classDiagramAsSvg %>
+					</td>
+				<tr>
+			<table>
         </div>
 		
 		<h2>Properties - Overview</h2>

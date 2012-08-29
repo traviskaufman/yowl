@@ -194,7 +194,7 @@ module DOWL
           warn "WARNING: vann:preferredNamespacePrefix not found"
         end
       end
-      if (@name.nil? and not @ontology.nil?)
+      if (@name.nil? and @ontology)
         @name = @ontology.escaped_short_name()
       end
       if (@name.nil? or @name.empty?())
@@ -211,6 +211,7 @@ module DOWL
         raise "ERROR: Passed nil to Schema:prefixedUri()"
       end
       uri = uri.to_s()
+      puts "uri=#{uri}"
       if uri.empty?
         raise "ERROR: Passed empty string to Schema:prefixedUri()"
       end

@@ -49,7 +49,9 @@ div.column {
 		  		<% end %>
 		  		<% if not schema.ontology.see_alsos.empty?() %>
 		  			<dt>See Also</dt>
-		  				<dd><%= schema.ontology.see_alsos %></dd>
+						<% schema.ontology.see_alsos.each() do |see_also| %>
+							<dd><a href="<%= see_also %>"><%= see_also %></a></dd>
+						<% end %>
 		  		<% end %>
 			</dl>
 		</div>

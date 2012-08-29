@@ -275,16 +275,17 @@ module DOWL
       allClasses = classes().collect() do |uri,klass|
         klass
       end
+      nonRootClasses = allClasses 
       rootClasses = root_classes()
       
       rootClasses.each() do |klass|
-        allClasses.delete(klass)
+        nonRootClasses.delete(klass)
         nodes = classDiagramAddNode(nodes, sg, klass)
       end
       allClasses.each() do |klass|
         nodes = classDiagramAddNode(nodes, g, klass)
       end
-      allClasses.each() do |klass|
+      nonRootClasses.each() do |klass|
         if @options.verbose
           puts "- Processing class #{klass.short_name}"
         end
@@ -302,7 +303,13 @@ module DOWL
             end
           end
         end
-
+        allClasses.each() do |domainClass|
+          domainClassNode = nodes[klass.uri]
+          klass.associations().each() do |association|
+            edge = g.add_edges(domainClassNode, nodes[association.rangeClass.uri])
+            edge.label = association.label
+          end
+        end
       end
       
 #     puts g.output(:dot => nil)

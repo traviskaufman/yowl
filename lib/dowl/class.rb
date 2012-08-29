@@ -89,7 +89,43 @@ module DOWL
       return ! sub_classes.empty?()
     end
     
+    def associations()
+      list = []
+        
+      query = RDF::Query.new do
+        pattern [:property, DOWL::Namespaces::RDFS.domain, @resource]
+        pattern [:property, DOWL::Namespaces::RDFS.range, :range]
+      end
+    
+      query.execute(graph).each do |statement|
+        range = statement.object
+        puts "Found Association from #{short_name} to #{range}"
+        rangeClass = @schema.classes[range]
+        puts " - Found this class for it: #{rangeClass}"
+        if rangeClass
+          list << DOWL::Association.new(self, rangeClass, statement.subject)
+        end
+      end
+
+      return list
+    end
+    
   end
   
+  class Association 
+    
+    attr_reader :domainClass
+    attr_reader :rangeClass
+    attr_reader :property
+    
+    def initialize(domainClass, rangeClass, property)
+      @domainClass = domainClass
+      @rangeClass = rangeClass
+      @property = property
+    end
+    
+    def label
+      return @property.to_s
+    end
   
 end

@@ -7,11 +7,22 @@ module DOWL
     attr_reader :sub_classes
     attr_reader :associations
     
+    private
     def initialize(resource, schema)
       super(resource, schema)
       @super_classes = nil
       @sub_classes = nil
       @associations = nil
+    end
+    
+    public 
+    def Class.withUri(resource, schema)
+      klass = @schema.classes[resource.to_s]
+      if klass
+        return klass
+      end
+      klass = Class.new(resource, schema)
+      @schema.classes[resource.to_s] = klass
     end
     
     public
@@ -51,7 +62,12 @@ module DOWL
         # </rdfs:subClassOf>
         #
         if statement.object.uri?
-          @super_classes << DOWL::Class.new(statement.object, @schema)
+          superClass = @schema.classes[statement.object.uri]
+          if superClass
+            @super_classes << superClass
+          else
+            warn "WARNING: Could not find super class #{statement.object.uri}"
+          end
         end
       end
       return @super_classes
@@ -82,7 +98,12 @@ module DOWL
       @schema.model.query(
         RDF::Query::Pattern.new(nil, DOWL::Namespaces::RDFS.subClassOf, @resource)
       ) do |statement|
-        @sub_classes << DOWL::Class.new(statement.subject, @schema)
+        subClass = @schema.classes[statement.object.uri]
+        if subClass
+          @sub_classes << subClass
+        else
+          warn "WARNING: Could not find sub class #{statement.object.uri}"
+        end
       end
       @sub_classes.sort! { |x,y| x <=> y }
       return @sub_classes  

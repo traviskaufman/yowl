@@ -102,7 +102,7 @@ module DOWL
     def init_classes(type)
       @model.query(RDF::Query::Pattern.new(nil, RDF.type, type)) do |statement|
         if !statement.subject.anonymous?
-          @classes[statement.subject.to_s] = DOWL::Class.new(statement.subject, self)                    
+          Class.withUri(statement.subject, self)                    
         end
       end      
     end

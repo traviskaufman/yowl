@@ -100,7 +100,7 @@ module DOWL
       query.execute(@schema.model).each do |solution|
         range = solution[:range]
         puts "Found Association from #{short_name} to #{range}"
-        rangeClass = @schema.classes[range]
+        rangeClass = @schema.classes[range.to_s]
         puts " - Found this class for it: #{rangeClass}"
         if rangeClass
           list << DOWL::Association.new(self, rangeClass, solution[:property])

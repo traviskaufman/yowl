@@ -127,5 +127,6 @@ module DOWL
     def label
       return @property.to_s
     end
+  end
   
 end

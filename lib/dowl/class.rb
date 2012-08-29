@@ -95,7 +95,6 @@ module DOWL
     
     public
     def sub_classes()
-      puts "#{short_name}::sub_classes()"
       if not @sub_classes.nil?
         return @sub_classes
       end

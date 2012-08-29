@@ -18,22 +18,18 @@ h2 {
 div.section {
   padding-left: 1cm ;
 }
-#mainwrapper{
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
+/* This clears the floats at the end of the columns div */
+div.columns:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
 }
-#col1{
+div.column {
   float: left;
-  width: 30%;
-  padding: 10px;
 }
-#col2{
-  float: right;
-  width: 70%;
-  padding: 10px;
-}
-		</style>
+      </style>
 	</head>
 	<body>
 		<h1><%= schema.ontology.title %></h1>
@@ -95,8 +91,8 @@ div.section {
 
 		<h2>Classes - Overview</h2>
 		<div class="section">
-			<div id="mainwrapper">
-				<div id="col1">
+			<div class="columns">
+				<div class="column" style="width: 30%">
 <%
 def doClass(klass)
   name = klass.short_name 
@@ -118,7 +114,9 @@ end
         			<% end %>
         			</ul>
         		</div>
-				<div id="col2"><%= schema.classDiagramAsSvg %></div>
+				<div class="column" style="width: 70%">
+					<%= schema.classDiagramAsSvg %>
+				</div>
 			</div>
         </div>
 		

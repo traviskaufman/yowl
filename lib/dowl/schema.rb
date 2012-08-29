@@ -241,10 +241,12 @@ module DOWL
       node = graph.add_nodes(klass.escaped_uri)
       node.URL = "#class_#{klass.short_name}"
       name = klass.short_name
-      prefix = name[/(.*)\s*:/]
-      nonPrefixedName = name[/\s*:(.*)/]
+      
+      prefix = name.sub(/(.*)\s*:/, "")
+      nonPrefixedName = name.sub(/:\s*(.*)/, "")
+      
       if prefix and nonPrefixedName
-        node.label = "#{nonPrefixedName}\n(#{prefix})"
+        node.label = "< #{nonPrefixedName}\n<I>(#{prefix})</I> >"
       else
         node.label = name
       end 

@@ -97,6 +97,9 @@ module DOWL
     public
     def sub_classes()
       if not @sub_classes.nil?
+        @sub_classes.each do |subclass|
+          puts "Returning subclass #{subclass.short_name}"
+        end
         return @sub_classes
       end
       @sub_classes = []
@@ -112,6 +115,9 @@ module DOWL
         end
       end
       @sub_classes.sort! { |x,y| x <=> y }
+      @sub_classes.each do |subclass|
+        puts "Returning subclass #{subclass.short_name}..."
+      end
       return @sub_classes  
     end
     

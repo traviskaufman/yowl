@@ -224,10 +224,13 @@ module DOWL
           return uri.gsub(namespace, "#{prefix}:")
         end
       end
-      ontology_uri = @ontology.uri
-      uri = uri.gsub(ontology_uri + '#', '')
-      uri = uri.gsub(ontology_uri + '/', '')
-      return uri.gsub(ontology_uri, '')
+      if @ontology
+        ontology_uri = @ontology.uri
+        uri = uri.gsub(ontology_uri + '#', '')
+        uri = uri.gsub(ontology_uri + '/', '')
+        return uri.gsub(ontology_uri, '')
+      end
+      return uri
     end
 
     private

@@ -243,6 +243,7 @@ module DOWL
       end
       if @ontology
         ontology_uri = @ontology.uri
+        puts "ontology_uri=#{ontology_uri}"
         uri = uri.gsub(ontology_uri + '#', '')
         uri = uri.gsub(ontology_uri + '/', '')
         set_trace_func nil

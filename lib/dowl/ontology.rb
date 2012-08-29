@@ -117,6 +117,16 @@ module DOWL
       return imports
     end
     
+    def see_alsos()
+       links = []
+       @schema.model.query(
+         RDF::Query::Pattern.new(@resource, DOWL::Namespaces::RDFS.seeAlso)
+       ) do |statement|
+         links << statement.object.to_s
+       end       
+       return links
+    end
+    
   end
 
 end

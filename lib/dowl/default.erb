@@ -44,6 +44,10 @@ div.section {
 		  			<dt>Copy Rights</dt>
 		  				<dd><%= schema.ontology.rights %></dd>
 		  		<% end %>
+		  		<% if not schema.ontology.see_alsos.empty?() %>
+		  			<dt>See Also</dt>
+		  				<dd><%= schema.ontology.see_alsos %></dd>
+		  		<% end %>
 			</dl>
 		</div>
 	

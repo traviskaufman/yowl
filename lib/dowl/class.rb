@@ -17,12 +17,16 @@ module DOWL
     
     public 
     def Class.withUri(resource, schema)
-      klass = @schema.classes[resource.to_s]
+      if resource.anonymous?
+        warn "WARNING: Ignoring class with uri #{resource.to_s}"
+        return
+      end
+      klass = schema.classes[resource.to_s]
       if klass
         return klass
       end
       klass = Class.new(resource, schema)
-      @schema.classes[resource.to_s] = klass
+      schema.classes[resource.to_s] = klass
     end
     
     public

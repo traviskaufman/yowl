@@ -97,6 +97,7 @@ module DOWL
       if not @sub_classes.nil?
         return @sub_classes
       end
+      puts "#{short_name}::sub_classes()"
       @sub_classes = []
         
       @schema.model.query(

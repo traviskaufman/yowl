@@ -242,11 +242,10 @@ module DOWL
       node.URL = "#class_#{klass.short_name}"
       name = klass.short_name
       
-      prefix = name.sub(/(.*)\s*:/, "")
-      nonPrefixedName = name.sub(/:\s*(.*)/, "")
-      
-      if prefix and nonPrefixedName
-        node.label = "< #{nonPrefixedName}\n<I>(#{prefix})</I> >"
+      if name.include?(':')
+        prefix = name.sub(/:\s*(.*)/, "")
+        name = name.sub(/(.*)\s*:/, "")
+        node.label = "<B>#{name}</B><BR><I>(#{prefix})</I>"
       else
         node.label = name
       end 

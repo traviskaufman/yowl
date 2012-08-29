@@ -253,6 +253,9 @@ module DOWL
       else
         node.label = name
       end 
+      if klass.hasComment?
+        node.tooltip = klass.comment
+      end
       nodes[klass.uri] = node
       return nodes
     end

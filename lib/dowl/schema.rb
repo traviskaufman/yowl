@@ -270,7 +270,7 @@ module DOWL
       rootClasses = root_classes()
       
       rootClasses.each() do |klass|
-        allClasses.delete!(klass)
+        allClasses.delete(klass)
         nodes = classDiagramAddNode(nodes, sg, klass)
       end
       allClasses.each() do |klass|

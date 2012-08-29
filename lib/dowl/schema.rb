@@ -218,7 +218,7 @@ module DOWL
           return prefix
         end
         if uri.include?(namespace)
-          if namespace == @ontology.ns
+          if @ontology and namespace == @ontology.ns
             return uri.gsub(namespace, '')
           end
           return uri.gsub(namespace, "#{prefix}:")

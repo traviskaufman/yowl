@@ -27,6 +27,7 @@ module DOWL
       end
       klass = Class.new(resource, schema)
       schema.classes[resource.to_s] = klass
+      return klass
     end
     
     public
@@ -94,7 +95,7 @@ module DOWL
     
     public
     def sub_classes()
-      puts "#{short_name}::sub_classes() #{@sub_classes.inspect}"
+      puts "#{short_name}::sub_classes()"
       if not @sub_classes.nil?
         return @sub_classes
       end

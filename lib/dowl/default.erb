@@ -83,9 +83,6 @@ div.column {
 			</ul>
 		</div>
 
-		<h2>Classes - Overview</h2>
-		<div class="section">
-			<div class="column" style="margin-right:10px;">
 <%
 def doClass(klass)
   name = klass.short_name 
@@ -101,13 +98,17 @@ def doClass(klass)
   return result
 end
 %>
+
+		<h2>Classes - Overview</h2>
+		<div class="section">
+			<div class="column" style="margin-right:10px;">
 				<ul class="class">
        			<% schema.root_classes().each do |klass| %>
        				<%= doClass(klass) %>
        			<% end %>
        			</ul>
-       		</div>
-			<div class="column">
+       			<%# Ensure that there's no space between the end-div and begin-div below!! %>
+       		</div><div class="column">
 				<%= schema.classDiagramAsSvg %>
 			</div>
         </div>

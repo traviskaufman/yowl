@@ -170,7 +170,7 @@ module DOWL
           @name = prefix
         end
       end
-      if (@name.nil? and not @ontology.nil?)
+      if @name.nil? and @ontology
         #
         # Searching for vann:preferredNamespacePrefix to use as the name for the schema
         #
@@ -194,7 +194,7 @@ module DOWL
           warn "WARNING: vann:preferredNamespacePrefix not found"
         end
       end
-      if (@name.nil? and @ontology)
+      if @name.nil? and @ontology
         @name = @ontology.escaped_short_name()
       end
       if (@name.nil? or @name.empty?())
@@ -207,28 +207,37 @@ module DOWL
     #
     public
     def prefixedUri(uri)
+      set_trace_func proc { |event, file, line, id, binding, classname|
+        printf "%8s %s:%-2d %10s %8s\n", event, file, line, id, classname
+      }
       if uri.nil?
+        set_trace_func nil
         raise "ERROR: Passed nil to Schema:prefixedUri()"
       end
       uri = uri.to_s()
-      puts "uri=#{uri}"
       if uri.empty?
+        set_trace_func nil
         raise "ERROR: Passed empty string to Schema:prefixedUri()"
       end
       @prefixes.each() do |prefix, namespace|
         if uri == namespace
+          set_trace_func nil
           return prefix
         end
         if "#{uri}/" == namespace
+          set_trace_func nil
           return prefix
         end
         if "#{uri}#" == namespace
+          set_trace_func nil
           return prefix
         end
         if uri.include?(namespace)
           if @ontology and namespace == @ontology.ns
+            set_trace_func nil
             return uri.gsub(namespace, '')
           end
+          set_trace_func nil
           return uri.gsub(namespace, "#{prefix}:")
         end
       end
@@ -236,8 +245,10 @@ module DOWL
         ontology_uri = @ontology.uri
         uri = uri.gsub(ontology_uri + '#', '')
         uri = uri.gsub(ontology_uri + '/', '')
+        set_trace_func nil
         return uri.gsub(ontology_uri, '')
       end
+      set_trace_func nil
       return uri
     end
 

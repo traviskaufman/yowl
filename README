@@ -2,22 +2,24 @@ A simple command-line tool for generating HTML documentation from RDFS/OWL schem
 
 INSTALLATION
 
-dowl is available as a gem, so you can just do:
+Installation on Mac OS X:
 
-[sudo] gem install rdf rdf-raptor ffi ruby-graphviz dowl
+  - Download and install MacPorts
+  - sudo port install libraptor
 
-To install from a source simply do:
+General
 
-rake install
+  dowl is available as a gem, so you can just do:
 
-Both options will give you a new command-line application called dowl.
+    [sudo] gem install ffi rdf rdf-raptor rdf-json rdf-trix ruby-graphviz dowl
 
-The application takes two parameters. The first parameter is the location of the schema file to parse the second parameter is optional and is the location of an ERB file that contains the template for output. A default template is provided and can be customized for specific purposes.
+  To install from a source simply do:
 
-The script sends its output to STDOUT so just pipe it into a file.
+    [sudo] rake install
 
-E.g:
+  Both options will give you a new command-line application called dowl.
 
-dowl examples/example.ttl >/tmp/example.html
+Usage
 
-The script will automatically include the contents of introduction.html, if found in the same directory as the schema, into the documentation. This file should contain an HTML fragment.
+  Execute bin/dowl to see usage options.
+

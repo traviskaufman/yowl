@@ -245,8 +245,11 @@ module DOWL
       if name.include?(':')
         prefix = name.sub(/:\s*(.*)/, "")
         name = name.sub(/(.*)\s*:/, "")
-        node.html = "<<TABLE BORDER=\"0\" CELLBORDER=\"1\" CELLSPACING=\"0\"><TR><TD>#{name}</TD></TR><TR><TD><I>(#{prefix})</I></TD></TR></TABLE>>"
-        puts node.html
+        #
+        # Can't get HTML labels to work
+        #
+        #node.label = "<TABLE BORDER=\"0\" CELLBORDER=\"1\" CELLSPACING=\"0\"><TR><TD>#{name}</TD></TR><TR><TD><I>(#{prefix})</I></TD></TR></TABLE>"
+        node.label = "#{name}\n(#{prefix})"
       else
         node.label = name
       end 

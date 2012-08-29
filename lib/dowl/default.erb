@@ -40,6 +40,10 @@ div.section {
 						<dd><a href="<%= author.uri %>"><%= author.name %></a></dd>
 					<% end %>
 		  		<% end %>
+		  		<% if schema.ontology.rights %>
+		  			<dt>Copy Rights</dt>
+		  				<dd><%= schema.ontology.rights %></dd>
+		  		<% end %>
 			</dl>
 		</div>
 	

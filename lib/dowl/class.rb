@@ -4,9 +4,15 @@ module DOWL
     include Comparable
     
     attr_reader :resource
+    attr_reader :super_classes
+    attr_reader :sub_classes
+    attr_reader :associations
     
     def initialize(resource, schema)
       super(resource, schema)
+      init_super_classes()
+      init_sub_classes()
+      init_associations()
     end
     
     def sub_class_of()
@@ -34,8 +40,8 @@ module DOWL
        return links
     end
     
-    def super_classes()
-      list = []
+    def init_super_classes()
+      @super_classes = []
     
       @schema.model.query(
         RDF::Query::Pattern.new(@resource, DOWL::Namespaces::RDFS.subClassOf)
@@ -55,18 +61,17 @@ module DOWL
         # </rdfs:subClassOf>
         #
         if statement.object.uri?
-          list << DOWL::Class.new(statement.object, @schema)
+          @super_classes << DOWL::Class.new(statement.object, @schema)
         end
       end
-      return list
     end    
 
     def hasSuperClasses?
-      return ! super_classes.empty?()
+      return ! @super_classes.empty?()
     end
     
     def hasSuperClassesInSchema?
-      super_classes.each() do |klass|
+      @super_classes.each() do |klass|
         if @schema.classes[klass.uri]
           return true
         end
@@ -74,44 +79,50 @@ module DOWL
       return false
     end
     
-    def sub_classes()
-      list = []
+    def init_sub_classes()
+      @sub_classes = []
         
       @schema.model.query(
         RDF::Query::Pattern.new(nil, DOWL::Namespaces::RDFS.subClassOf, @resource)
       ) do |statement|
-        list << DOWL::Class.new(statement.subject, @schema)
+        @sub_classes << DOWL::Class.new(statement.subject, @schema)
       end
-      return list.sort { |x,y| x <=> y }  
+      @sub_classes.sort! { |x,y| x <=> y }  
     end
     
     def hasSubClasses?
-      return ! sub_classes.empty?()
+      return ! @sub_classes.empty?()
     end
     
-    def associations()
-      list = []
+    def init_associations()
+      @associations = []
+        
+      if @options.verbose
+        puts "Searching for associations of class #{short_name}"
+      end
         
       query = RDF::Query.new do
         pattern [:property, DOWL::Namespaces::RDFS.domain, @resource]
         pattern [:property, DOWL::Namespaces::RDFS.range, :range]
       end
       solution = query.execute(@schema.model)
-      puts "Found #{solution.count} solutions"
+      if @options.verbose
+        puts " - Found #{solution.count} solutions"
+      end
       solution.distinct!
-      puts "Found #{solution.count} distinct solutions"
+      if @options.verbose
+        puts " - Found #{solution.count} distinct solutions"
+      end
       
       solution.each do |solution|
         range = solution[:range]
-        puts "Found Association from #{short_name} to #{range}"
+        puts " - Found Association from #{short_name} to #{range}"
         rangeClass = @schema.classes[range.to_s]
-        puts " - Found this class for it: #{rangeClass}"
+        puts "   - Found this class for it: #{rangeClass}"
         if rangeClass
-          list << DOWL::Association.new(self, rangeClass, solution[:property])
+          @associations << DOWL::Association.new(self, rangeClass, solution[:property])
         end
       end
-
-      return list
     end
     
   end

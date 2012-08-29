@@ -18,14 +18,6 @@ h2 {
 div.section {
   padding-left: 1cm ;
 }
-/* This clears the floats at the end of the columns div */
-div.columns:after {
-  content: ".";
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
-}
 div.column {
   float: left;
 }
@@ -91,8 +83,7 @@ div.column {
 
 		<h2>Classes - Overview</h2>
 		<div class="section">
-			<div class="columns">
-				<div class="column" style="width: 30%">
+			<div class="column" style="margin-right:10px;">
 <%
 def doClass(klass)
   name = klass.short_name 
@@ -108,15 +99,14 @@ def doClass(klass)
   return result
 end
 %>
-					<ul class="class">
-        			<% schema.root_classes().each do |klass| %>
-          				<%= doClass(klass) %>
-        			<% end %>
-        			</ul>
-        		</div>
-				<div class="column" style="width: 70%">
-					<%= schema.classDiagramAsSvg %>
-				</div>
+				<ul class="class">
+       			<% schema.root_classes().each do |klass| %>
+       				<%= doClass(klass) %>
+       			<% end %>
+       			</ul>
+       		</div>
+			<div class="column">
+				<%= schema.classDiagramAsSvg %>
 			</div>
         </div>
 		

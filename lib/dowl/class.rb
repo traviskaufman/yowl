@@ -108,10 +108,10 @@ module DOWL
         RDF::Query::Pattern.new(nil, DOWL::Namespaces::RDFS.subClassOf, @resource)
       ) do |statement|
         subClass = Class.withUri(statement.object, @schema)
-        if subClass and subClass != self
+        if (subClass and subClass != self)
           @sub_classes << subClass
         else
-          warn "WARNING: Could not find sub class #{statement.object.uri}"
+          warn "WARNING: Could not find sub class of #{short_name} with uri #{statement.object.to_s}"
         end
       end
       @sub_classes.sort! { |x,y| x <=> y }

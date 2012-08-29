@@ -66,11 +66,11 @@ module DOWL
         # </rdfs:subClassOf>
         #
         if statement.object.uri?
-          superClass = @schema.classes[statement.object.uri]
+          superClass = Class.withUri(statement.object, @schema)
           if superClass
             @super_classes << superClass
           else
-            warn "WARNING: Could not find super class #{statement.object.uri}"
+            warn "WARNING: Could not find super class #{statement.object.to_s}"
           end
         end
       end
@@ -102,7 +102,7 @@ module DOWL
       @schema.model.query(
         RDF::Query::Pattern.new(nil, DOWL::Namespaces::RDFS.subClassOf, @resource)
       ) do |statement|
-        subClass = @schema.classes[statement.object.uri]
+        subClass = Class.withUri(statement.object, @schema)
         if subClass
           @sub_classes << subClass
         else
@@ -145,7 +145,7 @@ module DOWL
       solution.each do |solution|
         range = solution[:range]
         puts " - Found Association from #{short_name} to #{range}"
-        rangeClass = @schema.classes[range.to_s]
+        rangeClass = Class.withUri(range, @schema)
         puts "   - Found this class for it: #{rangeClass}"
         if rangeClass
           @associations << DOWL::Association.new(solution[:property], @schema, self, rangeClass)

@@ -98,7 +98,7 @@ module DOWL
     def sub_classes()
       if not @sub_classes.nil?
         @sub_classes.each do |subclass|
-          puts "Returning subclass #{subclass.short_name}"
+          puts "Returning subclass of #{short_name}: #{subclass.short_name}"
         end
         return @sub_classes
       end
@@ -108,7 +108,7 @@ module DOWL
         RDF::Query::Pattern.new(nil, DOWL::Namespaces::RDFS.subClassOf, @resource)
       ) do |statement|
         subClass = Class.withUri(statement.object, @schema)
-        if subClass
+        if subClass and subClass != self
           @sub_classes << subClass
         else
           warn "WARNING: Could not find sub class #{statement.object.uri}"
@@ -116,7 +116,7 @@ module DOWL
       end
       @sub_classes.sort! { |x,y| x <=> y }
       @sub_classes.each do |subclass|
-        puts "Returning subclass #{subclass.short_name}..."
+        puts "Returning subclass #{short_name}: #{subclass.short_name}..."
       end
       return @sub_classes  
     end

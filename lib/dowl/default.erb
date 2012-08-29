@@ -18,6 +18,21 @@ h2 {
 div.section {
   padding-left: 1cm ;
 }
+#mainwrapper{
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+#col1{
+  float: left;
+  width: 30%;
+  padding: 10px;
+}
+#col2{
+  float: right;
+  width: 70%;
+  padding: 10px;
+}
 		</style>
 	</head>
 	<body>
@@ -80,6 +95,8 @@ div.section {
 
 		<h2>Classes - Overview</h2>
 		<div class="section">
+			<div id="mainwrapper">
+				<div id="col1">
 <%
 def doClass(klass)
   name = klass.short_name 
@@ -95,14 +112,14 @@ def doClass(klass)
   return result
 end
 %>
-			<ul class="class">
-        	<% schema.root_classes().each do |klass| %>
-          		<%= doClass(klass) %>
-        	<% end %>
-        	</ul>
-        </div>
-        <div class="section">
-			<%= schema.classDiagramAsSvg %>
+					<ul class="class">
+        			<% schema.root_classes().each do |klass| %>
+          				<%= doClass(klass) %>
+        			<% end %>
+        			</ul>
+        		</div>
+				<div id="col2"><%= schema.classDiagramAsSvg %></div>
+			</div>
         </div>
 		
 		<h2>Properties - Overview</h2>

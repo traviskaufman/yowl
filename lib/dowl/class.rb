@@ -97,7 +97,7 @@ module DOWL
         pattern [:property, DOWL::Namespaces::RDFS.range, :range]
       end
     
-      query.execute(graph).each do |statement|
+      query.execute(@schema.model).each do |statement|
         range = statement.object
         puts "Found Association from #{short_name} to #{range}"
         rangeClass = @schema.classes[range]

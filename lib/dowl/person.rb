@@ -1,24 +1,20 @@
 module DOWL
   
-  class Person < DOWL::DocObject
-    @name = nil
+  class Person < DOWL::LabelledDocObject
     
     def initialize(resource, schema)
       super(resource, schema)
+      @name = nil
     end
      
-    def uri()
-      return @resource.to_s
-    end
-
     def setName(name_)
       @name = name_
     end
      
     def name()
       name = get_literal(DOWL::Namespaces::FOAF.name)
-      if name == nil
-        name = uri()
+      if name.nil? or name.empty?
+        name = short_name()
       end
       return name
     end

@@ -333,9 +333,9 @@ module DOWL
         puts "  - Processing associations of class #{domainClass.short_name}:"
         domainClass.associations().each() do |association|
           if @options.verbose
-            puts "    - Adding edge #{association.rangeClass.short_name}, #{association.label} hash=#{association.key}"
+            puts "    - Adding edge #{association.rangeClass.short_name}, #{association.label}"
           end
-          #association.addAsGraphVizEdge(g, nodes)
+          association.addAsGraphVizEdge(g, nodes)
         end
       end
       

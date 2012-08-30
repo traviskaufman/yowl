@@ -159,7 +159,6 @@ module DOWL
       solutions.each do |solution|
         property = solution[:property]
         range = solution[:range]
-	puts " - Processing solution - #{property}=#{range}"
         if @schema.options.verbose
           puts " - Found Association from #{short_name} to #{@schema.prefixedUri(range)}: #{@schema.prefixedUri(property.to_s)}"
         end

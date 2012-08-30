@@ -147,16 +147,21 @@ module DOWL
         pattern [:property, RDF.type, DOWL::Namespaces::OWL.ObjectProperty]
         pattern [:property, DOWL::Namespaces::RDFS.range, :range]
       end
-      solution = query.execute(@schema.model)
+      solutions = query.execute(@schema.model)
       if @schema.options.verbose
         puts " - Found #{solution.count} solutions"
+        solutions.each do |solution|
+          solution.each do |name,value|
+            puts "   - #{name}=#{value}"
+          end
+        end
       end
-      solution.distinct!
+      solutions.distinct!
       if @schema.options.verbose
-        puts " - Found #{solution.count} distinct solutions"
+        puts " - Found #{solutions.count} distinct solutions"
       end
 
-      solution.each do |solution|
+      solutions.each do |solution|
         property = solution[:property]
         range = solution[:range]
         if @schema.options.verbose

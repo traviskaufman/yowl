@@ -159,7 +159,7 @@ end
 			<table class="terms">
    			<%schema.list_classes().each do |t| %>
    				<tr id="class_<%= t[1].short_name %>">
-   					<th colspan="2" class="termName"><%= t[1].short_name %><% if t[1].hasDifferentLabel? %> (<%= t[1].label %>)<% end %>
+   					<th colspan="2" class="termName"><%= t[1].short_name %><% if t[1].hasDifferentLabel? %> (<%= t[1].label %>)<% end %></th>
    				</tr>
 				<% if t[1].hasComment? %>
 					<tr>
@@ -220,7 +220,7 @@ end
 			<table class="terms">
 	   		<% schema.list_object_properties().each do |t| %>
 				<tr id="prop_<%= t[1].short_name %>">
-					<th colspan="2" class="termName"><%= t[1].short_name %><% if t[1].hasDifferentLabel? %> (<%= t[1].label %>)<% end %><th>
+					<th colspan="2" class="termName"><%= t[1].short_name %><% if t[1].hasDifferentLabel? %> (<%= t[1].label %>)<% end %></th>
 				</tr>
 				<% if t[1].hasComment? %>
 					<tr>

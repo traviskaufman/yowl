@@ -117,14 +117,14 @@ module DOWL
       @schema.model.query(
         RDF::Query::Pattern.new(nil, DOWL::Namespaces::RDFS.subClassOf, @resource)
       ) do |statement|
-        subClass = Class.withUri(statement.object, @schema)
-        puts "Found sub class #{subClass.short_name} for #{short_name} (#{statement.object.to_s})"
+        subClass = Class.withUri(statement.subject, @schema)
+        puts "Found sub class #{subClass.short_name} for #{short_name} (#{statement.subject.to_s})"
         if subClass
           if subClass != self
             @subClasses << subClass
           end
         else
-          warn "WARNING: Could not find sub class of #{short_name} with uri #{statement.object.to_s}"
+          warn "WARNING: Could not find sub class of #{short_name} with uri #{statement.subject.to_s}"
         end
       end
       #@subClasses.sort! { |x,y| x <=> y }

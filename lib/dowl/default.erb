@@ -95,7 +95,7 @@ table.classinfo td.classhierarchy {
 def doClass(klass)
   name = klass.short_name 
   result = "\n<li><a href=\"#class_#{name}\">#{name}</a></li>"
-  subclasses = klass.sub_classes()
+  subclasses = klass.subClasses()
   if ! subclasses.empty?() 
     result += "\n<ul>"
     subclasses.each do |subclass|
@@ -106,7 +106,6 @@ def doClass(klass)
   return result
 end
 %>
-
 		<h2>Classes - Overview</h2>
 		<div class="section">
 			<table class="classinfo">
@@ -159,7 +158,7 @@ end
 						<tr>
 							<td class="label">Sub-Classes</td>
 							<td>
-								<% t[1].sub_classes.each do |child| %>
+								<% t[1].subClasses.each do |child| %>
 									<a href="#class_<%= child.short_name %>"><%= child.short_name %></a>
 								<% end %>
 							</td>

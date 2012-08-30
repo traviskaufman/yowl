@@ -3,14 +3,14 @@ module DOWL
     include Comparable
 
     attr_reader :resource
-    attr_reader :sub_classes
+    attr_reader :subClasses
     attr_reader :associations
 
     private
     def initialize(resource, schema)
       super(resource, schema)
       @super_classes = nil
-      @sub_classes = nil
+      @subClasses = nil
       @associations = nil
     end
 
@@ -102,38 +102,38 @@ module DOWL
 
     public
 
-    def sub_classes()
-      if not @sub_classes.nil?
-        @sub_classes.each do |subclass|
+    def subClasses()
+      if not @subClasses.nil?
+        @subClasses.each do |subclass|
           puts "Returning subclass of #{short_name}: #{subclass.short_name}"
         end
-        return @sub_classes
+        return @subClasses
       end
-      @sub_classes = []
+      @subClasses = Set.new
 
       @schema.model.query(
-      RDF::Query::Pattern.new(nil, DOWL::Namespaces::RDFS.subClassOf, @resource)
+        RDF::Query::Pattern.new(nil, DOWL::Namespaces::RDFS.subClassOf, @resource)
       ) do |statement|
         subClass = Class.withUri(statement.object, @schema)
         if subClass
           if subClass != self
-            @sub_classes << subClass
+            @subClasses << subClass
           end
         else
           warn "WARNING: Could not find sub class of #{short_name} with uri #{statement.object.to_s}"
         end
       end
-      @sub_classes.sort! { |x,y| x <=> y }
-      @sub_classes.each do |subclass|
+      #@subClasses.sort! { |x,y| x <=> y }
+      @subClasses.each do |subclass|
         puts "Returning subclass #{short_name}: #{subclass.short_name}..."
       end
-      return @sub_classes
+      return @subClasses
     end
 
     public
 
     def hasSubClasses?
-      return ! sub_classes.empty?()
+      return ! subClasses.empty?()
     end
 
     public

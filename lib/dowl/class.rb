@@ -1,12 +1,11 @@
 module DOWL
-  
   class Class < DOWL::LabelledDocObject
     include Comparable
-    
+
     attr_reader :resource
     attr_reader :sub_classes
     attr_reader :associations
-    
+
     private
     def initialize(resource, schema)
       super(resource, schema)
@@ -14,8 +13,9 @@ module DOWL
       @sub_classes = nil
       @associations = nil
     end
-    
-    public 
+
+    public
+
     def Class.withUri(resource, schema)
       if resource.anonymous?
         warn "WARNING: Ignoring class with uri #{resource.to_s}"
@@ -30,28 +30,30 @@ module DOWL
       puts "Created class #{klass.short_name}"
       return klass
     end
-    
+
     public
+
     def see_alsos()
-       links = []
-       @schema.model.query( 
-         RDF::Query::Pattern.new(@resource, DOWL::Namespaces::RDFS.seeAlso)
-       ) do |statement|
-         links << statement.object.to_s
-       end
-       return links
+      links = []
+      @schema.model.query(
+      RDF::Query::Pattern.new(@resource, DOWL::Namespaces::RDFS.seeAlso)
+      ) do |statement|
+        links << statement.object.to_s
+      end
+      return links
     end
-    
+
     public
+
     def super_classes()
       if not @super_classes.nil?
         return @super_classes
       end
-      
+
       @super_classes = []
-    
+
       @schema.model.query(
-        RDF::Query::Pattern.new(@resource, DOWL::Namespaces::RDFS.subClassOf)
+      RDF::Query::Pattern.new(@resource, DOWL::Namespaces::RDFS.subClassOf)
       ) do |statement|
         #
         # Only look at statements like these:
@@ -79,14 +81,16 @@ module DOWL
         end
       end
       return @super_classes
-    end    
+    end
 
     public
+
     def hasSuperClasses?
       return ! super_classes.empty?()
     end
-    
+
     public
+
     def hasSuperClassesInSchema?
       super_classes.each() do |klass|
         if @schema.classes.include?(klass.uri)
@@ -95,8 +99,9 @@ module DOWL
       end
       return false
     end
-    
+
     public
+
     def sub_classes()
       if not @sub_classes.nil?
         @sub_classes.each do |subclass|
@@ -105,9 +110,9 @@ module DOWL
         return @sub_classes
       end
       @sub_classes = []
-        
+
       @schema.model.query(
-        RDF::Query::Pattern.new(nil, DOWL::Namespaces::RDFS.subClassOf, @resource)
+      RDF::Query::Pattern.new(nil, DOWL::Namespaces::RDFS.subClassOf, @resource)
       ) do |statement|
         subClass = Class.withUri(statement.object, @schema)
         if subClass
@@ -122,25 +127,27 @@ module DOWL
       @sub_classes.each do |subclass|
         puts "Returning subclass #{short_name}: #{subclass.short_name}..."
       end
-      return @sub_classes  
+      return @sub_classes
     end
-    
+
     public
+
     def hasSubClasses?
       return ! sub_classes.empty?()
     end
-    
+
     public
+
     def associations()
       if not @associations.nil?
         return @associations
       end
-      @associations = []
-        
+      @associations = Set.new
+
       if @schema.options.verbose
         puts "Searching for associations of class #{short_name}"
       end
-        
+
       query = RDF::Query.new do
         pattern [:property, DOWL::Namespaces::RDFS.domain, @resource]
         pattern [:property, RDF.type, DOWL::Namespaces::OWL.ObjectProperty]
@@ -154,7 +161,7 @@ module DOWL
       if @schema.options.verbose
         puts " - Found #{solution.count} distinct solutions"
       end
-      
+
       solution.each do |solution|
         property = solution[:property]
         range = solution[:range]
@@ -162,29 +169,32 @@ module DOWL
         rangeClass = Class.withUri(range, @schema)
         puts "   - Found this class for it: #{rangeClass}"
         if rangeClass
-          @associations << DOWL::Association.new(solution[:property], @schema, self, rangeClass)
+          @associations << Association.new(property, @schema, self, rangeClass)
         end
       end
       return @associations
     end
-    
+
   end
-  
-  class Association < DOWL::LabelledDocObject 
-    
+
+  class Association < DOWL::LabelledDocObject
+
     attr_reader :domainClass
     attr_reader :rangeClass
     attr_reader :property
-    
     def initialize(resource, schema, domainClass, rangeClass)
       super(resource, schema)
       @domainClass = domainClass
       @rangeClass = rangeClass
     end
-    
+
+    def hash
+      "#{@domainClass.uri},#{@rangeClass.uri},#{@propery}".hash
+    end
+
     def label
       return short_name
     end
   end
-  
+
 end

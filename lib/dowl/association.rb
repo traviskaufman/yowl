@@ -12,7 +12,7 @@ module DOWL
       end
   
       def hash
-        "#{@domainClass.uri},#{@rangeClass.uri},#{@resource.uri}".hash
+        "#{@domainClass.uri},#{@rangeClass.uri},#{@resource.to_s}".hash
       end
   
       def label

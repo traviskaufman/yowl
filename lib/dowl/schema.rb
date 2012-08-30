@@ -219,6 +219,7 @@ module DOWL
         set_trace_func nil
         raise "ERROR: Passed empty string to Schema:prefixedUri()"
       end
+      puts "prefixedUri(#{uri})"
       @prefixes.each() do |prefix, namespace|
         if uri == namespace
           set_trace_func nil

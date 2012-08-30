@@ -67,8 +67,9 @@ module DOWL
     end
     
     def hasDifferentLabel?
-      puts "****\n- #{short_name().sub(/.+:/, '')}\n- #{label}\n****"
-      return short_name().sub(/.+:/, '') != label()
+      #puts "****\n- #{short_name().sub(/.+:/, '')}\n- #{label}\n****"
+      #return short_name().sub(/.+:/, '') != label()
+      return short_name() != label()
     end
         
     def comment()

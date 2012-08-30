@@ -103,12 +103,15 @@ module DOWL
     public
 
     def subClasses()
+      puts "#{short_name}.subClasses 1"
       if @subClasses
+        puts "#{short_name}.subClasses 2"
         @subClasses.each do |subclass|
           puts "Returning subclass of #{short_name}: #{subclass.short_name}"
         end
         return @subClasses
       end
+      puts "#{short_name}.subClasses 3"
       @subClasses = Set.new
 
       @schema.model.query(

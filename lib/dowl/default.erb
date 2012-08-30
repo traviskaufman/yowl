@@ -91,6 +91,12 @@ table.classinfo td.classhierarchy {
 			</ul>
 		</div>
 
+		<h2>Classes - Overview</h2>
+		<div class="section">
+			<table class="classinfo">
+				<tr>
+					<td class="classhierarchy">
+						<ul class="class">
 <%
 def doClass(klass)
   name = klass.short_name 
@@ -105,13 +111,7 @@ def doClass(klass)
   end
   return result
 end
-%>
-		<h2>Classes - Overview</h2>
-		<div class="section">
-			<table class="classinfo">
-				<tr>
-					<td class="classhierarchy">
-						<ul class="class">
+%>						
        						<% schema.root_classes().each do |klass| %>
 			       				<%= doClass(klass) %>
        						<% end %>

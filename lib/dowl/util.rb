@@ -27,6 +27,7 @@ module DOWL
 
     def escaped_short_name()
       str = short_name()
+      # TODO: optimize this into one pattern
       str = str.gsub("://", "_")
       str = str.gsub(".", "_")
       str = str.gsub("/", "_")
@@ -35,10 +36,12 @@ module DOWL
     
     def escaped_uri()
       str = short_name().to_s
+      # TODO: optimize this into one pattern
       str = str.gsub("://", "__")
       str = str.gsub(".", "_")
       str = str.gsub("/", "_")
       str = str.gsub("#", "_")
+      str = str.gsub(":", "_")
       return str
     end
     

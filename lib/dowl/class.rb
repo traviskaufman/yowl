@@ -149,7 +149,7 @@ module DOWL
       end
       solutions = query.execute(@schema.model)
       if @schema.options.verbose
-        puts " - Found #{solution.count} solutions"
+        puts " - Found #{solutions.count} solutions"
         solutions.each do |solution|
           solution.each do |name,value|
             puts "   - #{name}=#{value}"

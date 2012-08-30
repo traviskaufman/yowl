@@ -288,8 +288,8 @@ module DOWL
       allClasses = classes().collect() do |uri,klass|
         klass
       end
-      nonRootClasses = allClasses 
-      rootClasses = root_classes()
+      nonRootClasses = allClasses.to_set
+      rootClasses = root_classes().to_set
       
       rootClasses.each() do |klass|
         nonRootClasses.delete(klass)
@@ -320,7 +320,7 @@ module DOWL
           domainClassNode = nodes[klass.uri]
           klass.associations().each() do |association|
             if @options.verbose
-              puts "  - Adding association edge #{association.rangeClass.short_name}, #{association.label}"
+              puts "  - Adding edge #{association.rangeClass.short_name}, #{association.label} hash=#{association.key}"
             end
             association.addAsGraphVizEdge(g, nodes)
           end

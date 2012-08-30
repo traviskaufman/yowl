@@ -165,12 +165,19 @@ module DOWL
       solution.each do |solution|
         property = solution[:property]
         range = solution[:range]
-        puts " - Found Association from #{short_name} to #{@schema.prefixedUri(range)}: #{@schema.prefixedUri(property.to_s)}"
+        if @schema.options.verbose
+          puts " - Found Association from #{short_name} to #{@schema.prefixedUri(range)}: #{@schema.prefixedUri(property.to_s)}"
+        end
         rangeClass = Class.withUri(range, @schema)
-        puts "   - Found this class for it: #{rangeClass}"
+        if @schema.options.verbose
+          puts "   - Found this class for it: #{rangeClass}"
+        end
         if rangeClass
           @associations << Association.new(property, @schema, self, rangeClass)
         end
+      end
+      if @schema.options.verbose
+        puts " - Returning #{@associations.size} associations"
       end
       return @associations
     end

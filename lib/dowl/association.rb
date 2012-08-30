@@ -5,18 +5,26 @@ module DOWL
       attr_reader :domainClass
       attr_reader :rangeClass
       attr_reader :property
-      attr_reader :hash
+      attr_reader :key
       
       def initialize(resource, schema, domainClass, rangeClass)
         super(resource, schema)
         @domainClass = domainClass
         @rangeClass = rangeClass
         
-        @hash = "#{@domainClass.uri},#{@rangeClass.uri},#{@resource.to_s}".hash 
+        @key = "#{@domainClass.uri},#{@rangeClass.uri},#{label}".hash 
       end
   
       def label
         return short_name
+      end
+      
+      def hash
+        return key
+      end
+      
+      def eql?(other)
+        @key.eql? other.key
       end
       
       def addAsGraphVizEdge(graph, nodes)

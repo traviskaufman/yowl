@@ -335,7 +335,7 @@ module DOWL
           if @options.verbose
             puts "    - Adding edge #{association.rangeClass.short_name}, #{association.label} hash=#{association.key}"
           end
-          association.addAsGraphVizEdge(g, nodes)
+          #association.addAsGraphVizEdge(g, nodes)
         end
       end
       

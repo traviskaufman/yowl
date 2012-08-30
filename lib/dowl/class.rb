@@ -115,9 +115,10 @@ module DOWL
       @subClasses = Set.new
 
       @schema.model.query(
-      RDF::Query::Pattern.new(nil, DOWL::Namespaces::RDFS.subClassOf, @resource)
+        RDF::Query::Pattern.new(nil, DOWL::Namespaces::RDFS.subClassOf, @resource)
       ) do |statement|
         subClass = Class.withUri(statement.object, @schema)
+        puts "Found sub class #{subClass.short_name} for #{short_name}"
         if subClass
           if subClass != self
             @subClasses << subClass

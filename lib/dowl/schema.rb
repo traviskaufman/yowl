@@ -241,7 +241,6 @@ module DOWL
         end
         uri = uri.gsub(ontology_uri + '#', '')
         uri = uri.gsub(ontology_uri + '/', '')
-        return uri.gsub(ontology_uri, '')
       end
       return uri
     end

@@ -103,7 +103,7 @@ module DOWL
     public
 
     def subClasses()
-      if not @subClasses.nil?
+      if @subClasses
         @subClasses.each do |subclass|
           puts "Returning subclass of #{short_name}: #{subclass.short_name}"
         end
@@ -112,7 +112,7 @@ module DOWL
       @subClasses = Set.new
 
       @schema.model.query(
-        RDF::Query::Pattern.new(nil, DOWL::Namespaces::RDFS.subClassOf, @resource)
+      RDF::Query::Pattern.new(nil, DOWL::Namespaces::RDFS.subClassOf, @resource)
       ) do |statement|
         subClass = Class.withUri(statement.object, @schema)
         if subClass

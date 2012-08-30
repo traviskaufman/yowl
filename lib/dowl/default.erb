@@ -15,6 +15,9 @@ h2 {
   border-top: 1px black solid;
   padding-left: 1cm ;
 }
+a {
+  text-decoration: none;
+}
 div.section {
   padding-left: 1cm ;
 }
@@ -28,9 +31,19 @@ table.classinfo td.classhierarchy {
   width: 20%;
   border-right: 1px black solid;
   padding-right: 10px;
+  font-size: 1em;
 }
-table.terms th.className {
+table.terms th.termName {
   text-align: left;
+  font-size: 1.1em;
+}
+table.terms td {
+  padding-left: 1em ;
+  padding-bottom: 0.5em;
+  font-size: 0.9em;
+}
+table.terms td.label {
+  vertical-align: top;
 }
 table.terms ul {
   margin: 0px;
@@ -146,7 +159,7 @@ end
 			<table class="terms">
    			<%schema.list_classes().each do |t| %>
    				<tr id="class_<%= t[1].short_name %>">
-   					<th colspan="2" class="className"><%= t[1].short_name %><% if t[1].hasDifferentLabel? %> (<%= t[1].label %>)<% end %>
+   					<th colspan="2" class="termName"><%= t[1].short_name %><% if t[1].hasDifferentLabel? %> (<%= t[1].label %>)<% end %>
    				</tr>
 				<% if t[1].hasComment? %>
 					<tr>
@@ -207,7 +220,7 @@ end
 			<table class="terms">
 	   		<% schema.list_object_properties().each do |t| %>
 				<tr id="prop_<%= t[1].short_name %>">
-					<td><%= t[1].short_name %><% if t[1].hasDifferentLabel? %> (<%= t[1].label %>)<% end %><td>
+					<th colspan="2" class="termName"><%= t[1].short_name %><% if t[1].hasDifferentLabel? %> (<%= t[1].label %>)<% end %><th>
 				</tr>
 				<% if t[1].hasComment? %>
 					<tr>
@@ -299,7 +312,7 @@ end
 			<table class="terms">
 	   		<% schema.list_datatype_properties().each do |t| %>
 				<tr id="prop_<%= t[1].short_name %>">
-					<td><%= t[1].short_name %><% if t[1].hasDifferentLabel? %> (<%= t[1].label %>)<% end %><td>
+					<th colspan="2" class="termName"><%= t[1].short_name %><% if t[1].hasDifferentLabel? %> (<%= t[1].label %>)<% end %></th>
 				</tr>
 				<% if t[1].hasComment? %>
 					<tr>

@@ -150,11 +150,6 @@ module DOWL
       solutions = query.execute(@schema.model)
       if @schema.options.verbose
         puts " - Found #{solutions.count} solutions"
-        solutions.each do |solution|
-          solution.each do |name,value|
-            puts "   - #{name}=#{value}"
-          end
-        end
       end
       solutions.distinct!
       if @schema.options.verbose
@@ -164,6 +159,7 @@ module DOWL
       solutions.each do |solution|
         property = solution[:property]
         range = solution[:range]
+	puts " - Processing solution - #{property}=#{range}"
         if @schema.options.verbose
           puts " - Found Association from #{short_name} to #{@schema.prefixedUri(range)}: #{@schema.prefixedUri(property.to_s)}"
         end
@@ -176,7 +172,7 @@ module DOWL
         end
       end
       if @schema.options.verbose
-        puts " - Returning #{@associations.size} associations"
+        puts " - Returning #{@associations.size} associations for class #{short_name}"
       end
       return @associations
     end

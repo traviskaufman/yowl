@@ -4,7 +4,7 @@
 		<meta charset="utf-8" />
 		<title><%= schema.ontology.title %></title>
 		<style>
-body, td {
+body, td, th {
   font-family: arial,sans-serif;
   font-size: 80% ;
 }
@@ -28,6 +28,15 @@ table.classinfo td.classhierarchy {
   width: 20%;
   border-right: 1px black solid;
   padding-right: 10px;
+}
+table.terms th.className {
+  text-align: left;
+}
+table.terms ul {
+  margin: 0px;
+}
+table.terms li {
+  margin-left: -2em;
 }
       </style>
 	</head>
@@ -134,15 +143,17 @@ end
 		
 		<h2>Classes</h2>
 		<div class="section">
-			<table class="classes" border="1">
+			<table class="terms">
    			<%schema.list_classes().each do |t| %>
    				<tr id="class_<%= t[1].short_name %>">
-   					<th colspan="2" id="className"><%= t[1].short_name %></th>
+   					<th colspan="2" class="className"><%= t[1].short_name %><% if t[1].hasDifferentLabel? %> (<%= t[1].label %>)<% end %>
    				</tr>
-				<% if t[1].hasDifferentLabel? %>
+				<% if t[1].hasComment? %>
 					<tr>
-						<td class="label">Label</td>
-						<td><%= t[1].label %></td>
+						<td class="label">Abstract</td>
+						<td> 				   				
+							<%= t[1].comment %>
+						</td>
 					</tr>
 				<% end %>
 				<% if t[1].status %>
@@ -155,9 +166,11 @@ end
 					<tr>
 						<td class="label">SubClass Of</td>
 						<td>
+							<ul>
 							<% t[1].super_classes.each do |parent| %>
-								<a href="#class_<%= parent.short_name %>"><%= parent.short_name %></a>
+								<li><a href="#class_<%= parent.short_name %>"><%= parent.short_name %></a></li>
 							<% end %>
+							</ul>
 						</td>
 					</tr>
 				<% end %>
@@ -165,9 +178,11 @@ end
 					<tr>
 						<td class="label">Sub-Classes</td>
 						<td>
+							<ul>
 							<% t[1].subClasses.each do |child| %>
-								<a href="#class_<%= child.short_name %>"><%= child.short_name %></a>
+								<li><a href="#class_<%= child.short_name %>"><%= child.short_name %></a></li>
 							<% end %>
+							</ul>
 						</td>
 					</tr>
 				<% end %>	   				
@@ -183,199 +198,192 @@ end
 						</td>
 					</tr>
 				<% end %>
-				<% if t[1].hasComment? %>
-					<tr>
-						<td colspan="2"> 				   				
-							<%= t[1].comment %>
-						</td>
-					</tr>
-				<% end %>
   			<%end%>
 			</table>
   		</div>	
 	
 		<h2>Object Properties</h2>
 		<div class="section">
+			<table class="terms">
 	   		<% schema.list_object_properties().each do |t| %>
-			<div class="term" id="prop_<%= t[1].short_name %>">
-				<h4>Property: <%= t[1].short_name %></h4>
-				<table>
-					<% if t[1].hasDifferentLabel? %>
+				<tr id="prop_<%= t[1].short_name %>">
+					<td><%= t[1].short_name %><% if t[1].hasDifferentLabel? %> (<%= t[1].label %>)<% end %><td>
+				</tr>
+				<% if t[1].hasComment? %>
+					<tr>
+						<td class="label">Abstract</td>
+						<td><%= t[1].comment %></td>
+					</tr>
+				<% end %>				
+				<% if t[1].status %>
+   					<tr>
+   						<td class="label">Status</td>
+   						<td><%= t[1].status %></td>
+   					</tr>
+				<% end %>
+				<% if t[1].sub_property_of %>
+					<% if t[1].sub_property_of.class.to_s == "String" %>	   				
 						<tr>
-							<td class="label">Label</td>
-							<td><%= t[1].label %></td>
+							<td class="label">Has Parent Property</td>
+							<td><a href="<%= t[1].sub_property_of %>"><%= t[1].sub_property_of %></a></td>
+						</tr>
+					<% else %>
+						<tr>
+							<td class="label">Has Parent Property</td>
+							<td><a href="#prop_<%= t[1].sub_property_of.short_name %>"><%= t[1].sub_property_of.short_name %></a></td>
 						</tr>
 					<% end %>
-					<% if t[1].status %>
-	   					<tr>
-	   						<td class="label">Status</td>
-	   						<td><%= t[1].status %></td>
-	   					</tr>
-					<% end %>
-   					<% if t[1].sub_property_of %>
-   						<% if t[1].sub_property_of.class.to_s == "String" %>	   				
-   							<tr>
-   								<td class="label">Has Parent Property</td>
-   								<td><a href="<%= t[1].sub_property_of %>"><%= t[1].sub_property_of %></a></td>
-   							</tr>
-   						<% else %>
-   							<tr>
-   								<td class="label">Has Parent Property</td>
-   								<td><a href="#prop_<%= t[1].sub_property_of.short_name %>"><%= t[1].sub_property_of.short_name %></a></td>
-   							</tr>
-   						<% end %>
-   					<% end %>
-   					<% if t[1].sub_properties.length > 0 %>
-						<tr>
-							<td class="label">Sub-Properties</td>
-							<td>
-								<% t[1].sub_properties.each do |child| %>
-									<a href="#class_<%= child.short_name %>"><%= child.short_name %></a>
+				<% end %>
+				<% if t[1].sub_properties.length > 0 %>
+					<tr>
+						<td class="label">Sub-Properties</td>
+						<td>
+							<ul>
+							<% t[1].sub_properties.each do |child| %>
+								<li><a href="#class_<%= child.short_name %>"><%= child.short_name %></a></li>
+							<% end %>
+							</ul>
+						</td>
+					</tr>
+				<% end %>		   				
+				<% if t[1].range.length > 0 %>
+					<tr>
+						<td class="label">Range</td>
+						<td>
+							<ul>
+							<% t[1].range.each do |cls| %>
+								<% if cls.class.to_s == "String" %>
+									<li><a href="<%= cls %>"><%= cls %></a></li>
+								<% else %>
+									<li><a href="#class_<%= cls.short_name %>"><%= cls.short_name %></a></li>
 								<% end %>
-							</td>
-						</tr>
-   					<% end %>		   				
-   					<% if t[1].range.length > 0 %>
-   						<tr>
-   							<td class="label">Range</td>
-   							<td>
-   							<% t[1].range.each do |cls| %>
-   								<% if cls.class.to_s == "String" %>
-   									<a href="<%= cls %>"><%= cls %></a>
-   								<% else %>
-   									<a href="#class_<%= cls.short_name %>"><%= cls.short_name %></a>
-   								<% end %>
-   							<% end %>		   				
-   							</td>
-   						</tr>
-   					<% end %>
-   					<% if t[1].domain.length > 0 %>
-   						<tr>
-   							<td class="label">Domain</td>
-   							<td>
-   							<% t[1].domain.each do |cls| %>
-   								<% if cls.class.to_s == "String" %>
-   									<a href="<%= cls %>"><%= cls %></a>
-   								<% else %>
-   									<a href="#class_<%= cls.short_name %>"><%= cls.short_name %></a>
-   								<% end %>
-   							<% end %>		   				
-   							</td>
-   						</tr>
-   					<% end %>		   				
-					<% if t[1].see_alsos.length > 0 %>
-						<tr>
-							<td class="label">See Also</td>
-							<td>
-			   					<ul>	   			
-								<% t[1].see_alsos.each do |link| %>
-									<li><a href="<%= link %>"><%= link %></a></li>
+							<% end %>
+							</ul>		   				
+						</td>
+					</tr>
+				<% end %>
+				<% if t[1].domain.length > 0 %>
+					<tr>
+						<td class="label">Domain</td>
+						<td>
+							<ul>
+							<% t[1].domain.each do |cls| %>
+								<% if cls.class.to_s == "String" %>
+									<li><a href="<%= cls %>"><%= cls %></a></li>
+								<% else %>
+									<li><a href="#class_<%= cls.short_name %>"><%= cls.short_name %></a></li>
 								<% end %>
-								</ul>
-							</td>
-						</tr>
-					<% end %>
-					<% if t[1].hasComment? %>
-						<tr>
-							<td colspan="2"> 				   				
-								<%= t[1].comment %>
-							</td>
-						</tr>
-					<% end %>
-				</table>	   				
-			</div>
+							<% end %>
+							</ul>		   				
+						</td>
+					</tr>
+				<% end %>		   				
+				<% if t[1].see_alsos.length > 0 %>
+					<tr>
+						<td class="label">See Also</td>
+						<td>
+		   					<ul>	   			
+							<% t[1].see_alsos.each do |link| %>
+								<li><a href="<%= link %>"><%= link %></a></li>
+							<% end %>
+							</ul>
+						</td>
+					</tr>
+				<% end %>
   			<%end%>
+			</table>	   				
   		</div>	
 	
 		<h2>Datatype Properties</h2>
 		<div class="section">
-   			<%schema.list_datatype_properties().each do |t| %>
-   			<div class="term" id="prop_<%= t[1].short_name %>">
-   				<h4>Property: <%= t[1].short_name %></h4>
-   				<table>
-					<% if t[1].hasDifferentLabel? %>
-						<tr>
-							<td class="label">Label</td>
-							<td><%= t[1].label %></td>
-						</tr>
-					<% end %>
-					<% if t[1].status %>
-	   					<tr>
-	   						<td class="label">Status</td>
-	   						<td><%= t[1].status %></td>
-	   					</tr>
-					<% end %>
-	   				<% if t[1].sub_property_of %>
-	   					<% if t[1].sub_property_of.class.to_s == "String" %>	   				
-	   						<tr>
-	   							<td class="label">Has Parent Property</td>
-	   							<td><a href="<%= t[1].sub_property_of %>"><%= t[1].sub_property_of %></a></td>
-	   						</tr>
-	   					<% else %>
-	   						<tr>
-	   							<td class="label">Has Parent Property</td>
-	   							<td><a href="#prop_<%= t[1].sub_property_of.short_name %>"><%= t[1].sub_property_of.short_name %></a></td>
-	   						</tr>
-	   					<% end %>
-	   				<% end %>
-	   				<% if t[1].sub_properties.length > 0 %>
-						<tr>
-							<td class="label">Sub-Properties</td>
-							<td>
-								<% t[1].sub_properties.each do |child| %>
-									<a href="#class_<%= child.short_name %>"><%= child.short_name %></a>
-								<% end %>
-							</td>
-						</tr>
-	   				<% end %>		   				
-	   				<% if t[1].range.length > 0 %>
-	   					<tr><td class="label">Range</td>
-	   					<td>
-	   					<% t[1].range.each do |cls| %>
-	   						<% if cls.class.to_s == "String" %>
-	   						<a href="<%= cls %>"><%= cls %></a>
-	   						<% else %>
-	   						<a href="#class_<%= cls.short_name %>"><%= cls.short_name %></a>
-	   						<% end %>
-	   					<% end %>		   				
+			<table class="terms">
+	   		<% schema.list_datatype_properties().each do |t| %>
+				<tr id="prop_<%= t[1].short_name %>">
+					<td><%= t[1].short_name %><% if t[1].hasDifferentLabel? %> (<%= t[1].label %>)<% end %><td>
+				</tr>
+				<% if t[1].hasComment? %>
+					<tr>
+						<td class="label">Abstract</td>
+						<td><%= t[1].comment %></td>
+					</tr>
+				<% end %>				
+				<% if t[1].status %>
+   					<tr>
+   						<td class="label">Status</td>
+   						<td><%= t[1].status %></td>
+   					</tr>
+				<% end %>
+   				<% if t[1].sub_property_of %>
+   					<% if t[1].sub_property_of.class.to_s == "String" %>	   				
+   						<tr>
+   							<td class="label">Has Parent Property</td>
+   							<td><a href="<%= t[1].sub_property_of %>"><%= t[1].sub_property_of %></a></td>
+   						</tr>
+   					<% else %>
+   						<tr>
+   							<td class="label">Has Parent Property</td>
+   							<td><a href="#prop_<%= t[1].sub_property_of.short_name %>"><%= t[1].sub_property_of.short_name %></a></td>
+   						</tr>
+   					<% end %>
+   				<% end %>
+   				<% if t[1].sub_properties.length > 0 %>
+					<tr>
+						<td class="label">Sub-Properties</td>
+						<td>
+							<ul>
+							<% t[1].sub_properties.each do |child| %>
+								<li><a href="#class_<%= child.short_name %>"><%= child.short_name %></a></li>
+							<% end %>
+							</ul>
+						</td>
+					</tr>
+   				<% end %>		   				
+   				<% if t[1].range.length > 0 %>
+   					<tr>
+   						<td class="label">Range</td>
+   						<td>
+   							<ul>
+		   					<% t[1].range.each do |cls| %>
+		   						<% if cls.class.to_s == "String" %>
+		   							<li><a href="<%= cls %>"><%= cls %></a></li>
+		   						<% else %>
+		   							<li><a href="#class_<%= cls.short_name %>"><%= cls.short_name %></a></li>
+		   						<% end %>
+		   					<% end %>
+		   					</ul>		   				
 	   					</td>
-	   					</tr>
-	   				<% end %>
-	   				<% if t[1].domain.length > 0 %>
-	   					<tr><td class="label">Domain</td>
-	   					<td>
-	   					<% t[1].domain.each do |cls| %>
-	   						<% if cls.class.to_s == "String" %>
-	   						<a href="<%= cls %>"><%= cls %></a>
-	   						<% else %>
-	   						<a href="#class_<%= cls.short_name %>"><%= cls.short_name %></a>
-	   						<% end %>
-	   					<% end %>		   				
-	   					</td>
-	   					</tr>
-	   				<% end %>				
-					<% if t[1].see_alsos.length > 0 %>
-						<tr>
-							<td class="label">See Also</td>
-							<td>
-			   					<ul>	   			
-								<% t[1].see_alsos.each do |link| %>
-									<li><a href="<%= link %>"><%= link %></a></li>
-								<% end %>
-								</ul>
-							</td>
-						</tr>
-					<% end %>
-					<% if t[1].hasComment? %>
-						<tr>
-							<td colspan="2"> 				   				
-								<%= t[1].comment %>
-							</td>
-						</tr>
-					<% end %>
-				</table>	   				
-   			</div>
-  			<%end%>	
+   					</tr>
+   				<% end %>
+   				<% if t[1].domain.length > 0 %>
+   					<tr>
+   						<td class="label">Domain</td>
+   						<td>
+   							<ul>
+		   					<% t[1].domain.each do |cls| %>
+		   						<% if cls.class.to_s == "String" %>
+		   							<li><a href="<%= cls %>"><%= cls %></a></li>
+		   						<% else %>
+		   							<li><a href="#class_<%= cls.short_name %>"><%= cls.short_name %></a></li>
+		   						<% end %>
+		   					<% end %>
+		   					</ul>		   				
+   						</td>
+   					</tr>
+   				<% end %>				
+				<% if t[1].see_alsos.length > 0 %>
+					<tr>
+						<td class="label">See Also</td>
+						<td>
+		   					<ul>	   			
+							<% t[1].see_alsos.each do |link| %>
+								<li><a href="<%= link %>"><%= link %></a></li>
+							<% end %>
+							</ul>
+						</td>
+					</tr>
+				<% end %>
+  			<%end%>
+			</table>	   				
   		</div>	
 	</body>
 </html>

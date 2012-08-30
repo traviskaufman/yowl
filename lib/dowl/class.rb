@@ -53,7 +53,7 @@ module DOWL
       @super_classes = []
 
       @schema.model.query(
-      RDF::Query::Pattern.new(@resource, DOWL::Namespaces::RDFS.subClassOf)
+        RDF::Query::Pattern.new(@resource, DOWL::Namespaces::RDFS.subClassOf)
       ) do |statement|
         #
         # Only look at statements like these:
@@ -118,7 +118,7 @@ module DOWL
         RDF::Query::Pattern.new(nil, DOWL::Namespaces::RDFS.subClassOf, @resource)
       ) do |statement|
         subClass = Class.withUri(statement.object, @schema)
-        puts "Found sub class #{subClass.short_name} for #{short_name}"
+        puts "Found sub class #{subClass.short_name} for #{short_name} (#{statement.object.to_s})"
         if subClass
           if subClass != self
             @subClasses << subClass

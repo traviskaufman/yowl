@@ -214,9 +214,7 @@ module DOWL
       if uri.empty?
         raise "ERROR: Passed empty string to Schema:prefixedUri()"
       end
-      puts "prefixedUri(#{uri})"
       @prefixes.each() do |prefix, namespace|
-        puts "prefixedUri(#{uri}) prefix=#{prefix} ns=#{namespace}"
         if uri == namespace
           return prefix
         end
@@ -233,11 +231,11 @@ module DOWL
           return uri.gsub(namespace, "#{prefix}:")
         end
       end
-      puts "prefixedUri(#{uri}) 2"
       if @ontology
-        puts "prefixedUri(#{uri}) 3"
         ontology_uri = @ontology.uri
-        puts "prefixedUri(#{uri}) 4 ontology_uri=#{ontology_uri}"
+        if ontology_uri == uri
+          return uri
+        end
         uri = uri.gsub(ontology_uri + '#', '')
         uri = uri.gsub(ontology_uri + '/', '')
         return uri.gsub(ontology_uri, '')

@@ -207,50 +207,41 @@ module DOWL
     #
     public
     def prefixedUri(uri)
-      set_trace_func proc { |event, file, line, id, binding, classname|
-        printf "%8s %s:%-2d %10s %8s\n", event, file, line, id, classname
-      }
       if uri.nil?
-        set_trace_func nil
         raise "ERROR: Passed nil to Schema:prefixedUri()"
       end
       uri = uri.to_s()
       if uri.empty?
-        set_trace_func nil
         raise "ERROR: Passed empty string to Schema:prefixedUri()"
       end
       puts "prefixedUri(#{uri})"
       @prefixes.each() do |prefix, namespace|
+        puts "prefixedUri(#{uri}) prefix=#{prefix} ns=#{namespace}"
         if uri == namespace
-          set_trace_func nil
           return prefix
         end
         if "#{uri}/" == namespace
-          set_trace_func nil
           return prefix
         end
         if "#{uri}#" == namespace
-          set_trace_func nil
           return prefix
         end
         if uri.include?(namespace)
           if @ontology and namespace == @ontology.ns
-            set_trace_func nil
             return uri.gsub(namespace, '')
           end
-          set_trace_func nil
           return uri.gsub(namespace, "#{prefix}:")
         end
       end
+      puts "prefixedUri(#{uri}) 2"
       if @ontology
+        puts "prefixedUri(#{uri}) 3"
         ontology_uri = @ontology.uri
-        puts "ontology_uri=#{ontology_uri}"
+        puts "prefixedUri(#{uri}) 4 ontology_uri=#{ontology_uri}"
         uri = uri.gsub(ontology_uri + '#', '')
         uri = uri.gsub(ontology_uri + '/', '')
-        set_trace_func nil
         return uri.gsub(ontology_uri, '')
       end
-      set_trace_func nil
       return uri
     end
 

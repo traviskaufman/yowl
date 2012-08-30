@@ -288,16 +288,24 @@ module DOWL
       allClasses = classes().collect() do |uri,klass|
         klass
       end
-      nonRootClasses = allClasses.to_set
+      allClasses = allClasses.to_set
+      nonRootClasses = allClasses
       rootClasses = root_classes().to_set
       
+      #
+      # Add the GraphViz nodes for each class, but do the 
+      # root classes in a subgraph to keep them at top level
+      #
       rootClasses.each() do |klass|
         nonRootClasses.delete(klass)
         nodes = classDiagramAddNode(nodes, sg, klass)
       end
-      allClasses.each() do |klass|
+      nonRootClasses.each() do |klass|
         nodes = classDiagramAddNode(nodes, g, klass)
       end
+      #
+      # Process edges to super classes, we can ignore the root classes here
+      #
       nonRootClasses.each() do |klass|
         if @options.verbose
           puts "- Processing class #{klass.short_name}"
@@ -316,15 +324,18 @@ module DOWL
             end
           end
         end
-        allClasses.each() do |domainClass|
-          domainClassNode = nodes[klass.uri]
-          puts "  - Processing associations of class #{klass.short_name}:"
-          klass.associations().each() do |association|
-            if @options.verbose
-              puts "    - Adding edge #{association.rangeClass.short_name}, #{association.label} hash=#{association.key}"
-            end
-            association.addAsGraphVizEdge(g, nodes)
+      end
+      #
+      # Process the other associations here
+      #
+      allClasses.each() do |domainClass|
+        domainClassNode = nodes[klass.uri]
+        puts "  - Processing associations of class #{klass.short_name}:"
+        klass.associations().each() do |association|
+          if @options.verbose
+            puts "    - Adding edge #{association.rangeClass.short_name}, #{association.label} hash=#{association.key}"
           end
+          association.addAsGraphVizEdge(g, nodes)
         end
       end
       

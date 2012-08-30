@@ -319,13 +319,14 @@ module DOWL
         allClasses.each() do |domainClass|
           domainClassNode = nodes[klass.uri]
           klass.associations().each() do |association|
-            puts "  - Adding association edge #{association.rangeClass.short_name}, #{association.property.to_s}"
+            if @options.verbose
+              puts "  - Adding association edge #{association.rangeClass.short_name}, #{association.label}"
+            end
             association.addAsGraphVizEdge(g, nodes)
           end
         end
       end
       
-#     puts g.output(:dot => nil)
       return GraphvizUtility.embeddableSvg(g)
     end
 

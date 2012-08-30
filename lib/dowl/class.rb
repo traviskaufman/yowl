@@ -195,6 +195,14 @@ module DOWL
     def label
       return short_name
     end
+    
+    def addAsGraphVizEdge(graph, nodes)
+      
+      domainClassNode = nodes[@domainClass.uri]
+      rangeClassNode = nodes[@rangeClass.uri]
+        
+      graph.add_edges(domainClassNode, rangeClassNode, :label => association.label)
+    end
   end
 
 end

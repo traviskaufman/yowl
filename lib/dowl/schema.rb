@@ -224,6 +224,9 @@ module DOWL
         if "#{uri}#" == namespace
           return prefix
         end
+        if namespace[-1..-1] != '#' and namespace[-1..-1] != '/'
+          raise "ERROR: Namespace in @prefixes without trailing hash or slash: #{namespace}"
+        end
         if uri.include?(namespace)
           if @ontology and namespace == @ontology.ns
             return uri.gsub(namespace, '')
@@ -316,8 +319,8 @@ module DOWL
         allClasses.each() do |domainClass|
           domainClassNode = nodes[klass.uri]
           klass.associations().each() do |association|
-            edge = g.add_edges(domainClassNode, nodes[association.rangeClass.uri])
-            #edge.label = association.label
+            puts "  - Adding association edge #{association.rangeClass.short_name}, #{association.property.to_s}"
+            association.addAsGraphVizEdge(g, nodes)
           end
         end
       end

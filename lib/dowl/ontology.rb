@@ -77,14 +77,14 @@ module DOWL
       @schema.model.query( 
         RDF::Query::Pattern.new(@resource, DOWL::Namespaces::DC.creator)
       ) do |statement|
-          person = Person.new(nil, @schema )
+          person = Person.new("#{ns}#{statement.object.to_s}", @schema)
           person.setName(statement.object)
           authors << person
       end         
       @schema.model.query( 
         RDF::Query::Pattern.new(@resource, DOWL::Namespaces::DC.contributor)
       ) do |statement|
-          person = Person.new(nil, @schema )
+          person = Person.new("#{ns}#{statement.object.to_s}", @schema)
           person.setName(statement.object)
           authors << person
       end         

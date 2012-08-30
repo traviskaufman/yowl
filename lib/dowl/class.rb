@@ -103,22 +103,15 @@ module DOWL
     public
 
     def subClasses()
-      puts "#{short_name}.subClasses 1"
       if @subClasses
-        puts "#{short_name}.subClasses 2"
-        @subClasses.each do |subclass|
-          puts "Returning subclass of #{short_name}: #{subclass.short_name}"
-        end
         return @subClasses
       end
-      puts "#{short_name}.subClasses 3"
       @subClasses = Set.new
 
       @schema.model.query(
         RDF::Query::Pattern.new(nil, DOWL::Namespaces::RDFS.subClassOf, @resource)
       ) do |statement|
         subClass = Class.withUri(statement.subject, @schema)
-        puts "Found sub class #{subClass.short_name} for #{short_name} (#{statement.subject.to_s})"
         if subClass
           if subClass != self
             @subClasses << subClass
@@ -128,9 +121,6 @@ module DOWL
         end
       end
       #@subClasses.sort! { |x,y| x <=> y }
-      @subClasses.each do |subclass|
-        puts "Returning subclass #{short_name}: #{subclass.short_name}..."
-      end
       return @subClasses
     end
 

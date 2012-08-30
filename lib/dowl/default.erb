@@ -134,10 +134,11 @@ end
 		
 		<h2>Classes</h2>
 		<div class="section">
+			<table class="classes" border="1">
    			<%schema.list_classes().each do |t| %>
-			<div class="term" id="class_<%= t[1].short_name %>">	   			
-				<h4>Class: <%= t[1].short_name %></h4>
-				<table>
+   				<tr id="class_<%= t[1].short_name %>">
+   					<th colspan="2" id="className"><%= t[1].short_name %></th>
+   				</tr>
 				<% if t[1].hasDifferentLabel? %>
 					<tr>
 						<td class="label">Label</td>
@@ -189,9 +190,8 @@ end
 						</td>
 					</tr>
 				<% end %>
-				</table>
-			</div>
   			<%end%>
+			</table>
   		</div>	
 	
 		<h2>Object Properties</h2>

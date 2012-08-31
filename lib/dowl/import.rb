@@ -14,6 +14,13 @@ module DOWL
     end
     
     def name
+      if @importedOntology
+        return @schema.name
+      end
+      prefix = @schema.prefixForNamespace(uri)
+      if prefix
+        return prefix
+      end
       return @schema.name
     end
     

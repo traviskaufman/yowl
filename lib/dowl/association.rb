@@ -27,10 +27,10 @@ module DOWL
 
     def addAsGraphVizEdge(graph, nodes)
 
-      if not nodes.has_key?(@domainClass.uri)
+      if not nodes.has_key(@domainClass.uri)
         return
       end
-      if not nodes.has_key?(@rangeClass.uri)
+      if not nodes.has_key(@rangeClass.uri)
         return
       end
       domainClassNode = nodes[@domainClass.uri]

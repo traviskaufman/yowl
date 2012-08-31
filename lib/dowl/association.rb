@@ -39,17 +39,14 @@ module DOWL
       if not nodes.has_key?(@rangeClass.uri)
         return edges
       end
+      if edges.has_key?(@key)
+        return edges
+      end
       
       domainClassNode = nodes[@domainClass.uri]
       rangeClassNode = nodes[@rangeClass.uri]
-        
-      edges.each do |edge|
-        if edge.node_one == domainClassNode and edge.node_two == rangeClassNode and edge[:label] == label
-          return edges
-        end
-      end
-
-      edges << graph.add_edges(domainClassNode, rangeClassNode, :xlabel => label, :arrowhead => :open)
+      
+      edges[@key] << graph.add_edges(domainClassNode, rangeClassNode, :xlabel => label, :arrowhead => :open)
       
       returne edges
     end

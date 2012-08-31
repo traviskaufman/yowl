@@ -142,7 +142,7 @@ module DOWL
         puts "Searching for associations of class #{short_name}"
       end
 
-      query = RDF::Query.new do({
+      query = RDF::Query.new({
         :property => {
           DOWL::Namespaces::RDFS.domain => @resource,
           RDF.type => DOWL::Namespaces::OWL.ObjectProperty,

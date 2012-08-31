@@ -48,7 +48,7 @@ module DOWL
       
       edges[@key] = graph.add_edges(domainClassNode, rangeClassNode, :xlabel => label, :arrowhead => :open)
       
-      returne edges
+      return edges
     end
   end
 end

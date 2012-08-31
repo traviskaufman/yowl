@@ -233,8 +233,8 @@ module DOWL
       g[:rankdir] = "LR"
       g.node[:fixedsize] = false
       
-      nodes = {}
-      edges = {}
+      nodes = Hash.new
+      edges = Hash.new
       nodes = addAsGraphvizNode(nodes, g)
       
       #

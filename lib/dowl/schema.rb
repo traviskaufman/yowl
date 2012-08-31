@@ -261,6 +261,7 @@ module DOWL
       }
       
       nodes = Hash.new
+      edges = Hash.new
       allClasses = classes.values.to_set
       nonRootClasses = allClasses
       rootClasses = root_classes.to_set
@@ -308,7 +309,7 @@ module DOWL
           if @options.verbose
             puts "    - Adding edge #{association.rangeClass.short_name}, #{association.label}"
           end
-          association.addAsGraphVizEdge(g, nodes)
+          edges = association.addAsGraphVizEdge(edges, g, nodes)
         end
       end
       

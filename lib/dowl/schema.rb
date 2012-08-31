@@ -291,7 +291,7 @@ module DOWL
             if @options.verbose
               puts "  - Processing super class #{superClass.short_name}"
             end
-            g.add_edges(nodes[klass.uri], superClassNode, :xlabel => "subClassOf", :arrowhead => :empty, :style => :bold)
+            g.add_edges(nodes[klass.uri], superClassNode, :label => "subClassOf", :arrowhead => :empty, :arrowsize => 0.5)
           else
             if @options.verbose
               puts "  - Processing super class #{superClass.short_name}, not found"

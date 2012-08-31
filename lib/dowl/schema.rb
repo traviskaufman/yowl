@@ -282,6 +282,7 @@ module DOWL
       end
 
       g = GraphvizUtility.setDefaults(GraphViz.new(:G, :type => :digraph))
+      g[:rankdir] = "LR"
       sg = g.subgraph() { |sg|
         sg[:rank => "same"]
       }

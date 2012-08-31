@@ -197,7 +197,7 @@ module DOWL
       # No need to add a node twice
       #
       if nodes.has_key? uri
-        return
+        return nodes
       end
       node = graph.add_nodes(escaped_uri)
       node.URL = "#class_#{short_name}"

@@ -217,6 +217,8 @@ module DOWL
       end
     
       g = GraphvizUtility.setDefaults(GraphViz.new(:G, :type => :digraph))
+      g[:rankdir] = "LR"
+      g.node[:fixedsize] = false
       
       nodes = {}
       nodes = addAsGraphvizNode(nodes, g)

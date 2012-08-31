@@ -18,6 +18,9 @@ h2 {
 a {
   text-decoration: none;
 }
+td, th {
+  vertical-align: top ;
+}
 div.section {
   padding-left: 1cm ;
 }
@@ -132,7 +135,7 @@ end
 		<div class="section">
 			<table class="classinfo">
 				<tr>
-					<td class="classhierarchy">
+					<td class="classhierarchy" valign="top">
 						<ul class="class">
    						<% schema.root_classes().each do |klass| %>
 		       				<%= doClass(klass) %>

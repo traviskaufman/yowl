@@ -7,6 +7,7 @@ module DOWL
   class Schema
     
     attr_reader :options
+    attr_reader :repository
     attr_reader :model
     attr_reader :prefixes
     attr_reader :name

@@ -101,17 +101,32 @@ table.terms li {
 				<%= introduction %>
 			</div>
 		<% end %>
-		
+
+
+<%
+def doImport(import)
+  if repository.knowsImport(import)
+    result = "\n<li><a href=\"../ontology/#{repository.getSchemaNameForImport(import)}.html\">#{import.uri} (#{import.name})</a></li>"
+  else
+    result = "\n<li><a href=\"#{import.uri}\">#{import.uri}</a></li>"
+  end
+  imports = import.imports()
+  if ! imports.empty?() 
+    result += "\n<ul>"
+    imports.each do |subImport|
+      result += doImport(subImport)
+    end
+    result += "\n</ul>"
+  end
+  return result
+end
+%>			
 		<h2>Imports</h2>
 		<div class="section">
 			The direct imports
-			<ul>
+			<ul class="class">
 			<% schema.ontology.imports.each() do |import| %>
-				<% if repository.knowsImport(import) %>
-					<li><a href="../ontology/<%= repository.getSchemaNameForImport(import) %>.html"><%= import.uri %></a></li>
-				<% else %>
-					<li><a href="<%= import.uri %>"><%= import.uri %></a></li>
-				<% end %>
+   				<%= doImport(import) %>
 			<% end %>
 			</ul>
 		</div>

@@ -273,6 +273,9 @@ module DOWL
     end
         
     public
+    #
+    # Generate the main Class Diagram
+    #
     def classDiagramAsSvg
       if @options.verbose
         puts "Generating SVG Class Diagram for #{name}"
@@ -283,13 +286,10 @@ module DOWL
         sg[:rank => "same"]
       }
       
-      nodes = {}
-      allClasses = classes().collect() do |uri,klass|
-        klass
-      end
-      allClasses = allClasses.to_set
+      nodes = Hash.new
+      allClasses = classes.values.to_set
       nonRootClasses = allClasses
-      rootClasses = root_classes().to_set
+      rootClasses = root_classes.to_set
       
       #
       # Add the GraphViz nodes for each class, but do the 

@@ -132,6 +132,10 @@ module DOWL
 
     public
 
+    #
+    # Return a collection of Associations representing ObjectProperties
+    # where the current class is one of the Domain classes.
+    #
     def associations()
       if not @associations.nil?
         return @associations
@@ -189,6 +193,12 @@ module DOWL
       if @schema.options.verbose
         puts "- Processing class #{name}"
       end
+      #
+      # No need to add a node twice
+      #
+      if nodes.has_key? uri
+        return
+      end
       node = graph.add_nodes(escaped_uri)
       node.URL = "#class_#{short_name}"
       
@@ -226,9 +236,24 @@ module DOWL
       nodes = {}
       nodes = addAsGraphvizNode(nodes, g)
       
+      #
+      # Do the "outbound" associations first
+      #
       associations.each do |association|
         nodes = association.rangeClass.addAsGraphvizNode(nodes, g)
         association.addAsGraphVizEdge(g, nodes)
+      end
+      
+      #
+      # Then do the "inbound" associations
+      #
+      @schema.classes.values.to_set.each do |klass|
+        klass.associations.each do |association|
+          if self == association.rangeClass
+            nodes = association.rangeClass.addAsGraphvizNode(nodes, g)
+            association.addAsGraphVizEdge(g, nodes)
+          end
+        end
       end
       
       return GraphvizUtility.embeddableSvg(g)

@@ -142,11 +142,14 @@ module DOWL
         puts "Searching for associations of class #{short_name}"
       end
 
-      query = RDF::Query.new do
-        pattern [:property, DOWL::Namespaces::RDFS.domain, @resource]
-        pattern [:property, RDF.type, DOWL::Namespaces::OWL.ObjectProperty]
-        pattern [:property, DOWL::Namespaces::RDFS.range, :range]
-      end
+      query = RDF::Query.new do({
+        :property => {
+          DOWL::Namespaces::RDFS.domain => @resource,
+          RDF.type => DOWL::Namespaces::OWL.ObjectProperty,
+          DOWL::Namespaces::RDFS.range => :range
+        }
+      })
+        
       solutions = query.execute(@schema.model)
       if @schema.options.verbose
         puts " - Found #{solutions.count} solutions"

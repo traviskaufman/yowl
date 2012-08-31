@@ -245,33 +245,6 @@ module DOWL
       return uri
     end
 
-    private
-    def classDiagramAddNode(nodes, graph, klass)
-      if @options.verbose
-        puts "- Processing class #{klass.short_name}"
-      end
-      node = graph.add_nodes(klass.escaped_uri)
-      node.URL = "#class_#{klass.short_name}"
-      name = klass.short_name
-      
-      if name.include?(':')
-        prefix = name.sub(/:\s*(.*)/, "")
-        name = name.sub(/(.*)\s*:/, "")
-        #
-        # Can't get HTML labels to work
-        #
-        #node.label = "<TABLE BORDER=\"0\" CELLBORDER=\"1\" CELLSPACING=\"0\"><TR><TD>#{name}</TD></TR><TR><TD><I>(#{prefix})</I></TD></TR></TABLE>"
-        node.label = "#{name}\n(#{prefix})"
-      else
-        node.label = name
-      end 
-      if klass.hasComment?
-        node.tooltip = klass.comment
-      end
-      nodes[klass.uri] = node
-      return nodes
-    end
-        
     public
     #
     # Generate the main Class Diagram
@@ -298,10 +271,10 @@ module DOWL
       #
       rootClasses.each() do |klass|
         nonRootClasses.delete(klass)
-        nodes = classDiagramAddNode(nodes, sg, klass)
+        nodes = klass.addAsGraphvizNode(nodes, sg)
       end
       nonRootClasses.each() do |klass|
-        nodes = classDiagramAddNode(nodes, g, klass)
+        nodes = klass.addAsGraphvizNode(nodes, g)
       end
       #
       # Process edges to super classes, we can ignore the root classes here
@@ -341,7 +314,7 @@ module DOWL
       
       return GraphvizUtility.embeddableSvg(g)
     end
-
+    
   end  
 
 end

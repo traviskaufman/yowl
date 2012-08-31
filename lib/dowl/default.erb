@@ -158,8 +158,17 @@ end
 		<div class="section">
 			<table class="terms">
    			<%schema.list_classes().each do |t| %>
+   				<%
+   					rowSpan = 1
+   					rowSpan += 1 if t[1].hasComment
+   					rowSpan += 1 if t[1].status
+   					rowSpan += t[1].super_classes.length
+   					rowSpan += t[1].subClasses.length
+   					rowSpan += t[1].see_alsos.length
+   				%>
    				<tr id="class_<%= t[1].short_name %>">
    					<th colspan="2" class="termName"><%= t[1].short_name %><% if t[1].hasDifferentLabel? %> (<%= t[1].label %>)<% end %></th>
+   					<th rowspan="<%= rowSpan %>"><%= perClassDiagramAsSvg %></th>
    				</tr>
 				<% if t[1].hasComment? %>
 					<tr>

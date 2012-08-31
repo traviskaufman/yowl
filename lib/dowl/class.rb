@@ -175,6 +175,54 @@ module DOWL
       end
       return @associations
     end
+    
+    public
+    #
+    # Add the current class as a GraphViz node to the given collection of nodes
+    # and to the given graph. Return the collection of nodes.
+    #    
+    def addAsGraphvizNode (nodes, graph)
+      name = short_name
+      if @options.verbose
+        puts "- Processing class #{name}"
+      end
+      node = graph.add_nodes(escaped_uri)
+      node.URL = "#class_#{short_name}"
+      
+      if name.include?(':')
+        prefix = name.sub(/:\s*(.*)/, "")
+        name = name.sub(/(.*)\s*:/, "")
+        #
+        # Can't get HTML labels to work
+        #
+        #node.label = "<TABLE BORDER=\"0\" CELLBORDER=\"1\" CELLSPACING=\"0\"><TR><TD>#{name}</TD></TR><TR><TD><I>(#{prefix})</I></TD></TR></TABLE>"
+        node.label = "#{name}\n(#{prefix})"
+      else
+        node.label = name
+      end 
+      if hasComment?
+        node.tooltip = comment
+      end
+      nodes[uri] = node
+      return nodes
+    end
+    
+    public
+    #
+    # Generate a diagram for each class, the "per class diagram"
+    #
+    def perClassDiagramAsSvg
+      if @options.verbose
+        puts "Generating SVG Per Class Diagram for #{short_name}"
+      end
+    
+      g = GraphvizUtility.setDefaults(GraphViz.new(:G, :type => :digraph))
+      
+      nodes = {}
+      nodes = addAsGraphvizNode(nodes, g)
+      
+      return GraphvizUtility.embeddableSvg(g)
+    end
 
   end
 

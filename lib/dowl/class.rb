@@ -183,7 +183,7 @@ module DOWL
     #    
     def addAsGraphvizNode (nodes, graph)
       name = short_name
-      if @options.verbose
+      if @schema.options.verbose
         puts "- Processing class #{name}"
       end
       node = graph.add_nodes(escaped_uri)
@@ -212,7 +212,7 @@ module DOWL
     # Generate a diagram for each class, the "per class diagram"
     #
     def perClassDiagramAsSvg
-      if @options.verbose
+      if @schema.options.verbose
         puts "Generating SVG Per Class Diagram for #{short_name}"
       end
     

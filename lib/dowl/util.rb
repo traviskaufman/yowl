@@ -13,6 +13,10 @@ module DOWL
       end
     end  
     
+    def repository
+      return @schema.repository
+    end
+    
     def uri 
       return @resource ? @resource.to_s : nil
     end

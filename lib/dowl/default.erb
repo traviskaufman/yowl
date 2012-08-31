@@ -105,7 +105,7 @@ table.terms li {
 
 <%
 def doImport(import)
-  if repository.knowsImport(import)
+  if import.repository.knowsImport(import)
     result = "\n<li><a href=\"../ontology/#{repository.getSchemaNameForImport(import)}.html\">#{import.uri} (#{import.name})</a></li>"
   else
     result = "\n<li><a href=\"#{import.uri}\">#{import.uri}</a></li>"

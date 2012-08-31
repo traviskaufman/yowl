@@ -221,6 +221,11 @@ module DOWL
       nodes = {}
       nodes = addAsGraphvizNode(nodes, g)
       
+      associations.each do |association|
+        nodes = association.rangeClass.addAsGraphvizNode(nodes, g)
+        association.addAsGraphVizEdge(g, nodes)
+      end
+      
       return GraphvizUtility.embeddableSvg(g)
     end
 

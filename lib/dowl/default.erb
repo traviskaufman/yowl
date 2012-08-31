@@ -162,13 +162,13 @@ end
    					rowSpan = 1
    					rowSpan += 1 if t[1].hasComment?
    					rowSpan += 1 if t[1].status
-   					rowSpan += t[1].super_classes.length
-   					rowSpan += t[1].subClasses.length
-   					rowSpan += t[1].see_alsos.length
+   					rowSpan += 1 if t[1].super_classes.length > 0
+   					rowSpan += 1 if t[1].subClasses.length > 0
+   					rowSpan += 1 if t[1].see_alsos.length > 0
    				%>
    				<tr id="class_<%= t[1].short_name %>">
    					<th colspan="2" class="termName"><%= t[1].short_name %><% if t[1].hasDifferentLabel? %> (<%= t[1].label %>)<% end %></th>
-   					<th rowspan="<%= rowSpan %>"><%= t[1].perClassDiagramAsSvg %></th>
+   					<th rowspan="<%= rowSpan %>" valign="top"><%= t[1].perClassDiagramAsSvg %></th>
    				</tr>
 				<% if t[1].hasComment? %>
 					<tr>

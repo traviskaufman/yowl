@@ -49,7 +49,7 @@ module DOWL
         end
       end
 
-      edges << graph.add_edges(domainClassNode, rangeClassNode, :xlabel => label, :arrowType => "open")
+      edges << graph.add_edges(domainClassNode, rangeClassNode, :xlabel => label, :arrowHead => :open)
       
       returne edges
     end

@@ -160,7 +160,7 @@ end
    			<%schema.list_classes().each do |t| %>
    				<%
    					rowSpan = 1
-   					rowSpan += 1 if t[1].hasComment
+   					rowSpan += 1 if t[1].hasComment?
    					rowSpan += 1 if t[1].status
    					rowSpan += t[1].super_classes.length
    					rowSpan += t[1].subClasses.length

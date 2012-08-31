@@ -234,6 +234,7 @@ module DOWL
       g.node[:fixedsize] = false
       
       nodes = {}
+      edges = {}
       nodes = addAsGraphvizNode(nodes, g)
       
       #
@@ -241,7 +242,7 @@ module DOWL
       #
       associations.each do |association|
         nodes = association.rangeClass.addAsGraphvizNode(nodes, g)
-        association.addAsGraphVizEdge(g, nodes)
+        edges = association.addAsGraphVizEdge(edges, g, nodes)
       end
       
       #
@@ -251,7 +252,7 @@ module DOWL
         klass.associations.each do |association|
           if self == association.rangeClass
             nodes = association.rangeClass.addAsGraphvizNode(nodes, g)
-            association.addAsGraphVizEdge(g, nodes)
+            edges = association.addAsGraphVizEdge(edges, g, nodes)
           end
         end
       end

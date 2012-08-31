@@ -25,18 +25,33 @@ module DOWL
       @key.eql? other.key
     end
 
-    def addAsGraphVizEdge(graph, nodes)
+    #
+    # Add the current Association as an edge to the given GraphViz graph,
+    # but check whether the Association refers to a Domain and Range class in
+    # the current schema and whether the Association has already been added
+    # to the graph (by checking the given edges collection).
+    #
+    def addAsGraphVizEdge(edges, graph, nodes)
 
       if not nodes.has_key?(@domainClass.uri)
-        return
+        return edges
       end
       if not nodes.has_key?(@rangeClass.uri)
-        return
+        return edges
       end
+      
       domainClassNode = nodes[@domainClass.uri]
       rangeClassNode = nodes[@rangeClass.uri]
+        
+      edges.each do |edge|
+        if edge.node_one == domainClassNode and edge.node_two == rangeClassNode and edge[:label] == label
+          return edges
+        end
+      end
 
-      graph.add_edges(domainClassNode, rangeClassNode, :label => label, :style => "tapered")
+      edges << graph.add_edges(domainClassNode, rangeClassNode, :xlabel => label, :arrowType => "open")
+      
+      returne edges
     end
   end
 end

@@ -358,7 +358,7 @@ module DOWL
          resource = solution[:resource]
          #type = solution[:type]
            
-         @individuals << Individual.new(resource, @schema)
+         @individuals << Individual.new(resource, self)
        end
        
        return @individuals

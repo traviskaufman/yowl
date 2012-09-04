@@ -168,7 +168,7 @@ module DOWL
       if @ontology
         prefix, ns = prefixForNamespace(@ontology.uri())
         if prefix
-          @name = prefix
+          @name = prefix.to_s
         end
       end
       if @name.nil? and @ontology
@@ -177,7 +177,7 @@ module DOWL
         #
         prefix = @ontology.get_literal(DOWL::Namespaces::VANN.preferredNamespacePrefix)
         if prefix
-          @name = prefix
+          @name = prefix.to_s
           if @options.verbose
             puts "Found vann:preferredNamespacePrefix: #{prefix}"
           end
@@ -218,13 +218,13 @@ module DOWL
       uri = uri.gsub(",", "_")
       @prefixes.each() do |prefix, namespace|
         if uri == namespace
-          return prefix
+          return prefix.to_s
         end
         if "#{uri}/" == namespace
-          return prefix
+          return prefix.to_s
         end
         if "#{uri}#" == namespace
-          return prefix
+          return prefix.to_s
         end
         if namespace[-1..-1] != '#' and namespace[-1..-1] != '/'
           raise "ERROR: Namespace in @prefixes without trailing hash or slash: #{namespace}"
@@ -233,7 +233,7 @@ module DOWL
           if @ontology and namespace == @ontology.ns
             return uri.gsub(namespace, '')
           end
-          return uri.gsub(namespace, "#{prefix}:")
+          return uri.gsub(namespace, "#{prefix.to_s}:")
         end
       end
       if @ontology

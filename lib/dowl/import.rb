@@ -36,7 +36,11 @@ module DOWL
     # See DOWL::Individual::classWithURI(uri)
     #    
     def classWithURI(uri)
-      return @importedOntology ? @importedOntology.classWithURI(uri) : nil
+      if @importedOntology
+        return @importedOntology.classWithURI(uri)
+      end
+      puts "WARNING: Cannot check whether class #{uri.to_s} exists in imported ontology #{uri} as this ontology is not loaded"
+      return nil
     end
 
   end

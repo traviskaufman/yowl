@@ -131,8 +131,8 @@ module DOWL
   	end
   	
   	def GraphvizUtility.embeddableSvg(g)
-  	  puts "Generated Dot is:"
-      puts g.output(:dot => String)
+      #puts "Generated Dot is:"
+      #puts g.output(:dot => String)
 
   	  svg = g.output(:svg => String)
       index = svg.index("<svg")

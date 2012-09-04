@@ -60,6 +60,7 @@ module DOWL
       classes = []
       ont = ontology
       @types.each do |type|
+puts "Processing Type #{type.to_s} class:#{type.class.to_s} ont=#{ont.to_s}"
         if ont
           klass = ontology.classWithURI(type)
         else
@@ -125,7 +126,7 @@ module DOWL
       
       @classes.each do |klass|
         nodes = klass.addAsGraphvizNode(nodes, g)
-        klassNode = nodes[klassNode.uri]
+        klassNode = nodes[klass.uri]
         g.add_edges(individualNode, klassNode)
       end
       

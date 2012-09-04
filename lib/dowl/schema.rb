@@ -148,7 +148,7 @@ module DOWL
     # Do not check the imported ontologies.
     #
     def classInSchemaWithURI(uri)
-      return classes[uri]
+      return classes[uri.to_s]
     end
     
     public

@@ -4,3 +4,9 @@
 
 - Now also finds dowl/introduction.html
 - When rdfs:label is missing the short name is used
+- Generates SVG graphics: 
+  - a Class Diagram with all Classes found in a schema
+  - A Diagram per Class with its direct associations
+  - A Diagram per Individual with its direct associations
+  - At the index page: a Diagram with all Ontologies and their import relationships
+ 

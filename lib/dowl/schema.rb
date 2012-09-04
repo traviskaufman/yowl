@@ -337,33 +337,31 @@ module DOWL
       #   FILTER (?type != owl:NamedIndividual && regex(str(?resource), "r29-.*"))
       # }
       #      
-      query = RDF::Query.new({
-         :resource => {
-           RDF.type => DOWL::Namespaces::OWL.NamedIndividual,
-           RDF.type => :type
-         }
-       })
-         
-       solutions = query.execute(@model).filter do |solution|
-         solution.type != DOWL::Namespaces::OWL.NamedIndividual 
-         #and 
-         #solution.resource =~ /^r29-.*/
-       end
-       if @options.verbose
-         puts " - Found #{solutions.count} filtered solutions"
-       end
+      sse = SPARQL::Grammar.parse(
+<<sparql
+        SELECT DISTINCT * WHERE { 
+          ?resource a owl:NamedIndividual .
+          ?resource a ?type .
+          FILTER (?type != owl:NamedIndividual && regex(str(?resource), "r29-.*"))
+          }
+sparql
+      )
+      solutions = sse.execute(@model)
+      if @options.verbose
+        puts " - Found #{solutions.count} filtered solutions"
+      end
  
-       solutions.each do |solution|
+      solutions.each do |solution|
          
-         resource = solution[:resource]
-         #type = solution[:type]
+        resource = solution[:resource]
+        #type = solution[:type]
            
-         puts "Creating Individual with #{resource.to_s}"
+        puts "Creating Individual with #{resource.to_s}"
            
-         @individuals << Individual.new(resource, self)
-       end
+        @individuals << Individual.new(resource, self)
+      end
        
-       return @individuals
+      return @individuals
       
     end
     

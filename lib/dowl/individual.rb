@@ -57,8 +57,13 @@ module DOWL
     
     def init_classes
       classes = []
+      ont = ontology
       @types.each do |type|
-        klass = classWithURI(type)
+        if ont
+          klass = ontology.classWithURI(type)
+        else
+          klass = @schema.classes[klass.uri]
+        end
         if klass
           classes << klass
         else

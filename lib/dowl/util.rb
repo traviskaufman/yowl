@@ -59,6 +59,10 @@ module DOWL
       return @resource ? @schema.model.first_value(RDF::Query::Pattern.new(@resource, property)) : nil
     end
     
+    def ontology
+      return @schema.ontology ? @schema.ontology : nil
+    end
+    
   end
   
   class LabelledDocObject < DOWL::DocObject

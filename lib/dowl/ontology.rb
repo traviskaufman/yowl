@@ -4,13 +4,8 @@ module DOWL
 
   class Ontology < DOWL::LabelledDocObject
     
-    attr_reader :authors
-    attr_reader :imports
-   
     def initialize(resource, schema)
       super(resource, schema)  
-      @authors = init_authors()
-      @imports = init_imports()
     end
     
     def ns()
@@ -60,6 +55,11 @@ module DOWL
       return get_literal(DOWL::Namespaces::DC.rights)
     end
     
+    public
+    def authors
+      @authors ||= init_authors
+    end
+    
     private
     def init_authors()      
       authors = []
@@ -96,7 +96,7 @@ module DOWL
     
     public
     def hasAuthors?
-      return ! @authors.empty?
+      return ! authors.empty?
     end
     
     def numberOfClasses()
@@ -107,8 +107,13 @@ module DOWL
       return @schema.properties.size()
     end
     
+    public
+    def imports
+      @imports ||= init_imports
+    end
+    
     private
-    def init_imports()
+    def init_imports
       imports = []
       @schema.model.query( 
         RDF::Query::Pattern.new(@resource, DOWL::Namespaces::OWL.imports)
@@ -119,7 +124,12 @@ module DOWL
     end
     
     public
-    def see_alsos()
+    def see_alsos
+      @see_alsos ||= init_see_alsos
+    end
+    
+    private
+    def init_see_alsos()
        links = []
        @schema.model.query(
          RDF::Query::Pattern.new(@resource, DOWL::Namespaces::RDFS.seeAlso)
@@ -129,6 +139,7 @@ module DOWL
        return links
     end
     
+    public
     #
     # See DOWL::Individual::classWithURI(uri)
     #

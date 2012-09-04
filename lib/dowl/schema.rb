@@ -328,7 +328,7 @@ module DOWL
         puts "Searching for Individuals in schema #{@name}"
       end
       
-      @individuals = Hash.new
+      @individuals = []
       
       #
       # SELECT DISTINCT * WHERE { 

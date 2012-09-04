@@ -319,7 +319,7 @@ module DOWL
     
     private
     def sparqlParser
-      parser = SPARQL::Grammar.Parser.new()
+      parser = SPARQL::Grammar::Parser.new()
       parser.prefixes = @prefixes
       return parser
     end

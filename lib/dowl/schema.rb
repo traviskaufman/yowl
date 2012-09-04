@@ -377,9 +377,9 @@ sparql
     # and to the given graph. Return the collection of nodes.
     #    
     def addAsGraphvizNode (nodes, graph)
-      name = short_name
+      label = short_name
       if @schema.options.verbose
-        puts "- Processing Individual #{name}"
+        puts "- Processing Individual #{label}"
       end
       #
       # No need to add a node twice
@@ -388,18 +388,19 @@ sparql
         return nodes
       end
       node = graph.add_nodes(escaped_uri)
-      node.URL = "#individual#{short_name}"
+      #node.URL = "#individual#{short_name}"
       
       if name.include?(':')
-        prefix = name.sub(/:\s*(.*)/, "")
-        name = name.sub(/(.*)\s*:/, "")
+        prefix = label.sub(/:\s*(.*)/, "")
+        label = label.sub(/(.*)\s*:/, "")
+        label = label.gsub("_", " ")
         #
         # Can't get HTML labels to work
         #
         #node.label = "<TABLE BORDER=\"0\" CELLBORDER=\"1\" CELLSPACING=\"0\"><TR><TD>#{name}</TD></TR><TR><TD><I>(#{prefix})</I></TD></TR></TABLE>"
-        node.label = "#{name}\n(#{prefix})"
+        node.label = "#{label}\n(#{prefix})"
       else
-        node.label = name
+        node.label = label
       end 
       #if hasComment?
       #  node.tooltip = comment

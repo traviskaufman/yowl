@@ -442,7 +442,7 @@ end
 				<table class="terms">
 	   			<%schema.individuals.each do |individual| %>
 	   				<tr id="class_<%= individual.short_name %>">
-	   					<th colspan="2" class="termName"><%= individual.uri %></th>
+	   					<th colspan="2" class="termName"><%= individual.short_name %></th>
 	   					<th valign="top"><%= individual.asSvg %></th>
 	   				</tr>
 	  			<%end%>

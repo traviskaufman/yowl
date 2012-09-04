@@ -70,7 +70,7 @@ module DOWL
       xmldoc.doctype.entities.each() do |prefix, entity|
         namespace = entity.normalized()
         if namespace.include?('://')
-          prefixes[prefix] = namespace
+          prefixes[prefix.to_sym] = namespace
         end
       end
       
@@ -340,7 +340,7 @@ module DOWL
         SELECT DISTINCT * WHERE { 
           ?resource a owl:NamedIndividual .
           ?resource a ?type .
-          FILTER (?type != owl:NamedIndividual && regex(str(?resource), "r29-.*"))
+          FILTER (?type != owl:NamedIndividual))
           }
 sparql
       solutions = SPARQL.execute(sparql, @model, { :prefixes => @prefixes })

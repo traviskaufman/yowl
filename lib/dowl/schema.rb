@@ -323,6 +323,10 @@ module DOWL
       if not @individuals.nil?
         return @individuals
       end
+
+      if @options.verbose
+        puts "Searching for Individuals in schema #{@name}"
+      end
       
       @individuals = Hash.new
       
@@ -341,8 +345,9 @@ module DOWL
        })
          
        solutions = query.execute(@model).filter do |solution|
-         solution.type != DOWL::Namespaces::OWL.NamedIndividual and 
-         solution.resource =~ /^r29-.*/
+         solution.type != DOWL::Namespaces::OWL.NamedIndividual 
+         #and 
+         #solution.resource =~ /^r29-.*/
        end
        if @options.verbose
          puts " - Found #{solutions.count} filtered solutions"
@@ -355,6 +360,8 @@ module DOWL
            
          @individuals << Individual.new(resource, @schema)
        end
+       
+       return @individuals
       
     end
     

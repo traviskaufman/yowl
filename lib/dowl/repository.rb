@@ -38,7 +38,7 @@ module DOWL
     def getSchemaForImport(import)
       importUri = import.uri
       @schemas.each() do |schema|
-        puts "Checking whether schema #{schema.uri} matches import #{importUri}"
+#       puts "Checking whether schema #{schema.uri} matches import #{importUri}"
         if schema.uri == importUri
           return schema
         end

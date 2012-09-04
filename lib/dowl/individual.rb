@@ -22,6 +22,7 @@ module DOWL
       @prefix = init_prefix
       @types = init_types
       @classes = init_classes
+      puts "Individual #{@label} has #{@classes.length} classes"
     end
     
     def init_label

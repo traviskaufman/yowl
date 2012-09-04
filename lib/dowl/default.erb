@@ -435,16 +435,25 @@ end
 	  		</div>	
 		<%end%>
 		
-		
 		<% if schema.individuals.length > 0 %>
 			<h2>Individuals</h2>
 			<div class="section">
 				<table class="terms">
 	   			<%schema.individuals.each do |individual| %>
+	   				<%
+	   					rowSpan = 1
+	   					rowSpan += 1 if individual.hasComment?
+	   				%>
 	   				<tr id="class_<%= individual.short_name %>">
 	   					<th colspan="2" class="termName"><%= individual.short_name %></th>
-	   					<th valign="top"><%= individual.asSvg %></th>
+	   					<th rowspan="<%= rowSpan %>" valign="top"><%= individual.asSvg %></th>
 	   				</tr>
+					<% if individual.hasComment? %>
+						<tr>
+							<td class="label">Abstract</td>
+							<td><%= individual.comment %></td>
+						</tr>
+					<% end %>				
 	  			<%end%>
 				</table>
 	  		</div>	

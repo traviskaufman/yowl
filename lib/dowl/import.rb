@@ -4,24 +4,36 @@ module DOWL
 
   class Import < DOWL::LabelledDocObject
     
+    attr_reader :importedSchema
     attr_reader :importedOntology
  
     def initialize(resource, schema)
       super(resource, schema)
       
-      importedSchema = @schema.repository.getSchemaForImport(self)
-      @importedOntology = importedSchema ? importedSchema.ontology : nil
+      @importedSchema = @schema.repository.getSchemaForImport(self)
+      @importedOntology = @importedSchema ? @importedSchema.ontology : nil
+      
+      if @importedSchema
+        puts "Created Import #{uri} and found schema #{@importedSchema.uri}"
+      else
+        puts "Created Import #{uri} but did not find schema for it "
+      end
+      if @importedOntology
+        puts "Created Import #{uri} and found ontology #{@importedOntology.uri}"
+      else
+        puts "Created Import #{uri} but did not find ontology for it "
+      end
     end
     
     def name
-      if @importedOntology
-        return @schema.name
+      if @importedSchema
+        return @importedSchema.name
       end
       prefix = @schema.prefixForNamespace(uri)
       if prefix
         return prefix
       end
-      return @schema.name
+      return short_name
     end
     
     def resourceNameHtml

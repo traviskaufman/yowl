@@ -152,6 +152,21 @@ module DOWL
     end
     
     public
+    #
+    # See DOWL::Individual::classWithURI(uri)
+    #
+    def classWithURI(uri)
+      if @ontology
+        return @ontology.classWithURI(uri)
+      end
+      klass = classInSchemaWithURI(uri)
+      if klass
+        return klass
+      end
+      return nil
+    end    
+    
+    public
     def root_classes()
       allClasses = classes().collect() do |uri,klass|
         klass

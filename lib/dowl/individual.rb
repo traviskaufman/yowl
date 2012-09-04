@@ -57,14 +57,8 @@ module DOWL
     
     def init_classes
       classes = []
-      ont = ontology
       @types.each do |type|
-puts "Processing Type #{type.to_s} class:#{type.class.to_s} ont=#{ont.to_s}"
-        if ont
-          klass = ontology.classWithURI(type)
-        else
-          klass = @schema.classInSchemaWithURI(type)
-        end
+        klass = @schema.ontology.classWithURI(type)
         if klass
           classes << klass
         else

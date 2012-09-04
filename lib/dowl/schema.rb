@@ -420,28 +420,6 @@ module DOWL
       edges = Hash.new
       nodes = addAsGraphvizNode(nodes, g)
       
-      /*
-      #
-      # Do the "outbound" associations first
-      #
-      associations.each do |association|
-        nodes = association.rangeClass.addAsGraphvizNode(nodes, g)
-        edges = association.addAsGraphVizEdge(edges, g, nodes)
-      end
-      
-      #
-      # Then do the "inbound" associations
-      #
-      @schema.classes.values.to_set.each do |klass|
-        klass.associations.each do |association|
-          if self == association.rangeClass
-            nodes = association.rangeClass.addAsGraphvizNode(nodes, g)
-            edges = association.addAsGraphVizEdge(edges, g, nodes)
-          end
-        end
-      end
-      */
-      
       return GraphvizUtility.embeddableSvg(g)
     end
      

@@ -107,7 +107,7 @@ module DOWL
   
   class GraphvizUtility
   
-  	def GraphvizUtility.setDefaults(g)
+    def GraphvizUtility.setDefaults(g)
   	  
       g[:rankdir] = "BT"
         
@@ -128,16 +128,16 @@ module DOWL
       g.edge[:labeldistance] = 2
         
       return g
-  	end
+    end
   	
-  	def GraphvizUtility.embeddableSvg(g)
-      #puts "Generated Dot is:"
-      #puts g.output(:dot => String)
+    def GraphvizUtility.embeddableSvg(g)
+      puts "Generated Dot is:"
+      puts g.output(:dot => String)
 
-  	  svg = g.output(:svg => String)
+      svg = g.output(:svg => String)
       index = svg.index("<svg")
+      
       return index ? svg[index..-1] : svg
     end
   end
-  
 end

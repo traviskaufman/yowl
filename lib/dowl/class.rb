@@ -27,7 +27,9 @@ module DOWL
       end
       klass = Class.new(resource, schema)
       schema.classes[resource.to_s] = klass
-      puts "Created class #{klass.short_name}"
+      if schema.options.verbose
+        puts "Created class #{klass.short_name}"
+      end
       return klass
     end
 

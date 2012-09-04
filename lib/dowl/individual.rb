@@ -4,29 +4,21 @@ module DOWL
   #  
   class Individual < DOWL::LabelledDocObject
     
+    def initialize(resource, schema)
+      super(resource, schema)
+      puts "Creating Individual #{short_name}"
+    end
+   
+    public
     #
     # This label is a bit different than the one in the base class as this one
     # gets its prefix stripped, if there is one.
     #
-    attr_reader :label
-    #
-    # The prefix to be used for the URI of this Individual, if defined, nil if it isn't
-    #
-    attr_reader :prefix
-    attr_reader :types
-    attr_reader :classes
-    
-    def initialize(resource, schema)
-      super(resource, schema)
-      @label = init_label
-      @prefix = init_prefix
-      @types = init_types
-      @classes = init_classes
-      if @classes.length == 0
-        puts "WARNING: Individual #{uri} has no known Class"
-      end
+    def label
+      @label ||= init_label
     end
-    
+
+    private 
     def init_label
       label = get_literal(DOWL::Namespaces::RDFS.label)
       if label
@@ -38,12 +30,27 @@ module DOWL
 
       return label
     end
-    
+   
+    public
+    #
+    # The prefix to be used for the URI of this Individual, if defined, nil if it isn't
+    #
+    def prefix
+      @prefix ||= init_prefix
+    end
+
+    private 
     def init_prefix
       name = short_name
       return name.include?(':') ? short_name.sub(/:\s*(.*)/, "") : nil
     end
     
+    public
+    def types
+      @types ||= init_types
+    end
+
+    private
     def init_types
       types = []
       @schema.model.query(
@@ -53,17 +60,24 @@ module DOWL
           next
         end
         types << statement.object
-        puts "Found Type #{statement.object.to_s} for #{label}"
+        puts "Found Type #{statement.object.to_s} for Individual #{label}"
       end
       return types
     end
-    
+   
+    public
+    def classes
+      @classes ||= init_classes
+    end
+
+    private 
     def init_classes
       classes = []
-      @types.each do |type|
+      types.each do |type|
         klass = @schema.classWithURI(type)
         if klass
           classes << klass
+          puts "Found Class #{klass.short_name} for Individual #{label}"
         else
           puts "WARNING: Could not find Class definition for URI #{type.to_s}"
         end
@@ -118,9 +132,9 @@ module DOWL
       edges = Hash.new
       nodes = addAsGraphvizNode(nodes, g)
       
-      individualNode = nodes[0]
+      individualNode = nodes[uri]
       
-      @classes.each do |klass|
+      classes.each do |klass|
         nodes = klass.addAsGraphvizNode(nodes, g)
         klassNode = nodes[klass.uri]
         g.add_edges(individualNode, klassNode)

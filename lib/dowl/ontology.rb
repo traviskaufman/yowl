@@ -148,7 +148,6 @@ module DOWL
       if klass
         return klass
       end
-puts "Ontology #{uri}: # imports=#{imports.length}"
       imports.each do |import|
         klass = import.classWithURI(uri_)
         if klass

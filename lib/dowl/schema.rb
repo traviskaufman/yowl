@@ -93,9 +93,6 @@ module DOWL
           return prefix, namespace
         end
       end
-      if @options.verbose
-        puts "No prefix found for namespace #{namespace_}"
-      end
       return nil, nil
     end
     
@@ -148,13 +145,6 @@ module DOWL
     # Do not check the imported ontologies.
     #
     def classInSchemaWithURI(uri_)
-      puts "schema=#{uri} classInSchemaWithURI(#{uri_})"
-      classes.each do |klassuri, klass|
-        puts "- Checking #{klassuri} == #{uri_}"
-        if classes[uri_.to_s]
-          puts "  - Found"
-        end
-      end
       return classes[uri_.to_s]
     end
     
@@ -337,7 +327,9 @@ module DOWL
       #
       allClasses.each() do |domainClass|
         domainClassNode = nodes[domainClass.uri]
-        puts "  - Processing associations of class #{domainClass.short_name}:"
+        if @options.verbose
+          puts "  - Processing associations of class #{domainClass.short_name}:"
+        end
         domainClass.associations().each() do |association|
           if @options.verbose
             puts "    - Adding edge #{association.rangeClass.short_name}, #{association.label}"
@@ -348,15 +340,17 @@ module DOWL
       
       return GraphvizUtility.embeddableSvg(g)
     end
-    
-    public
-    def individuals ()
-      
-      if not @individuals.nil?
-        return @individuals
-      end
-      @individuals = []
 
+    public
+    def individuals
+      @individuals ||= init_individuals
+    end
+    
+    private
+    def init_individuals
+     
+      individuals = []
+ 
       if @options.verbose
         puts "Searching for Individuals in schema #{@name}"
       end
@@ -385,13 +379,10 @@ sparql
         resource = solution[:resource]
         #type = solution[:type]
            
-        puts "Creating Individual with #{resource.to_s}"
-           
-        @individuals << Individual.new(resource, self)
+        individuals << Individual.new(resource, self)
       end
        
-      return @individuals
-      
+      return individuals
     end
     
   end  

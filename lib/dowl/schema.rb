@@ -317,18 +317,24 @@ module DOWL
       return GraphvizUtility.embeddableSvg(g)
     end
     
+    private
+    def sparqlParser
+      parser = SPARQL::Grammar.Parser.new()
+      parser.prefixes = @prefixes
+      return parser
+    end
+    
     public
     def individuals ()
       
       if not @individuals.nil?
         return @individuals
       end
+      @individuals = []
 
       if @options.verbose
         puts "Searching for Individuals in schema #{@name}"
       end
-      
-      @individuals = []
       
       #
       # SELECT DISTINCT * WHERE { 
@@ -336,16 +342,15 @@ module DOWL
       #   ?resource a ?type .
       #   FILTER (?type != owl:NamedIndividual && regex(str(?resource), "r29-.*"))
       # }
-      #      
-      sse = SPARQL::Grammar.parse(
-<<sparql
+      #
+      sparql = <<sparql
         SELECT DISTINCT * WHERE { 
           ?resource a owl:NamedIndividual .
           ?resource a ?type .
           FILTER (?type != owl:NamedIndividual && regex(str(?resource), "r29-.*"))
           }
 sparql
-      )
+      solutions = sparqlParser.execute(sparql, @model)
       solutions = sse.execute(@model)
       if @options.verbose
         puts " - Found #{solutions.count} filtered solutions"

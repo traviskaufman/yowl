@@ -132,7 +132,9 @@ module DOWL
       end
       imports.each do |import|
         klass = import.classWithURI(uri)
-        return klass
+        if klass
+          return klass
+        end
       end
       return nil
     end

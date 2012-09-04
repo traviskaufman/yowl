@@ -41,7 +41,7 @@ module DOWL
     end
     
     def isExternal?
-      return @importedSchema.nil? and @importedOntology.nil?
+      return (@importedSchema.nil? and @importedOntology.nil?)
     end
 
     #
@@ -51,7 +51,7 @@ module DOWL
       if @importedOntology
         return @importedOntology.classWithURI(uri_)
       end
-      puts "WARNING: Cannot check whether class #{uri_.to_s} exists in imported ontology #{uri} as this ontology is not loaded"
+      #puts "WARNING: Cannot check whether class #{uri_.to_s} exists in imported ontology #{uri} as this ontology is not loaded"
       return nil
     end
 

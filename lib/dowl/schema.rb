@@ -340,7 +340,7 @@ module DOWL
          }
        })
          
-       solutions = query.execute(@schema.model).filter do |solution|
+       solutions = query.execute(@model).filter do |solution|
          solution.type != DOWL::Namespaces::OWL.NamedIndividual and 
          solution.resource =~ /^r29-.*/
        end

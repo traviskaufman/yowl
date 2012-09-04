@@ -33,5 +33,12 @@ module DOWL
       return @importedOntology ? @importedOntology.imports : []
     end
 
+    #
+    # See DOWL::Individual::classWithUri(uri)
+    #    
+    def classWithURI(uri)
+      return @importedOntology ? @importedOntology.classWithUri(uri) : nil
+    end
+
   end
 end

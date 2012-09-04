@@ -122,6 +122,27 @@ module DOWL
        return links
     end
     
+    #
+    # Iterate over all imports and get the first class we can find with the
+    # given URI. This is probably not correct but works, sort of, for now.
+    #
+    # TODO: implement this according to standards, we probably need to merge
+    # all triples we find for the given class in some sort of ordered way.
+    #
+    # See DOWL::Individual::classWithUri(uri)
+    #
+    def classWithURI(uri)
+      klass = classInSchemaWithUri(uri)
+      if klass
+        return klass
+      end
+      imports.each do |import|
+        klass = import.classWithURI(uri)
+        return klass
+      end
+      return nil
+    end
+    
   end
 
 end

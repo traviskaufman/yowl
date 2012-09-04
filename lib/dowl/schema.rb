@@ -143,6 +143,20 @@ module DOWL
     end
     
     public
+    #
+    # Return the class with the given URI as it is defined in this schema.
+    # Do not check the imported ontologies.
+    #
+    def classInSchemaWithUri(uri)
+      classes.each do |klass|
+        if klass.hasUri?(uri)
+          return klass
+        end
+      end
+      return nil
+    end
+    
+    public
     def root_classes()
       allClasses = classes().collect() do |uri,klass|
         klass

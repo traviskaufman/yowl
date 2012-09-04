@@ -23,7 +23,11 @@ module DOWL
     
     def hasUri?
       return @resource ? true : false
-    end    
+    end 
+    
+    def hasUri?(uri)
+      return @resource == uri
+    end   
 
     def short_name()
       return @schema.prefixedUri(uri)

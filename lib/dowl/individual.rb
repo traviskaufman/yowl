@@ -14,12 +14,14 @@ module DOWL
     #
     attr_reader :prefix
     attr_reader :types
+    attr_reader :classes
     
     def initialize(resource, schema)
       super(resource, schema)
       @label = init_label
       @prefix = init_prefix
       @types = init_types
+      @classes = init_classes
     end
     
     def init_label
@@ -51,6 +53,19 @@ module DOWL
         puts "Found Type #{statement.object.to_s} for #{label}"
       end
       return types
+    end
+    
+    def init_classes
+      classes = []
+      @types.each do |type|
+        klass = classWithURI(type)
+        if klass
+          classes << klass
+        else
+          puts "WARNING: Could not find Class definition for URI #{type.to_s}"
+        end
+      end
+      return classes
     end
     
     public
@@ -102,9 +117,10 @@ module DOWL
       
       individualNode = nodes[0]
       
-      @types.each do |type|
-        g.add_nodes(type.to_s)
-        g.add_edges(individualNode, type)
+      @classes.each do |klass|
+        nodes = klass.addAsGraphvizNode(nodes, g)
+        klassNode = nodes[klassNode.uri]
+        g.add_edges(individualNode, klassNode)
       end
       
       return GraphvizUtility.embeddableSvg(g)

@@ -132,13 +132,14 @@ module DOWL
     #
     # See DOWL::Individual::classWithURI(uri)
     #
-    def classWithURI(uri)
-      klass = @schema.classInSchemaWithURI(uri)
+    def classWithURI(uri_)
+      klass = @schema.classInSchemaWithURI(uri_)
       if klass
         return klass
       end
+puts "Ontology #{uri}: # imports=#{imports.length}"
       imports.each do |import|
-        klass = import.classWithURI(uri)
+        klass = import.classWithURI(uri_)
         if klass
           return klass
         end

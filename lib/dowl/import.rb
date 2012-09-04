@@ -48,6 +48,7 @@ module DOWL
     # See DOWL::Individual::classWithURI(uri)
     #    
     def classWithURI(uri_)
+      puts "Import #{uri}:classWithURI(#{uri_.to_s}) importedOntology=#{@importedOntology ? @importedOntology.uri : 'x'}"
       if @importedOntology
         return @importedOntology.classWithURI(uri_)
       end

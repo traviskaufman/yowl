@@ -61,7 +61,7 @@ module DOWL
     def init_classes
       classes = []
       @types.each do |type|
-        klass = @schema.ontology.classWithURI(type)
+        klass = @schema.classWithURI(type)
         if klass
           classes << klass
         else

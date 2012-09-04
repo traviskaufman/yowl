@@ -13,15 +13,11 @@ module DOWL
       @importedSchema = @schema.repository.getSchemaForImport(self)
       @importedOntology = @importedSchema ? @importedSchema.ontology : nil
       
-      if @importedSchema
-        puts "Created Import #{uri} and found schema #{@importedSchema.uri}"
-      else
-        puts "Created Import #{uri} but did not find schema for it "
+      if @importedSchema.nil?
+        puts "WARNING: Created Import #{uri} but did not find schema for it "
       end
-      if @importedOntology
-        puts "Created Import #{uri} and found ontology #{@importedOntology.uri}"
-      else
-        puts "Created Import #{uri} but did not find ontology for it "
+      if @importedOntology.nil?
+        puts "WARNING: Created Import #{uri} but did not find ontology for it "
       end
     end
     
@@ -43,15 +39,19 @@ module DOWL
     def imports
       return @importedOntology ? @importedOntology.imports : []
     end
+    
+    def isExternal?
+      return @importedSchema.nil? and @importedOntology.nil?
+    end
 
     #
     # See DOWL::Individual::classWithURI(uri)
     #    
-    def classWithURI(uri)
+    def classWithURI(uri_)
       if @importedOntology
-        return @importedOntology.classWithURI(uri)
+        return @importedOntology.classWithURI(uri_)
       end
-      puts "WARNING: Cannot check whether class #{uri.to_s} exists in imported ontology #{uri} as this ontology is not loaded"
+      puts "WARNING: Cannot check whether class #{uri_.to_s} exists in imported ontology #{uri} as this ontology is not loaded"
       return nil
     end
 

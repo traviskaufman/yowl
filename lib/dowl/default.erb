@@ -443,6 +443,7 @@ end
 	   				<%
 	   					rowSpan = 1
 	   					rowSpan += 1 if individual.hasComment?
+	   					rowSpan += 1 if individual.classes.length > 0
 	   				%>
 	   				<tr id="class_<%= individual.short_name %>">
 	   					<th colspan="2" class="termName"><%= individual.short_name %></th>
@@ -454,6 +455,18 @@ end
 							<td><%= individual.comment %></td>
 						</tr>
 					<% end %>				
+					<% if individual.classes.length > 0 %>
+						<tr>
+							<td class="label">Class</td>
+							<td>
+								<ul>
+								<% individual.classes.each do |klass| %>
+									<li><a href="../ontology/<% klass.schema.name %>.html#class_<%= klass.short_name %>"><%= klass.short_name %></a></li>
+								<% end %>
+								</ul>
+							</td>
+						</tr>
+					<% end %>
 	  			<%end%>
 				</table>
 	  		</div>	

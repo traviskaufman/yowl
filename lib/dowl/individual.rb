@@ -22,6 +22,9 @@ module DOWL
       @prefix = init_prefix
       @types = init_types
       @classes = init_classes
+      if @classes.length == 0
+        puts "WARNING: Individual #{uri} has no known Class"
+      end
     end
     
     def init_label

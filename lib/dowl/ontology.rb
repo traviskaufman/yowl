@@ -5,10 +5,12 @@ module DOWL
   class Ontology < DOWL::LabelledDocObject
     
     attr_reader :authors
+    attr_reader :imports
    
     def initialize(resource, schema)
-        super(resource, schema)  
-        init_authors()
+      super(resource, schema)  
+      @authors = init_authors()
+      @imports = init_imports()
     end
     
     def ns()
@@ -58,8 +60,9 @@ module DOWL
       return get_literal(DOWL::Namespaces::DC.rights)
     end
     
+    private
     def init_authors()      
-      @authors = []
+      authors = []
       #
       # First find the Authors by searching for foaf:maker
       #
@@ -77,19 +80,21 @@ module DOWL
       @schema.model.query( 
         RDF::Query::Pattern.new(@resource, DOWL::Namespaces::DC.creator)
       ) do |statement|
-          person = Person.new(RDF::URI.new("#{ns}#{statement.object.to_s}"), @schema)
-          person.setName(statement.object)
-          authors << person
+        person = Person.new(RDF::URI.new("#{ns}#{statement.object.to_s}"), @schema)
+        person.setName(statement.object)
+        authors << person
       end         
       @schema.model.query( 
         RDF::Query::Pattern.new(@resource, DOWL::Namespaces::DC.contributor)
       ) do |statement|
-          person = Person.new(RDF::URI.new("#{ns}#{statement.object.to_s}"), @schema)
-          person.setName(statement.object)
-          authors << person
-      end         
+        person = Person.new(RDF::URI.new("#{ns}#{statement.object.to_s}"), @schema)
+        person.setName(statement.object)
+        authors << person
+      end 
+      return authors        
     end
     
+    public
     def hasAuthors?
       return ! @authors.empty?
     end
@@ -102,7 +107,8 @@ module DOWL
       return @schema.properties.size()
     end
     
-    def imports()
+    private
+    def init_imports()
       imports = []
       @schema.model.query( 
         RDF::Query::Pattern.new(@resource, DOWL::Namespaces::OWL.imports)
@@ -112,6 +118,7 @@ module DOWL
       return imports
     end
     
+    public
     def see_alsos()
        links = []
        @schema.model.query(

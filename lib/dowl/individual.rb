@@ -4,7 +4,14 @@ module DOWL
   #  
   class Individual < DOWL::LabelledDocObject
     
+    #
+    # This label is a bit different than the one in the base class as this one
+    # gets its prefix stripped, if there is one.
+    #
     attr_reader :label
+    #
+    # The prefix to be used for the URI of this Individual, if defined, nil if it isn't
+    #
     attr_reader :prefix
     attr_reader :types
     
@@ -55,7 +62,7 @@ module DOWL
       #
       # No need to add a node twice
       #
-      if nodes.has_key? uri
+      if nodes.has_key?(uri)
         return nodes
       end
       node = graph.add_nodes(escaped_uri)

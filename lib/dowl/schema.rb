@@ -344,7 +344,7 @@ module DOWL
          solution.type != DOWL::Namespaces::OWL.NamedIndividual and 
          solution.resource =~ /^r29-.*/
        end
-       if @schema.options.verbose
+       if @options.verbose
          puts " - Found #{solutions.count} filtered solutions"
        end
  

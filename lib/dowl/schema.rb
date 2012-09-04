@@ -317,13 +317,6 @@ module DOWL
       return GraphvizUtility.embeddableSvg(g)
     end
     
-    private
-    def sparqlParser
-      parser = SPARQL::Grammar::Parser.new()
-      parser.prefixes = @prefixes
-      return parser
-    end
-    
     public
     def individuals ()
       
@@ -350,8 +343,7 @@ module DOWL
           FILTER (?type != owl:NamedIndividual && regex(str(?resource), "r29-.*"))
           }
 sparql
-      solutions = sparqlParser.execute(sparql, @model)
-      solutions = sse.execute(@model)
+      solutions = SPARQL.execute(sparql, @model, { :prefixes => @prefixes })
       if @options.verbose
         puts " - Found #{solutions.count} filtered solutions"
       end

@@ -44,6 +44,9 @@ module DOWL
       @schema.model.query(
         RDF::Query::Pattern.new(@resource, RDF.type)
       ) do |statement|
+        if statement.object == DOWL::Namespaces::OWL.NamedIndividual
+          next
+        end
         types << statement.object
         puts "Found Type #{statement.object.to_s} for #{label}"
       end
@@ -100,7 +103,7 @@ module DOWL
       individualNode = nodes[0]
       
       @types.each do |type|
-        g.add_nodes(type)
+        g.add_nodes(type.to_s)
         g.add_edges(individualNode, type)
       end
       

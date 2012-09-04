@@ -4,6 +4,10 @@ module DOWL
   #  
   class Individual < DOWL::LabelledDocObject
     
+    attr_reader :label
+    attr_reader :prefix
+    attr_reader :types
+    
     def initialize(resource, schema)
       super(resource, schema)
       @label = init_label

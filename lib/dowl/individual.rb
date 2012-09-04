@@ -90,7 +90,12 @@ module DOWL
       edges = Hash.new
       nodes = addAsGraphvizNode(nodes, g)
       
+      individualNode = nodes[0]
       
+      @types.each do |type|
+        g.add_nodes(type)
+        g.add_edges(individualNode, type)
+      end
       
       return GraphvizUtility.embeddableSvg(g)
     end

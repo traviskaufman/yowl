@@ -34,6 +34,7 @@ module DOWL
       # TODO: optimize this into one pattern
       str = str.gsub("://", "_")
       str = str.gsub(".", "_")
+      str = str.gsub(",", "_")
       str = str.gsub("/", "_")
       return str
     end
@@ -46,6 +47,7 @@ module DOWL
       str = str.gsub("/", "_")
       str = str.gsub("#", "_")
       str = str.gsub(":", "_")
+      str = str.gsub(",", "_")
       return str
     end
     

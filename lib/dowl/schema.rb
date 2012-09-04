@@ -215,6 +215,7 @@ module DOWL
       if uri.empty?
         raise "ERROR: Passed empty string to Schema:prefixedUri()"
       end
+      uri = uri.gsub(",", "_")
       @prefixes.each() do |prefix, namespace|
         if uri == namespace
           return prefix
@@ -340,7 +341,7 @@ module DOWL
         SELECT DISTINCT * WHERE { 
           ?resource a owl:NamedIndividual .
           ?resource a ?type .
-          FILTER (?type != owl:NamedIndividual))
+          FILTER (?type != owl:NamedIndividual)
           }
 sparql
       solutions = SPARQL.execute(sparql, @model, { :prefixes => @prefixes })
@@ -400,9 +401,9 @@ sparql
       else
         node.label = name
       end 
-      if hasComment?
-        node.tooltip = comment
-      end
+      #if hasComment?
+      #  node.tooltip = comment
+      #end
       nodes[uri] = node
       return nodes
     end    

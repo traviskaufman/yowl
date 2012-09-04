@@ -9,7 +9,7 @@ module DOWL
       @resource = resource
       @schema = schema
       if (@resource and not @resource.uri?)
-        raise "ERROR: Instantiating an object with a non-URI resource: #{@resource.inspect}"
+        raise "ERROR: Instantiating an object with a non-URI resource: #{@resource.to_s} (#{@resource.inspect})"
       end
     end  
     

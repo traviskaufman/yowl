@@ -358,6 +358,8 @@ module DOWL
          resource = solution[:resource]
          #type = solution[:type]
            
+         puts "Creating Individual with #{resource.to_s}"
+           
          @individuals << Individual.new(resource, self)
        end
        

@@ -25,7 +25,6 @@ module DOWL
     end
     
     def resourceNameHtml
-      
       return "#{@name}.html"
     end
     
@@ -34,10 +33,10 @@ module DOWL
     end
 
     #
-    # See DOWL::Individual::classWithUri(uri)
+    # See DOWL::Individual::classWithURI(uri)
     #    
     def classWithURI(uri)
-      return @importedOntology ? @importedOntology.classWithUri(uri) : nil
+      return @importedOntology ? @importedOntology.classWithURI(uri) : nil
     end
 
   end

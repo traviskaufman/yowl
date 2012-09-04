@@ -129,10 +129,10 @@ module DOWL
     # TODO: implement this according to standards, we probably need to merge
     # all triples we find for the given class in some sort of ordered way.
     #
-    # See DOWL::Individual::classWithUri(uri)
+    # See DOWL::Individual::classWithURI(uri)
     #
     def classWithURI(uri)
-      klass = @schema.classInSchemaWithUri(uri)
+      klass = @schema.classInSchemaWithURI(uri)
       if klass
         return klass
       end

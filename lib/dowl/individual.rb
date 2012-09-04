@@ -62,7 +62,7 @@ module DOWL
         if ont
           klass = ontology.classWithURI(type)
         else
-          klass = @schema.classInSchemaWithUri(type)
+          klass = @schema.classInSchemaWithURI(type)
         end
         if klass
           classes << klass

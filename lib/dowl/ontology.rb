@@ -132,7 +132,7 @@ module DOWL
     # See DOWL::Individual::classWithUri(uri)
     #
     def classWithURI(uri)
-      klass = classInSchemaWithUri(uri)
+      klass = @schema.classInSchemaWithUri(uri)
       if klass
         return klass
       end

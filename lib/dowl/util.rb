@@ -21,8 +21,12 @@ module DOWL
       return @resource ? @resource.to_s : nil
     end
     
-    def hasUri?(uri)
-      return @resource == uri
+    def hasUri?(uri_)
+      case uri
+      when String
+        return uri == uri_
+      end
+      return @resource == uri_
     end   
 
     def short_name()

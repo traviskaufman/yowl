@@ -11,7 +11,7 @@ General
 
   dowl is available as a gem, so you can just do:
 
-    [sudo] gem install ffi rdf rdf-raptor rdf-json rdf-trix sxp sparql-grammar ruby-graphviz dowl
+    [sudo] gem install ffi rdf rdf-raptor rdf-json rdf-trix sxp sparql ruby-graphviz dowl
 
   To install from a source simply do:
 

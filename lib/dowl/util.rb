@@ -21,10 +21,6 @@ module DOWL
       return @resource ? @resource.to_s : nil
     end
     
-    def hasUri?
-      return @resource ? true : false
-    end 
-    
     def hasUri?(uri)
       return @resource == uri
     end   
@@ -60,7 +56,7 @@ module DOWL
     end    
     
     def get_literal(property)
-      return hasUri? ? @schema.model.first_value(RDF::Query::Pattern.new(@resource, property)) : nil
+      return @resource ? @schema.model.first_value(RDF::Query::Pattern.new(@resource, property)) : nil
     end
     
   end

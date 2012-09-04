@@ -317,6 +317,134 @@ module DOWL
       return GraphvizUtility.embeddableSvg(g)
     end
     
+    public
+    def individuals ()
+      
+      if not @individuals.nil?
+        return @individuals
+      end
+      
+      @individuals = Hash.new
+      
+      #
+      # SELECT DISTINCT * WHERE { 
+      #   ?resource a owl:NamedIndividual .
+      #   ?resource a ?type .
+      #   FILTER (?type != owl:NamedIndividual && regex(str(?resource), "r29-.*"))
+      # }
+      #      
+      query = RDF::Query.new({
+         :resource => {
+           RDF.type => DOWL::Namespaces::OWL.NamedIndividual,
+           RDF.type => :type
+         }
+       })
+         
+       solutions = query.execute(@schema.model).filter do |solution|
+         solution.type != DOWL::Namespaces::OWL.NamedIndividual and 
+         solution.resource =~ /^r29-.*/
+       end
+       if @schema.options.verbose
+         puts " - Found #{solutions.count} filtered solutions"
+       end
+ 
+       solutions.each do |solution|
+         
+         resource = solution[:resource]
+         #type = solution[:type]
+           
+         @individuals << Individual.new(resource, @schema)
+       end
+      
+    end
+    
   end  
+  
+  class Individual < DOWL::LabelledDocObject
+    
+    def initialize(resource, schema)
+      super(resource, schema)
+    end
+    
+    public
+    #
+    # Add the current Individual as a GraphViz node to the given collection of nodes
+    # and to the given graph. Return the collection of nodes.
+    #    
+    def addAsGraphvizNode (nodes, graph)
+      name = short_name
+      if @schema.options.verbose
+        puts "- Processing Individual #{name}"
+      end
+      #
+      # No need to add a node twice
+      #
+      if nodes.has_key? uri
+        return nodes
+      end
+      node = graph.add_nodes(escaped_uri)
+      node.URL = "#individual#{short_name}"
+      
+      if name.include?(':')
+        prefix = name.sub(/:\s*(.*)/, "")
+        name = name.sub(/(.*)\s*:/, "")
+        #
+        # Can't get HTML labels to work
+        #
+        #node.label = "<TABLE BORDER=\"0\" CELLBORDER=\"1\" CELLSPACING=\"0\"><TR><TD>#{name}</TD></TR><TR><TD><I>(#{prefix})</I></TD></TR></TABLE>"
+        node.label = "#{name}\n(#{prefix})"
+      else
+        node.label = name
+      end 
+      if hasComment?
+        node.tooltip = comment
+      end
+      nodes[uri] = node
+      return nodes
+    end    
+    
+    public
+    #
+    # Generate a diagram for each Individual
+    #
+    def asSvg
+      if @schema.options.verbose
+        puts "Generating SVG for Individual #{short_name}"
+      end
+    
+      g = GraphvizUtility.setDefaults(GraphViz.new(:G, :type => :digraph))
+      g[:rankdir] = "LR"
+      g.node[:fixedsize] = false
+      
+      nodes = Hash.new
+      edges = Hash.new
+      nodes = addAsGraphvizNode(nodes, g)
+      
+      /*
+      #
+      # Do the "outbound" associations first
+      #
+      associations.each do |association|
+        nodes = association.rangeClass.addAsGraphvizNode(nodes, g)
+        edges = association.addAsGraphVizEdge(edges, g, nodes)
+      end
+      
+      #
+      # Then do the "inbound" associations
+      #
+      @schema.classes.values.to_set.each do |klass|
+        klass.associations.each do |association|
+          if self == association.rangeClass
+            nodes = association.rangeClass.addAsGraphvizNode(nodes, g)
+            edges = association.addAsGraphVizEdge(edges, g, nodes)
+          end
+        end
+      end
+      */
+      
+      return GraphvizUtility.embeddableSvg(g)
+    end
+     
+  end
 
 end

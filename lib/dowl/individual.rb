@@ -4,11 +4,29 @@ module DOWL
   #  
   class Individual < DOWL::LabelledDocObject
     
+    private
     def initialize(resource, schema)
       super(resource, schema)
-      puts "Creating Individual #{short_name}"
+      if schema.options.verbose
+        puts "Created Individual #{short_name}"
+      end
     end
    
+    public
+    def Individual.withUri(resource, schema)
+      if resource.anonymous?
+        warn "WARNING: Ignoring Individual with uri #{resource.to_s}"
+        return
+      end
+      individual = schema.individuals[resource.to_s]
+      if individual
+        return individual
+      end
+      individual = Individual.new(resource, schema)
+      schema.individuals[resource.to_s] = individual
+      return individual
+    end
+        
     public
     #
     # This label is a bit different than the one in the base class as this one
@@ -87,6 +105,49 @@ module DOWL
     
     public
     #
+    # Return a collection of Associations representing ObjectProperties
+    # where the current class is one of the Domain classes.
+    #
+    def associatedIndividuals
+      @associatedIndividuals ||= init_associatedIndividuals
+    end
+    
+    private
+    def associations()
+      associations = Set.new
+
+      if @schema.options.verbose
+        puts "Searching for associations of Individual #{short_name}"
+      end
+
+      sparql = <<sparql
+        SELECT DISTINCT ?individual WHERE { 
+          ?individual a owl:NamedIndividual .
+          ?individual ?predicate <#{uri}> .
+        }
+sparql
+      if @options.verbose
+        puts " - SPARQL: #{sparql}"
+      end
+      solutions = SPARQL.execute(sparql, @schema.model, { :prefixes => @schema.prefixes })
+      if @options.verbose
+        puts " - Found #{solutions.count} associated Individuals"
+      end
+      
+      solutions.each do |solution|
+        individual = solution[:individual]
+        if @schema.options.verbose
+          puts " - Found Individual #{individual.to_s}"
+        end
+        if rangeClass
+          associations[individual.to_s] << Individual.withUri(individual, @schema)
+        end
+      end
+      return associations
+    end
+    
+    public
+    #
     # Add the current Individual as a GraphViz node to the given collection of nodes
     # and to the given graph. Return the collection of nodes.
     #    
@@ -138,6 +199,10 @@ module DOWL
         nodes = klass.addAsGraphvizNode(nodes, g)
         klassNode = nodes[klass.uri]
         g.add_edges(individualNode, klassNode)
+      end
+      
+      associatedIndividuals.each do |individual|
+        individual.addAsGraphvizNode(nodes, g)
       end
       
       return GraphvizUtility.embeddableSvg(g)

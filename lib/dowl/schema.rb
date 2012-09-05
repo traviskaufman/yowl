@@ -349,19 +349,13 @@ module DOWL
     private
     def init_individuals
      
-      individuals = []
+      @individuals = Hash.new
  
       if @options.verbose
         puts "Searching for Individuals in schema #{@name}"
       end
       
-      #
-      # SELECT DISTINCT * WHERE { 
-      #   ?resource a owl:NamedIndividual .
-      #   ?resource a ?type .
       #   FILTER (?type != owl:NamedIndividual && regex(str(?resource), "r29-.*"))
-      # }
-      #
       sparql = <<sparql
         SELECT DISTINCT * WHERE { 
           ?resource a owl:NamedIndividual .
@@ -371,18 +365,14 @@ module DOWL
 sparql
       solutions = SPARQL.execute(sparql, @model, { :prefixes => @prefixes })
       if @options.verbose
-        puts " - Found #{solutions.count} filtered solutions"
+        puts " - Found #{solutions.count} Individuals"
       end
  
       solutions.each do |solution|
-         
-        resource = solution[:resource]
-        #type = solution[:type]
-           
-        individuals << Individual.new(resource, self)
+        Individual.withUri(solution[:resource], self)
       end
        
-      return individuals
+      return @individuals
     end
     
   end  

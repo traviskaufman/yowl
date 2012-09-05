@@ -15,7 +15,6 @@ module DOWL
     end
 
     public
-
     def Class.withUri(resource, schema)
       if resource.anonymous?
         warn "WARNING: Ignoring class with uri #{resource.to_s}"

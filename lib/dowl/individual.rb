@@ -112,7 +112,7 @@ module DOWL
       if defined?(@associatedIndividuals)
         return @associatedIndividuals
       end
-      init_associatedIndividuals
+      return init_associatedIndividuals
     end
     
     private
@@ -151,6 +151,7 @@ sparql
           puts " - Found Individual #{individual.short_name}"
         end
       end
+      return @associatedIndividuals
     end
     
     public

@@ -3,11 +3,17 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>Ontologies</title>
+		<link rel="stylesheet" type="text/css" href="css/smoothness/jquery-ui-1.8.23.custom.css" />
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
+		<script>
+		$(function() {
+			$('#ontologyTabs').bind('tabsselect', function(event, ui) {
+			});
+		});
+		</script>
+		<link rel="stylesheet" type="text/css" href="css/default.css">
 		<style>
-body, td {
-  font-family: arial,sans-serif;
-  font-size: 80% ;
-}
 th {
   border-bottom: 1px black solid;
 }
@@ -25,6 +31,14 @@ td.title {
 		</style>
 	</head>
 	<body>
+	
+		<div id="ontologyTabs">
+     		<ul>
+				<% ontologies.each do |ontology| %>
+         			<li><a href="./ontology/<%= ontology.resourceNameHtml %>"><span><%= ontology.short_name %></span></a></li>
+				<% end %>
+     		</ul>
+		</div>
 		<table border="0" width="100%">
 		<tr class="header">
 			<th align="left">PREFIX</th>

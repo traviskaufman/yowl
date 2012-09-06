@@ -38,12 +38,12 @@ td.title {
      			<li><a href="#tabOverview">Overview</a></li>
      			<li><a href="#tabImportDiagram">Import Diagram</a></li>
 				<% ontologies.each do |ontology| %>
-         			<li><a href="./ontology/<%= ontology.resourceNameHtml %>"><span><%= ontology.short_name %></span></a></li>
+         			<li><a href="/ontology/<%= ontology.resourceNameHtml %>"><span><%= ontology.short_name %></span></a></li>
 				<% end %>
      		</ul>
 		</div>
 		
-		<div id="tabOverview">
+		<div id="tabOverview"><p>
 			<table border="0" width="100%">
 			<tr class="header">
 				<th align="left">PREFIX</th>
@@ -72,9 +72,9 @@ td.title {
 				<% end %>
 			<% end %>
 			</table>
-		</div>
-		<div id="tabImportDiagram">
+		</p></div>
+		<div id="tabImportDiagram"><p>
 			<%= repository.ontologiesAsSvg %>
-		</div>
+		</p></div>
 	</body>
 </html>

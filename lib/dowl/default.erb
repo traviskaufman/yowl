@@ -18,7 +18,7 @@
 		<div id="accordion">
 
 		<h3><a href="#"><%= schema.ontology.title %></a></h3>
-		<div class="section">
+		<div>
 			<dl>
 				<dt>Latest Version</dt>
 					<dd><a href="../ontology/<%= schema.ontology.resourceNameHtml %>"><%= schema.ontology.ns %></a></dd>
@@ -51,13 +51,14 @@
 	
 		<% if schema.ontology.hasComment? %>	
 			<h3><a href="#">Abstract</a></h3>
-			<div class="section" id="abstract">
+			<div>
 				<%= schema.ontology.comment %>
 			</div>
 		<% end %>
 		
 		<% if introduction %>
-			<div class="section" id="introduction">
+			<h3><a href="#">Introduction</a></h3>
+			<div>
 				<%= introduction %>
 			</div>
 		<% end %>
@@ -81,8 +82,8 @@ def doImport(import)
   return result
 end
 %>			
-		<h3>Imports</h3>
-		<div class="section">
+		<h3><a href="#">Imports</a></h3>
+		<div>
 			<ul class="class">
 			<% schema.ontology.imports.each() do |import| %>
    				<%= doImport(import) %>
@@ -106,8 +107,8 @@ def doClass(klass)
 end
 %>
 		<% if schema.root_classes.length > 0 %>
-			<h2>Classes - Overview</h2>
-			<div class="section">
+			<h3><a href="#">Classes - Overview</a></h3>
+			<div>
 				<table class="classinfo">
 					<tr>
 						<td class="classhierarchy" valign="top">
@@ -126,8 +127,8 @@ end
 	    <% end %>
 		
 		<% if schema.list_properties.length > 0 %>
-			<h2>Properties - Overview</h2>
-			<div class="section">
+			<h3><a href="#">Properties - Overview</a></h3>
+			<div>
 				<% schema.list_properties().each do |key,val| %>
 			 	| <a href="#prop_<%= val.short_name %>"><%= val.short_name %></a>
 				<% end %>
@@ -136,7 +137,7 @@ end
 
 		
 		<% if schema.root_classes.length > 0 %>
-			<h2>Classes</h2>
+			<h3><a href="#">Classes</a></h3>
 			<div class="section">
 				<table class="terms">
 	   			<%schema.list_classes().each do |t| %>
@@ -208,7 +209,7 @@ end
 		<%end%>
 	
 		<% if schema.list_object_properties.length > 0 %>
-			<h2>Object Properties</h2>
+			<h3><a href="#">Object Properties</a></h3>
 			<div class="section">
 				<table class="terms">
 		   		<% schema.list_object_properties().each do |t| %>
@@ -302,7 +303,7 @@ end
 		<% end %>
 			
 		<% if schema.list_datatype_properties.length > 0 %>
-			<h2>Datatype Properties</h2>
+			<h3><a href="#">Datatype Properties</a></h3>
 			<div class="section">
 				<table class="terms">
 		   		<% schema.list_datatype_properties().each do |t| %>
@@ -396,7 +397,7 @@ end
 		<%end%>
 		
 		<% if schema.individuals.length > 0 %>
-			<h2>Individuals</h2>
+			<h3><a href="#">Individuals</a></h3>
 			<div class="section">
 				<table class="terms">
 	   			<%schema.individuals.values.each do |individual| %>

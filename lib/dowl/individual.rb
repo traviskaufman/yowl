@@ -146,15 +146,11 @@ sparql
       end
       
       solutions.each do |solution|
-        individual = solution[:individual]
+        individual = Individual.withUri(solution[:individual], @schema)
         if @schema.options.verbose
-          puts " - Found Individual #{individual.to_s}"
-        end
-        if individual
-          @associatedIndividuals[individual.to_s] = Individual.withUri(individual, @schema)
+          puts " - Found Individual #{individual.short_name}"
         end
       end
-      return @associatedIndividuals
     end
     
     public
@@ -212,8 +208,10 @@ sparql
         g.add_edges(individualNode, klassNode)
       end
       
-      associatedIndividuals.values.each do |individual|
-        nodes = individual.addAsGraphvizNode(nodes, g)
+      associatedIndividuals.values.each do |otherIndividual|
+        nodes = otherIndividual.addAsGraphvizNode(nodes, g)
+        otherIndividualNode = nodes[otherIndividual.uri]
+        g.add_edges(individualNode, otherIndividualNode)
       end
       
       return GraphvizUtility.embeddableSvg(g)

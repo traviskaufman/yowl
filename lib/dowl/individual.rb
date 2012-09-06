@@ -113,7 +113,7 @@ module DOWL
     end
     
     private
-    def associations()
+    def init_associatedIndividuals()
       associations = Set.new
 
       if @schema.options.verbose

@@ -439,7 +439,7 @@ end
 			<h2>Individuals</h2>
 			<div class="section">
 				<table class="terms">
-	   			<%schema.individuals.each do |individual| %>
+	   			<%schema.individuals.values.each do |individual| %>
 	   				<%
 	   					rowSpan = 1
 	   					rowSpan += 1 if individual.hasComment?

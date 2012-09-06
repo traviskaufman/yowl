@@ -9,7 +9,8 @@
 		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
 		<script>
 		$(function() {
-			$('#ontologyTabs').bind('tabsselect', function(event, ui) {
+			$("#ontologyTabs").tabs();
+			$("#ontologyTabs").bind('tabsselect', function(event, ui) {
 			});
 		});
 		</script>
@@ -34,39 +35,46 @@ td.title {
 	
 		<div id="ontologyTabs">
      		<ul>
+     			<li><a href="#tabOverview">Overview</a></li>
+     			<li><a href="#tabImportDiagram">Import Diagram</a></li>
 				<% ontologies.each do |ontology| %>
          			<li><a href="./ontology/<%= ontology.resourceNameHtml %>"><span><%= ontology.short_name %></span></a></li>
 				<% end %>
      		</ul>
 		</div>
-		<table border="0" width="100%">
-		<tr class="header">
-			<th align="left">PREFIX</th>
-			<th align="left">Namespace</th>
-			<th align="left">Ontology Name</th>
-			<th align="right"># Classes</th>
-			<th align="right"># Properties</th>
-			<th align="right"># Imports</th>
-			<th align="right">Modified</th>
-		</tr>
-		<% ontologies.each do |ontology| %>
-			<tr>
-				<td class="prefix"><a href="./ontology/<%= ontology.resourceNameHtml %>"><%= ontology.short_name %></a></td>
-				<td class="namespace"><a href="./ontology/<%= ontology.resourceNameHtml %>"><%= ontology.ns %></a></td>
-				<td class="title"><%= ontology.title %></td>
-				<td align="right"><%= ontology.numberOfClasses %></td>
-				<td align="right"><%= ontology.numberOfProperties %></td>
-				<td align="right"><%= ontology.imports.size %><td>
-				<td align="right"><%= ontology.modified %></td>
+		
+		<div id="tabOverview">
+			<table border="0" width="100%">
+			<tr class="header">
+				<th align="left">PREFIX</th>
+				<th align="left">Namespace</th>
+				<th align="left">Ontology Name</th>
+				<th align="right"># Properties</th>
+				<th align="right"># Imports</th>
+				<th align="right"># Classes</th>
+				<th align="right">Modified</th>
 			</tr>
-			<% if ontology.hasComment? %>
+			<% ontologies.each do |ontology| %>
 				<tr>
-					<td colspan="2">&nbsp;</td>
-					<td colspan="5"><%= ontology.comment %></td>
+					<td class="prefix"><a href="./ontology/<%= ontology.resourceNameHtml %>"><%= ontology.short_name %></a></td>
+					<td class="namespace"><a href="./ontology/<%= ontology.resourceNameHtml %>"><%= ontology.ns %></a></td>
+					<td class="title"><%= ontology.title %></td>
+					<td align="right"><%= ontology.numberOfClasses %></td>
+					<td align="right"><%= ontology.numberOfProperties %></td>
+					<td align="right"><%= ontology.imports.size %><td>
+					<td align="right"><%= ontology.modified %></td>
 				</tr>
+				<% if ontology.hasComment? %>
+					<tr>
+						<td colspan="2">&nbsp;</td>
+						<td colspan="5"><%= ontology.comment %></td>
+					</tr>
+				<% end %>
 			<% end %>
-		<% end %>
-		</table>
-		<%= repository.ontologiesAsSvg %>
+			</table>
+		</div>
+		<div id="tabImportDiagram">
+			<%= repository.ontologiesAsSvg %>
+		</div>
 	</body>
 </html>

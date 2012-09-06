@@ -1,10 +1,14 @@
 require 'rexml/document'
 
 module DOWL
+
   #
   # Utility class providing access to information about the schema, e.g. its description, lists of classes, etc
   #
   class Schema
+
+    @@PredefinedNamespaces = Hash.new
+    @@PredefinedNamespaces["http://protege.stanford.edu/plugins/owl/dc/protege-dc.owl"] = "http://purl.org/dc/elements/1.1/"
     
     attr_reader :options
     attr_reader :repository
@@ -81,6 +85,14 @@ module DOWL
     def uri
       return @ontology.nil? ? nil : @ontology.uri
     end
+
+    private 
+    def testIsNamespace?(ns1_, ns2_)
+      ns1 = ns1_.chomp('#').chomp('/')
+      ns2 = ns2_.chomp('#').chomp('/')
+      puts "testIsNamespace #{ns1} == #{ns2}"
+      return ns1 == ns2
+    end
     
     #
     # Return the prefix and the corresponding namespace for the given namespace,
@@ -88,11 +100,14 @@ module DOWL
     # When no namespace could be found, return two nils.
     public
     def prefixForNamespace(namespace_)
+      ns = @@PredefinedNamespaces.include?(namespace_) ? @@PredefinedNamespaces[namespace_] : namespace_
       @prefixes.each() do |prefix, namespace|
-        if (namespace == namespace_ or namespace + '/' == namespace_ or namespace + '#' == namespace_)
+        if testIsNamespace?(namespace, ns)
+puts "Found #{prefix} for #{namespace}"
           return prefix, namespace
         end
       end
+puts "Nothing found for #{namespace_}"
       return nil, nil
     end
     

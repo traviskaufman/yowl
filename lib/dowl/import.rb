@@ -25,7 +25,7 @@ module DOWL
       if @importedSchema
         return @importedSchema.name
       end
-      prefix = @schema.prefixForNamespace(uri)
+      prefix, ns = @schema.prefixForNamespace(uri)
       if prefix
         return prefix
       end

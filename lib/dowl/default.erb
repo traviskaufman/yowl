@@ -3,61 +3,21 @@
 	<head>
 		<meta charset="utf-8" />
 		<title><%= schema.ontology.title %></title>
-		<style>
-body, td, th {
-  font-family: arial,sans-serif;
-  font-size: 80% ;
-}
-h1 {
-  padding-left: 1cm ;
-}
-h2 {
-  border-top: 1px black solid;
-  padding-left: 1cm ;
-}
-a {
-  text-decoration: none;
-}
-td, th {
-  vertical-align: top ;
-}
-div.section {
-  padding-left: 1cm ;
-}
-table.classinfo {
-  width: 100%;
-}
-table.classinfo td {
-  padding: 0px;
-}
-table.classinfo td.classhierarchy {
-  width: 20%;
-  border-right: 1px black solid;
-  padding-right: 10px;
-  font-size: 1em;
-}
-table.terms th.termName {
-  text-align: left;
-  font-size: 1.1em;
-}
-table.terms td {
-  padding-left: 1em ;
-  padding-bottom: 0.5em;
-  font-size: 0.9em;
-}
-table.terms td.label {
-  vertical-align: top;
-}
-table.terms ul {
-  margin: 0px;
-}
-table.terms li {
-  margin-left: -2em;
-}
-      </style>
+		<link rel="stylesheet" type="text/css" href="css/smoothness/jquery-ui-1.8.23.custom.css" />
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
+		<script>
+		$(function() {
+			$( "#accordion" ).accordion();
+		});
+		</script>
+		<link rel="stylesheet" type="text/css" href="css/default.css">
 	</head>
 	<body>
-		<h1><%= schema.ontology.title %></h1>
+		<div class="demo">
+		<div id="accordion">
+
+		<h3><a href="#"><%= schema.ontology.title %></a></h3>
 		<div class="section">
 			<dl>
 				<dt>Latest Version</dt>
@@ -90,7 +50,7 @@ table.terms li {
 		</div>
 	
 		<% if schema.ontology.hasComment? %>	
-			<h2>Abstract</h2>
+			<h3><a href="#">Abstract</a></h3>
 			<div class="section" id="abstract">
 				<%= schema.ontology.comment %>
 			</div>
@@ -121,7 +81,7 @@ def doImport(import)
   return result
 end
 %>			
-		<h2>Imports</h2>
+		<h3>Imports</h3>
 		<div class="section">
 			<ul class="class">
 			<% schema.ontology.imports.each() do |import| %>
@@ -471,5 +431,7 @@ end
 				</table>
 	  		</div>	
 		<%end%>
+		</div>
+		</div>
 	</body>
 </html>

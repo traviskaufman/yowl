@@ -226,9 +226,9 @@ module DOWL
     # Generate a diagram for each class, the "per class diagram"
     #
     def perClassDiagramAsSvg
-      if @schema.options.verbose
-        puts "Generating SVG Per Class Diagram for #{short_name}"
-      end
+      #if @schema.options.verbose
+      #  puts "Generating SVG Per Class Diagram for #{short_name}"
+      #end
     
       g = GraphvizUtility.setDefaults(GraphViz.new(:G, :type => :digraph))
       g[:rankdir] = "LR"

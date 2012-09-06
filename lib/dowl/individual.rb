@@ -114,7 +114,7 @@ module DOWL
     
     private
     def init_associatedIndividuals()
-      associations = Set.new
+      @associatedIndividuals = Set.new
 
       if @schema.options.verbose
         puts "Searching for associations of Individual #{short_name}"
@@ -140,10 +140,10 @@ sparql
           puts " - Found Individual #{individual.to_s}"
         end
         if rangeClass
-          associations[individual.to_s] << Individual.withUri(individual, @schema)
+          @associatedIndividuals[individual.to_s] << Individual.withUri(individual, @schema)
         end
       end
-      return associations
+      return @associatedIndividuals
     end
     
     public

@@ -126,11 +126,11 @@ module DOWL
           ?individual ?predicate <#{uri}> .
         }
 sparql
-      if @options.verbose
+      if @schema.options.verbose
         puts " - SPARQL: #{sparql}"
       end
       solutions = SPARQL.execute(sparql, @schema.model, { :prefixes => @schema.prefixes })
-      if @options.verbose
+      if @schema.options.verbose
         puts " - Found #{solutions.count} associated Individuals"
       end
       

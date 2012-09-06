@@ -109,21 +109,32 @@ module DOWL
     # where the current class is one of the Domain classes.
     #
     def associatedIndividuals
-      @associatedIndividuals ||= init_associatedIndividuals
+      if defined?(@associatedIndividuals)
+        return @associatedIndividuals
+      end
+      init_associatedIndividuals
     end
     
     private
     def init_associatedIndividuals()
-      @associatedIndividuals = Set.new
+      @associatedIndividuals = Hash.new
 
       if @schema.options.verbose
         puts "Searching for associations of Individual #{short_name}"
       end
 
       sparql = <<sparql
-        SELECT DISTINCT ?individual WHERE { 
-          ?individual a owl:NamedIndividual .
-          ?individual ?predicate <#{uri}> .
+        SELECT DISTINCT ?individual WHERE {
+          {
+            ?individual a owl:NamedIndividual .
+            ?individual ?predicateA <#{uri}> .
+          } UNION {
+            <#{uri}>
+              a owl:NamedIndividual ;
+              ?predicateB ?individual ;
+            .
+            ?individual a owl:NamedIndividual .
+          }
         }
 sparql
       if @schema.options.verbose
@@ -139,8 +150,8 @@ sparql
         if @schema.options.verbose
           puts " - Found Individual #{individual.to_s}"
         end
-        if rangeClass
-          @associatedIndividuals[individual.to_s] << Individual.withUri(individual, @schema)
+        if individual
+          @associatedIndividuals[individual.to_s] = Individual.withUri(individual, @schema)
         end
       end
       return @associatedIndividuals
@@ -201,8 +212,8 @@ sparql
         g.add_edges(individualNode, klassNode)
       end
       
-      associatedIndividuals.each do |individual|
-        individual.addAsGraphvizNode(nodes, g)
+      associatedIndividuals.values.each do |individual|
+        nodes = individual.addAsGraphvizNode(nodes, g)
       end
       
       return GraphvizUtility.embeddableSvg(g)

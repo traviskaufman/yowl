@@ -5,40 +5,30 @@ module DOWL
   class Options
     
     attr_accessor :ontology_file_names
-    attr_accessor :html_output_dir
-    attr_accessor :index_file_name
-    attr_accessor :ontology_template_file_name
-    attr_accessor :index_template_file_name
-    attr_accessor :introduction_file_name
-    attr_reader :ontology_template
-    attr_reader :index_template
-    attr_reader :introduction
+    attr_accessor :output_dir
+    attr_accessor :template_dirs
+    
+    attr_reader :templates
+    
     attr_accessor :verbose
+
     
     def initialize()
       @verbose = false
       @ontology_file_names = []
-      @html_output_dir = Dir.pwd()
-      @index_file_name = nil
-      @ontology_template_file_name = nil
-      @index_template_file_name = nil
-      @introduction_file_name = nil
-      @ontology_template = nil
-      @index_template = nil
-      @introduction = nil
+      @output_dir = Dir.pwd()
+      @template_dirs = []
+      @templates = Hash.new
     end
     
     def validate()
       if ! validate_ontology_file_names()
         return false
       end
-      if ! validate_ontology_template()
+      if ! validate_template_dirs()
         return false
       end
-      if ! validate_index_template()
-        return false
-      end
-      if ! validate_introduction()
+      if ! validate_templates()
         return false
       end
       return true
@@ -58,6 +48,16 @@ module DOWL
       return true
     end
     
+    private
+    def validate_template_dirs
+      @template_dirs << File.join(ontology_dir(), "dowl/template")
+      @template_dirs << File.join(File.dirname(__FILE__), "template")
+      @template_dirs = @template_dirs.find_all do |dir|
+        Dir[dir]
+      end
+      return ! @template_dirs.empty?()
+    end
+    
     #
     # TODO: Either we support one template per ontology or
     # we support one template per input directory. That would
@@ -69,124 +69,35 @@ module DOWL
     end
     
     private
-    def validate_ontology_template_file_name(filename)
-      if verbose()
-        puts "Checking ontology template #{filename}"
-      end
-      if File.exists?(filename)
-        File.open(filename) do |file|
-          @ontology_template = ERB.new(file.read)
-        end
+    def load_template(templateName_, required_ = true)
+      @template_dirs.each do |template_dir|
+        templateFileName = File.join(template_dir, "#{templateName_}.erb")
         if verbose()
-          puts "Found and read ontology template #{filename}"
+          puts "Checking template #{templateFileName}"
         end
-        return true
-      end
-      return false
-    end
-
-    private
-    def validate_index_template_file_name(filename)
-      if verbose()
-        puts "Checking index template #{filename}"
-      end
-      if File.exists?(filename)
-        File.open(filename) do |file|
-          @index_template = ERB.new(file.read)
+        if File.exists?(templateFileName)
+          File.open(templateFileName) do |file|
+            @templates[templateName_] = ERB.new(file.read)
+          end
+          if verbose()
+            puts "Loaded template #{templateFileName}"
+          end
+          return
         end
-        if verbose()
-          puts "Found and read index template #{filename}"
-        end
-        return true
       end
-      return false
+      if required_
+        raise "ERROR: #{templateName_} could not be found"
+      end
     end
     
     private
-    def validate_ontology_template()
+    def validate_templates()
       
-      if @ontology_template_file_name != nil
-        if validate_ontology_template_file_name(@ontology_template_file_name)
-          return true
-        end
-        warn "ERROR: Could not find ontology template #{ontology_template_file_name}"
-        return false
-      end
-      
-      if validate_ontology_template_file_name(File.join(ontology_dir(), "dowl/default.erb"))
-        return true
-      end
-
-      if validate_ontology_template_file_name(File.join(File.dirname(__FILE__), "default.erb"))
-        return true
-      end
-      
-      warn "Could not find ontology template"
-      return false
-    end
-    
-    private
-    def validate_index_template()
-      
-      if @index_template_file_name != nil
-        if validate_index_template_file_name(@index_template_file_name)
-          return true
-        end
-        warn "ERROR: Could not find index template #{index_template_file_name}"
-        return false
-      end
-      
-      if validate_index_template_file_name(File.join(ontology_dir(), "dowl/index.erb"))
-        return true
-      end
-  
-      if validate_index_template_file_name(File.join(File.dirname(__FILE__), "index.erb"))
-        return true
-      end
-      
-      warn "Could not find index template"
-      return false
-    end
-    
-    private
-    def validate_introduction_file_name(filename)
-      if verbose()
-        puts "Checking introduction template #{filename}"
-      end
-      if File.exists?(filename)
-        File.open(filename) do |file|
-          @introduction = file.read
-        end
-        if verbose()
-          puts "Found and read introduction template #{filename}"
-        end
-        return true
-      end
-      return false
-    end
-    
-    private
-    def validate_introduction()
-      
-      if @introduction_file_name != nil
-        if validate_introduction_file_name(@introduction_file_name)
-          return true
-        end
-        warn "ERROR: Could not find #{@introduction_file_name}"
-        return false
-      end
-      
-      if validate_introduction_file_name(File.join(ontology_dir(), "introduction.html"))
-        return true
-      end
-
-      if validate_introduction_file_name(File.join(ontology_dir(), "dowl/introduction.html"))
-        return true
-      end
-      
-      if validate_introduction_file_name(File.join(File.dirname(__FILE__), "introduction.html"))
-        return true
-      end
+      load_template('index');
+      load_template('overview');
+      load_template('introduction', false);
+      load_template('import-diagram');
+      load_template('ontology');
       
       return true
     end

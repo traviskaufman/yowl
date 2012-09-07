@@ -51,8 +51,16 @@ module DOWL
     public
     def Schema.fromFile(ontology_file_name, repository)
       
+      puts "Read Schema #{ontology_file_name}"
       prefixes = Schema::read_prefixes(ontology_file_name)
-      model = RDF::Graph.new(ontology_file_name, :prefixes => prefixes)
+      
+      format = RDF::Format.for(ontology_file_name)
+      if format.nil?()
+        format = RDF::Format.for(:file_extension => "rdf")
+      end
+      reader = format.reader
+      
+      model = reader.new(ontology_file_name, :prefixes => prefixes)
       model.load!
       
       return Schema.new(repository, model, prefixes)

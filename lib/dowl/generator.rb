@@ -28,7 +28,7 @@ module DOWL
       
       b = binding
       
-      output_file = File.join(@options.html_output_dir, "#{schema.name}.html")
+      output_file = File.join(@options.output_dir, "#{schema.name}.html")
       if @options.verbose
         puts "Generating #{output_file}"
       end

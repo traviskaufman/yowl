@@ -15,24 +15,27 @@ module DOWL
         opts.separator ""
         opts.separator "Specific options:"
   
-        opts.on('-i', '--ontology FILE', 'Read FILE') do |ontology|
-          options.ontology_file_names << ontology
+        opts.on('-i', '--ontology FILE', Array, 'Read FILE') do |ontologies|
+          ontologies.each do |ontology|
+            puts "*****#{ontology}"
+            options.ontology_file_names << ontology
+          end
         end
    
-        opts.on('-o', '--htmldir DIR', 'Write HTML output to DIR') do |dir|
-          options.html_output_dir = dir
+        opts.on('-o', '--output DIR', 'Write HTML output to DIR') do |dir|
+          options.output_dir = dir
         end
 
         opts.on('--index FILE', 'Generate an index.html file named FILE') do |index|
           options.index_file_name = index
         end
   
-        opts.on('-t', '--template FILE', 'Use ERB template FILE') do |template|
-          options.ontology_template_file_name = template
+        opts.on('-t', '--template DIR', 'Use ERB templates in DIR') do |dir|
+          options.template_dir = dir
         end
 
         opts.on('--introduction FILE', 'Use HTML file as introduction') do |htmlfile|
-          options.introduction_file_name = htmlfile
+          options.introduction_template_file_name = htmlfile
         end
    
         opts.separator ""

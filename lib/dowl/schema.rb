@@ -29,7 +29,7 @@ module DOWL
       @options = repository.options
       @model = model
       @prefixes = prefixes
-      
+
       if options.verbose
         @prefixes.each_pair do |prefix, namespace|
           puts " PREFIX #{prefix}: #{namespace}"
@@ -58,10 +58,7 @@ module DOWL
       if format.nil?()
         format = RDF::Format.for(:file_extension => "rdf")
       end
-      reader = format.reader
-      
-      model = reader.new(ontology_file_name, :prefixes => prefixes)
-      model.load!
+      model = RDF::Graph.load(ontology_file_name, { :format => format.to_sym, :prefixes => prefixes })
       
       return Schema.new(repository, model, prefixes)
     end

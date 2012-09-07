@@ -5,9 +5,6 @@ module DOWL
     def initialize(repository, options)
       @options = options
       @repository = repository
-      @ontology_template = @options.ontology_template
-      @index_template = @options.index_template
-      @introduction = @options.introduction
     end
     
     private
@@ -33,18 +30,14 @@ module DOWL
         puts "Generating #{output_file}"
       end
       File.open(output_file, 'w') do |file|
-        file.write(@ontology_template.result(b))
+        file.write(@options.templates['ontology'].result(b))
       end
     end
     
     private
     def generateIndexHtmlFile()
       
-      if @options.index_file_name == nil
-        puts "Not generating index since index file name not specified."
-        return
-      end
-      if @index_template == nil
+      if @options.templates['index'] == nil
         puts "Not generating index since index template not specified."
         return
       end
@@ -59,7 +52,7 @@ module DOWL
       b = binding
       
       File.open(@options.index_file_name, 'w') do |file|
-        file.write(@index_template.result(b))
+        file.write(@options.templates['index'].result(b))
       end
     end
     

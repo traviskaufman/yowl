@@ -26,18 +26,10 @@ module DOWL
           options.output_dir = dir
         end
 
-        opts.on('--index FILE', 'Generate an index.html file named FILE') do |index|
-          options.index_file_name = index
-        end
-  
         opts.on('-t', '--template DIR', 'Use ERB templates in DIR') do |dir|
           options.template_dir = dir
         end
 
-        opts.on('--introduction FILE', 'Use HTML file as introduction') do |htmlfile|
-          options.introduction_template_file_name = htmlfile
-        end
-   
         opts.separator ""
         opts.separator "Common options:"
   

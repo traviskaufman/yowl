@@ -25,24 +25,27 @@ module DOWL
       
       b = binding
       
-      output_file = File.join(@options.output_dir, "#{schema.name}.html")
+      ontologyFile = File.join(@options.output_dir, "ontology/#{schema.name}.html")
       if @options.verbose
-        puts "Generating #{output_file}"
+        puts "Generating #{ontologyFile}"
       end
-      File.open(output_file, 'w') do |file|
+      File.open(ontologyFile, 'w') do |file|
         file.write(@options.templates['ontology'].result(b))
       end
     end
     
     private
-    def generateIndexHtmlFile()
+    def generateHtmlFile(templateName_)
       
-      if @options.templates['index'] == nil
-        puts "Not generating index since index template not specified."
+      template = @options.templates[templateName_]
+      
+      if template.nil?
+        puts "Not generating #{templateName_}.html since #{templateName_} template could not be found."
         return
       end
+      fileName = File.join(@options.output_dir, '#{templateName_}.html')
       if @options.verbose
-        puts "Generating #{@options.index_file_name}"
+        puts "Generating #{fileName}"
       end
       
       repository = @repository
@@ -51,15 +54,18 @@ module DOWL
       
       b = binding
       
-      File.open(@options.index_file_name, 'w') do |file|
-        file.write(@options.templates['index'].result(b))
+      File.open(fileName, 'w') do |file|
+        file.write(template.result(b))
       end
-    end
+    end    
     
     public
     def run()
+      generateHtmlFile('index')
+      generateHtmlFile('overview')
+      generateHtmlFile('introduction')
+      generateHtmlFile('import-diagram')
       generateOntologyHtmlFiles()
-      generateIndexHtmlFile()      
     end
   end  
 end

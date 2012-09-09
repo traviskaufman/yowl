@@ -58,7 +58,12 @@ module DOWL
       if format.nil?()
         format = RDF::Format.for(:file_extension => "rdf")
       end
-      model = RDF::Graph.load(ontology_file_name, { :format => format.to_sym, :prefixes => prefixes })
+      begin
+        model = RDF::Graph.load(ontology_file_name, { :format => format.to_sym, :prefixes => prefixes })
+      rescue
+        warn "ERROR: Error while parsing #{ontology_file_name}"
+        return nil
+      end
       
       return Schema.new(repository, model, prefixes)
     end

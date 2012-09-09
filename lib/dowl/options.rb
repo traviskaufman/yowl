@@ -22,6 +22,7 @@ module DOWL
     end
     
     def validate()
+      puts "Output will be generated in this directory: #{output_dir.to_s}"
       if ! validate_ontology_file_names()
         return false
       end
@@ -44,6 +45,7 @@ module DOWL
           warn "File does not exist: " + filename
           return false
         end
+        puts "Will process input file: #{filename}"
       end
       return true
     end

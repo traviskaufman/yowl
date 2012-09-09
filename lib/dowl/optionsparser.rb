@@ -15,10 +15,12 @@ module DOWL
         opts.separator ""
         opts.separator "Specific options:"
   
-        opts.on('-i', '--ontology FILE', Array, 'Read FILE') do |ontologies|
-          ontologies.each do |ontology|
-            puts "*****#{ontology}"
-            options.ontology_file_names << ontology
+        opts.on('-i', '--ontology FILES', String, 'Read input FILES') do |ontology|
+          options.ontology_file_names << ontology
+          index = 0
+          while ARGV[index][0,1] != "-"
+            options.ontology_file_names << ARGV[index]
+            index += 1
           end
         end
    

@@ -35,46 +35,12 @@ td.title {
 	
 		<div id="ontologyTabs">
      		<ul>
-     			<li><a href="#tabOverview">Overview</a></li>
-     			<li><a href="#tabImportDiagram">Import Diagram</a></li>
+     			<li><a href="overview.html">Overview</a></li>
+     			<li><a href="import-diagram.html">Import Diagram</a></li>
 				<% ontologies.each do |ontology| %>
-         			<li><a href="/ontology/<%= ontology.resourceNameHtml %>"><span><%= ontology.short_name %></span></a></li>
+         			<li><a href="ontology/<%= ontology.resourceNameHtml %>"><span><%= ontology.short_name %></span></a></li>
 				<% end %>
      		</ul>
 		</div>
-		
-		<div id="tabOverview"><p>
-			<table border="0" width="100%">
-			<tr class="header">
-				<th align="left">PREFIX</th>
-				<th align="left">Namespace</th>
-				<th align="left">Ontology Name</th>
-				<th align="right"># Properties</th>
-				<th align="right"># Imports</th>
-				<th align="right"># Classes</th>
-				<th align="right">Modified</th>
-			</tr>
-			<% ontologies.each do |ontology| %>
-				<tr>
-					<td class="prefix"><a href="./ontology/<%= ontology.resourceNameHtml %>"><%= ontology.short_name %></a></td>
-					<td class="namespace"><a href="./ontology/<%= ontology.resourceNameHtml %>"><%= ontology.ns %></a></td>
-					<td class="title"><%= ontology.title %></td>
-					<td align="right"><%= ontology.numberOfClasses %></td>
-					<td align="right"><%= ontology.numberOfProperties %></td>
-					<td align="right"><%= ontology.imports.size %><td>
-					<td align="right"><%= ontology.modified %></td>
-				</tr>
-				<% if ontology.hasComment? %>
-					<tr>
-						<td colspan="2">&nbsp;</td>
-						<td colspan="5"><%= ontology.comment %></td>
-					</tr>
-				<% end %>
-			<% end %>
-			</table>
-		</p></div>
-		<div id="tabImportDiagram"><p>
-			<%= repository.ontologiesAsSvg %>
-		</p></div>
 	</body>
 </html>

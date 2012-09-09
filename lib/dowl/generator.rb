@@ -25,7 +25,14 @@ module DOWL
       
       b = binding
       
-      ontologyFile = File.join(@options.output_dir, "ontology/#{schema.name}.html")
+      dir = File.join(@options.output_dir, "ontology")
+      
+      begin
+        Dir.mkdir(dir)
+      rescue Errno::EEXIST
+      end
+      
+      ontologyFile = File.join(dir, "#{schema.name}.html")
       if @options.verbose
         puts "Generating #{ontologyFile}"
       end
@@ -43,7 +50,7 @@ module DOWL
         puts "Not generating #{templateName_}.html since #{templateName_} template could not be found."
         return
       end
-      fileName = File.join(@options.output_dir, '#{templateName_}.html')
+      fileName = File.join(@options.output_dir, "#{templateName_}.html")
       if @options.verbose
         puts "Generating #{fileName}"
       end

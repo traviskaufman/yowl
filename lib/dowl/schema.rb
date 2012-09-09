@@ -100,7 +100,7 @@ module DOWL
     def testIsNamespace?(ns1_, ns2_)
       ns1 = ns1_.chomp('#').chomp('/')
       ns2 = ns2_.chomp('#').chomp('/')
-      puts "testIsNamespace #{ns1} == #{ns2}"
+      #puts "testIsNamespace #{ns1} == #{ns2}"
       return ns1 == ns2
     end
     

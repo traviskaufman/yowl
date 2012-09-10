@@ -81,6 +81,7 @@ module DOWL
       @options.template_dirs.each do |template_dir|
         copyTemplateDir("#{template_dir}/js", "#{@options.output_dir}")
         copyTemplateDir("#{template_dir}/css", "#{@options.output_dir}")
+        copyTemplateDir("#{template_dir}/themes", "#{@options.output_dir}")
         copyTemplateDir("#{template_dir}/img", "#{@options.output_dir}")
       end
     end

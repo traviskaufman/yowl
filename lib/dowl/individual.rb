@@ -78,7 +78,9 @@ module DOWL
           next
         end
         types << statement.object
-        puts "Found Type #{statement.object.to_s} for Individual #{label}"
+        if @schema.options.verbose
+          puts "Found Type #{statement.object.to_s} for Individual #{label}"
+        end
       end
       return types
     end
@@ -95,7 +97,9 @@ module DOWL
         klass = @schema.classWithURI(type)
         if klass
           classes << klass
-          puts "Found Class #{klass.short_name} for Individual #{label}"
+          if @schema.options.verbose
+            puts "Found Class #{klass.short_name} for Individual #{label}"
+          end
         else
           puts "WARNING: Could not find Class definition for URI #{type.to_s}"
         end

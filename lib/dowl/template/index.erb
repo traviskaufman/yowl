@@ -4,32 +4,34 @@
 		<meta charset="utf-8" />
 		<meta name="robots" content="noindex, nofollow" />
 		<title>Ontologies</title>
-		<link rel="stylesheet" href="./css/jquery.ui.all.css" />
+		<link type="text/css" href="./css/smoothness/jquery-ui-1.8.23.custom.css" rel="Stylesheet" />
 		<link rel="stylesheet" href="./css/demos.css" />
 		<script src="./js/jquery-1.7.2.min.js"></script>
 		<script src="./js/jquery-ui-1.8.23.custom.min.js"></script>
 		<script>
-			$(function() {
-				$("#tabs").tabs({
+			$(document).ready(function(){
+        		$("#tabs").tabs({
 					ajaxOptions: {
+						cache: false,
 						error: function(xhr, status, index, anchor) {
 							$(anchor.hash).html(
 								"Couldn't load this tab. We'll try to fix this as soon as possible."
 							);
 						}
-					}
+					},
+					spinner: 'Loading Ontology...'
 				});
-			});
+    		});
 		</script>
 	</head>
 	<body>
 		<div class="demo">
 			<div id="tabs">
 		 		<ul>
-		 			<li><a href="./overview.html">Overview</a></li>
-		 			<li><a href="./import-diagram.html">Import Diagram</a></li>
+		 			<li><a title="overview" href="./overview.html">Overview</a></li>
+		 			<li><a title="import-diagram" href="./import-diagram.html">Import Diagram</a></li>
 					<% ontologies.each do |ontology| %>
-		     			<li><a href="./ontology/<%= ontology.resourceNameHtml %>"><%= ontology.short_name %></a></li>
+		     			<li><a title="<%= ontology.short_name %>" href="./ontology/<%= ontology.resourceNameHtml %>"><%= ontology.short_name %></a></li>
 					<% end %>
 		 		</ul>
 			</div>

@@ -6,6 +6,10 @@ table {
 	font-size: 1em;
 }
 
+a {
+	text-decoration: none;
+}
+
 /* Site
    -------------------------------- */
 
@@ -123,7 +127,47 @@ body {
 }
 
 table.classinfo {
-	border: 1px red solid;
+	width: 100%;
+	border-spacing: 0;
+  	border-collapse: collapse;
+}
+
+table.classinfo td.classhierarchy {
+	width: 10% ;
+	padding-right: 4em ;
+	border-right: 1px black solid ;
+}
+
+table.terms {
+	width: 100%;
+	border-spacing: 0;
+  	border-collapse: collapse;
+}
+table.terms td {
+	text-align: left ;
+	vertical-align: top ;
+	padding: 0px ;
+	padding-top: 0.2em;
+}
+table.terms th {
+	text-align: left ;
+	vertical-align: top ;
+	padding: 0px ;
+	padding-top: 0.2em;
+	border-top: 1px black solid;
+}
+table.terms td.label {
+	width: 10% ;
+	padding-right: 4em ;
+}
+table.terms ul {
+	padding: 0px ;
+	padding-left: 20px ;
+	margin: 0px ;
+}
+table.terms li {
+	margin-top: 0px;
+	margin-bottom: 0px;
 }
 
 /* new styles for demo pages, added by Filament 12.29.08

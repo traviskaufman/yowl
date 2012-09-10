@@ -1,3 +1,4 @@
+
 module DOWL
   class Class < DOWL::LabelledDocObject
     include Comparable

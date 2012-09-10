@@ -34,8 +34,8 @@ body {
 	font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
 }
 
-.layout-grid td.demos {
-	background: url('/img/demos_bg.jpg') no-repeat;
+.layout-grid td.dowl {
+	background: url('/img/dowl_bg.jpg') no-repeat;
 	height: 337px;
 	overflow: hidden;
 }
@@ -65,29 +65,29 @@ body {
 	font-size: 1.2em;
 }
 
-/* Demos */
+/* dowl */
 
-.demos-nav, .demos-nav dt, .demos-nav dd, .demos-nav ul, .demos-nav li {
+.dowl-nav, .dowl-nav dt, .dowl-nav dd, .dowl-nav ul, .dowl-nav li {
 	margin: 0;
 	padding: 0
 }
 
-.demos-nav {
+.dowl-nav {
 	float: left;
 	width: 170px;
 	font-size: 1.3em;
 }
 
-.demos-nav dt,
-.demos-nav h4 {
+.dowl-nav dt,
+.dowl-nav h4 {
 	margin: 0;
 	padding: 0;
 	font: normal 1.1em "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
 	color: #e87b10;
 }
 
-.demos-nav dt,
-.demos-nav h4 {
+.dowl-nav dt,
+.dowl-nav h4 {
 	margin-top: 1.5em;
 	margin-bottom: 0;
 	padding-left: 8px;
@@ -96,8 +96,8 @@ body {
 	border-bottom: 1px solid #F4F4F4;
 }
 
-.demos-nav dd a,
-.demos-nav li a {
+.dowl-nav dd a,
+.dowl-nav li a {
 	border-bottom: 1px solid #F4F4F4;
 	display:block;
 	padding: 4px 3px 4px 8px;
@@ -108,20 +108,23 @@ body {
 	height:13px;
 }
 
-.demos-nav dd a:hover,
-.demos-nav dd a:focus,
-.demos-nav dd a:hover,
-.demos-nav dd a:focus {
+.dowl-nav dd a:hover,
+.dowl-nav dd a:focus,
+.dowl-nav dd a:hover,
+.dowl-nav dd a:focus {
 	background: #f3f3f3;
 	color:#000;
 	-moz-border-radius: 5px; -webkit-border-radius: 5px;
 }
- .demos-nav dd a.selected {
+ .dowl-nav dd a.selected {
 	background: #555;
 	color:#ffffff;
 	-moz-border-radius: 5px; -webkit-border-radius: 5px;
 }
 
+table.classinfo {
+	border: 1px red solid;
+}
 
 /* new styles for demo pages, added by Filament 12.29.08
 eventually we should convert the font sizes to ems -- using px for now to minimize style conflicts
@@ -205,7 +208,7 @@ div.demo-description {
 	background-position: top left;
 }
 
-.left-nav .demos-nav {
+.left-nav .dowl-nav {
 	padding-right: 10px;
 }
 

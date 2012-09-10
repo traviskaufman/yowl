@@ -113,11 +113,9 @@ module DOWL
       ns = @@PredefinedNamespaces.include?(namespace_) ? @@PredefinedNamespaces[namespace_] : namespace_
       @prefixes.each() do |prefix, namespace|
         if testIsNamespace?(namespace, ns)
-puts "Found #{prefix} for #{namespace}"
           return prefix, namespace
         end
       end
-puts "Nothing found for #{namespace_}"
       return nil, nil
     end
     

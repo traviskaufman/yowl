@@ -64,10 +64,30 @@ module DOWL
       File.open(fileName, 'w') do |file|
         file.write(template.result(b))
       end
-    end    
+    end 
+    
+    private
+    def copyTemplateDir(src_, tgt_)
+      if Dir[src_] == []
+        return
+      end
+      puts "Copying #{src_} -> #{tgt_}"
+      FileUtils.cp_r src_, tgt_ 
+    end   
+    
+    private
+    def copyTemplates()
+      
+      @options.template_dirs.each do |template_dir|
+        copyTemplateDir("#{template_dir}/js", "#{@options.output_dir}")
+        copyTemplateDir("#{template_dir}/css", "#{@options.output_dir}")
+        copyTemplateDir("#{template_dir}/img", "#{@options.output_dir}")
+      end
+    end
     
     public
     def run()
+      copyTemplates()
       generateHtmlFile('index')
       generateHtmlFile('overview')
       generateHtmlFile('introduction')

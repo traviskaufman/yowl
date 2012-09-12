@@ -19,7 +19,7 @@
 		</script>	 
 	</head>
 	<body>
-		<div class="demo">
+		<div class="dowl">
 		<div class="accordion">
 
 		<h3><a href="#<%= schema.name %>-info"><%= schema.ontology.title %></a></h3>
@@ -111,7 +111,7 @@ def doClass(klass)
   return result
 end
 %>
-		<% if schema.root_classes.length > 0 %>
+		<% if schema.hasClasses? %>
 			<h3><a href="#<%= schema.name %>-classes-overview">Classes - Overview</a></h3>
 			<div>
 				<table class="classinfo">
@@ -133,7 +133,7 @@ end
 		
 		<% if schema.list_properties.length > 0 %>
 			<h3><a href="#<%= schema.name %>-properties">Properties - Overview</a></h3>
-			<div><div>
+			<div>
 				<% schema.list_properties().each do |key,val| %>
 			 	| <a href="#prop_<%= val.short_name %>"><%= val.short_name %></a>
 				<% end %>
@@ -141,7 +141,7 @@ end
 		<% end %>				
 
 		
-		<% if schema.root_classes.length > 0 %>
+		<% if schema.hasClasses? %>
 			<h3><a href="#<%= schema.name %>-classes">Classes</a></h3>
 			<div>
 				<table class="terms">
@@ -161,7 +161,7 @@ end
 					<% if t[1].hasComment? %>
 						<tr>
 							<td class="label">Abstract</td>
-							<td> 				   				
+							<td> 				
 								<%= t[1].comment %>
 							</td>
 						</tr>

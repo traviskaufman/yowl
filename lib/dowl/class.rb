@@ -190,7 +190,7 @@ module DOWL
     # Add the current class as a GraphViz node to the given collection of nodes
     # and to the given graph. Return the collection of nodes.
     #    
-    def addAsGraphvizNode (nodes, graph)
+    def addAsGraphvizNode (graph_, nodes_, edges_)
       name = short_name
       if @schema.options.verbose
         puts "- Processing class #{name}"
@@ -198,10 +198,10 @@ module DOWL
       #
       # No need to add a node twice
       #
-      if nodes.has_key? uri
-        return nodes
+      if nodes_.has_key? uri
+        return nodes_, edges_
       end
-      node = graph.add_nodes(escaped_uri)
+      node = graph_.add_nodes(escaped_uri)
       node.URL = "#class_#{short_name}"
       
       if name.include?(':')
@@ -218,8 +218,8 @@ module DOWL
       if hasComment?
         node.tooltip = comment
       end
-      nodes[uri] = node
-      return nodes
+      nodes_[uri] = node
+      return nodes_, edges_
     end
     
     public
@@ -237,14 +237,14 @@ module DOWL
       
       nodes = Hash.new
       edges = Hash.new
-      nodes = addAsGraphvizNode(nodes, g)
+      nodes, edges = addAsGraphvizNode(g, nodes, edges)
       
       #
       # Do the "outbound" associations first
       #
       associations.each do |association|
-        nodes = association.rangeClass.addAsGraphvizNode(nodes, g)
-        edges = association.addAsGraphVizEdge(edges, g, nodes)
+        nodes, edges = association.rangeClass.addAsGraphvizNode(g, nodes, edges)
+        nodes, edges = association.addAsGraphVizEdge(g, nodes, edges)
       end
       
       #
@@ -253,13 +253,36 @@ module DOWL
       @schema.classes.values.to_set.each do |klass|
         klass.associations.each do |association|
           if self == association.rangeClass
-            nodes = association.rangeClass.addAsGraphvizNode(nodes, g)
-            edges = association.addAsGraphVizEdge(edges, g, nodes)
+            nodes, edges = association.rangeClass.addAsGraphvizNode(g, nodes, edges)
+            nodes, edges = association.addAsGraphVizEdge(g, nodes, edges)
           end
         end
       end
       
       return GraphvizUtility.embeddableSvg(g)
+    end
+    
+    #
+    # Create the GraphVis Edge for all "is a" (rdf:type) associations from a node
+    # (representing a Class or Individual) to another node (always representing a Class)
+    #
+    def Class.newGraphVizEdge(graph_, domainNode_, rangeNode_, constraint_ = true)
+      options = {
+        :arrowhead => "empty", 
+        :dir => "back",
+        :label => "is a", 
+        :arrowsize => 0.5,
+        :penwidth => 0.5,
+        :constraint => constraint_
+      }
+      if not constraint_
+        options[:style] = :dashed
+      end
+      return graph_.add_edges(
+        rangeNode_,
+        domainNode_,
+        options
+      )
     end
 
   end

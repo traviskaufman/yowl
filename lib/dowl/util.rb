@@ -30,7 +30,14 @@ module DOWL
     end   
 
     def short_name()
-      return @schema.prefixedUri(uri)
+      name = @schema.prefixedUri(uri)
+      prefix = name.sub(/:.*/, '')
+      #
+      # If the short name looks like this then fix it a little:
+      #    <prefix>:<prefix>-name -> <prefix>:name
+      #
+      name = name.sub(/:#{prefix}-/, ':')
+      return name
     end
 
     def escaped_short_name()
@@ -90,6 +97,13 @@ module DOWL
       return get_literal(DOWL::Namespaces::RDFS.comment)
     end
     
+    def commentOrLabel()
+      if hasComment?
+        return comment
+      end
+      return label
+    end
+    
     def hasComment?
       comment = comment()
       return (comment and not comment.empty?)
@@ -130,11 +144,13 @@ module DOWL
       return g
     end
   	
-    def GraphvizUtility.embeddableSvg(g)
-      #puts "Generated Dot is:"
-      #puts g.output(:dot => String)
+    def GraphvizUtility.embeddableSvg(graph_, log_ = false)
+      if log_
+        puts "Generated Dot is:"
+        puts graph_.output(:dot => String)
+      end
 
-      svg = g.output(:svg => String)
+      svg = graph_.output(:svg => String)
       index = svg.index("<svg")
       
       return index ? svg[index..-1] : svg

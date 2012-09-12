@@ -126,6 +126,34 @@ body {
 	-moz-border-radius: 5px; -webkit-border-radius: 5px;
 }
 
+table.overview {
+	width: 100%;
+	border-spacing: 0;
+  	border-collapse: collapse;
+}
+
+table.overview th {
+	border-bottom: 1px black solid;
+}
+
+table.overview th.prefix {
+	width: 5%;
+	text-align: left;
+	border-bottom: 1px black solid;
+}
+
+table.overview td.prefix {
+	width: 5%;
+	text-align: left;
+	white-space:nowrap;
+}
+
+table.overview td.title {
+	text-align: left;
+	white-space:nowrap;
+	font-weight: bold;
+}
+
 table.classinfo {
 	width: 100%;
 	border-spacing: 0;

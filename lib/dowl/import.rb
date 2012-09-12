@@ -13,6 +13,7 @@ module DOWL
       @importedSchema = @schema.repository.getSchemaForImport(self)
       @importedOntology = @importedSchema ? @importedSchema.ontology : nil
       
+      #puts "Created Import #{uri}->#{escaped_uri}"
       if @importedSchema.nil?
         puts "WARNING: Created Import #{uri} but did not find schema for it "
       end

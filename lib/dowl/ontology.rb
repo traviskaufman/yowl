@@ -107,6 +107,10 @@ module DOWL
       return @schema.properties.size()
     end
     
+    def numberOfIndividuals()
+      return @schema.individuals.size()
+    end
+    
     public
     def imports
       @imports ||= init_imports

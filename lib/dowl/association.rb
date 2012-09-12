@@ -31,24 +31,36 @@ module DOWL
     # the current schema and whether the Association has already been added
     # to the graph (by checking the given edges collection).
     #
-    def addAsGraphVizEdge(edges, graph, nodes)
+    def addAsGraphVizEdge(graph_, nodes_, edges_)
 
-      if not nodes.has_key?(@domainClass.uri)
-        return edges
+      if not nodes_.has_key?(@domainClass.uri)
+        return nodes_, edges_
       end
-      if not nodes.has_key?(@rangeClass.uri)
-        return edges
+      if not nodes_.has_key?(@rangeClass.uri)
+        return nodes_, edges_
       end
-      if edges.has_key?(@key)
-        return edges
+      if edges_.has_key?(@key)
+        return nodes_, edges_
       end
-      
-      domainClassNode = nodes[@domainClass.uri]
-      rangeClassNode = nodes[@rangeClass.uri]
-      
-      edges[@key] = graph.add_edges(domainClassNode, rangeClassNode, :label => label, :arrowhead => :open, :arrowsize => 0.5)
-      
-      return edges
+
+      domainClassNode = nodes_[@domainClass.uri]
+      rangeClassNode = nodes_[@rangeClass.uri]
+
+      edges_[@key] = Association.newGraphVizEdge(graph_, domainClassNode, rangeClassNode, label)
+
+      return nodes_, edges_
+    end
+
+    def Association.newGraphVizEdge(graph_, domainNode_, rangeNode_, label_, constraint_ = true)
+      return graph_.add_edges(
+        domainNode_,
+        rangeNode_,
+        :label => label_, 
+        :arrowhead => :open, 
+        :arrowsize => 0.5,
+        :penwidth => 0.5,
+        :constraint => constraint_
+      )
     end
   end
 end

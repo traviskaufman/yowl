@@ -10,30 +10,30 @@
 		<script src="./js/jquery-ui-1.8.23.custom.min.js"></script>
 	</head>
 	<body>
-		<table border="0" width="100%">
+		<table class="overview" border="0" width="100%">
 		<tr class="header">
-			<th align="left">PREFIX</th>
-			<th align="left">Namespace</th>
+			<th class="prefix">PREFIX</th>
 			<th align="left">Ontology Name</th>
-			<th align="right"># Properties</th>
-			<th align="right"># Imports</th>
 			<th align="right"># Classes</th>
+			<th align="right"># Properties</th>
+			<th align="right"># Individuals</th>
+			<th align="right"># Imports</th>
 			<th align="right">Modified</th>
 		</tr>
 		<% ontologies.each do |ontology| %>
 			<tr>
-				<td class="prefix"><a href="./ontology/<%= ontology.resourceNameHtml %>"><%= ontology.short_name %></a></td>
-				<td class="namespace"><a href="./ontology/<%= ontology.resourceNameHtml %>"><%= ontology.ns %></a></td>
+				<td class="prefix"><a href="./ontology/<%= ontology.resourceNameHtml %>" title="<%= ontology.ns %>"><%= ontology.short_name %></a></td>
 				<td class="title"><%= ontology.title %></td>
 				<td align="right"><%= ontology.numberOfClasses %></td>
 				<td align="right"><%= ontology.numberOfProperties %></td>
+				<td align="right"><%= ontology.numberOfIndividuals %></td>
 				<td align="right"><%= ontology.imports.size %></td>
 				<td align="right"><%= ontology.modified %></td>
 			</tr>
 			<% if ontology.hasComment? %>
 				<tr>
-					<td colspan="2">&nbsp;</td>
-					<td colspan="5"><%= ontology.comment %></td>
+					<td colspan="1">&nbsp;</td>
+					<td colspan="6"><%= ontology.comment %></td>
 				</tr>
 			<% end %>
 		<% end %>

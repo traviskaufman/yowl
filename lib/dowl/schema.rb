@@ -151,6 +151,11 @@ module DOWL
     end
     
     public
+    def hasClasses?
+      return ! @classes.empty?
+    end 
+    
+    public
     def list_object_properties()
       return object_properties().sort { |x,y| x[1] <=> y[1] }
     end    
@@ -318,10 +323,10 @@ module DOWL
       #
       rootClasses.each() do |klass|
         nonRootClasses.delete(klass)
-        nodes = klass.addAsGraphvizNode(nodes, sg)
+        nodes, edges = klass.addAsGraphvizNode(sg, nodes, edges)
       end
       nonRootClasses.each() do |klass|
-        nodes = klass.addAsGraphvizNode(nodes, g)
+        nodes, edges = klass.addAsGraphvizNode(g, nodes, edges)
       end
       #
       # Process edges to super classes, we can ignore the root classes here
@@ -337,7 +342,7 @@ module DOWL
             if @options.verbose
               puts "  - Processing super class #{superClass.short_name}"
             end
-            g.add_edges(nodes[klass.uri], superClassNode, :label => "is a", :arrowhead => :empty, :arrowsize => 0.5)
+            Class.newGraphVizEdge(g, nodes[klass.uri], superClassNode)
           else
             if @options.verbose
               puts "  - Processing super class #{superClass.short_name}, not found"
@@ -357,7 +362,7 @@ module DOWL
           if @options.verbose
             puts "    - Adding edge #{association.rangeClass.short_name}, #{association.label}"
           end
-          edges = association.addAsGraphVizEdge(edges, g, nodes)
+          nodes, edges = association.addAsGraphVizEdge(g, nodes, edges)
         end
       end
       
@@ -366,7 +371,10 @@ module DOWL
 
     public
     def individuals
-      @individuals ||= init_individuals
+      if not defined?(@individuals)
+        init_individuals
+      end
+      return @individuals
     end
     
     private
@@ -394,8 +402,9 @@ sparql
       solutions.each do |solution|
         Individual.withUri(solution[:resource], self)
       end
-       
-      return @individuals
+      if @options.verbose
+        puts "Initialized All Individuals in #{@name}"
+      end
     end
     
   end  

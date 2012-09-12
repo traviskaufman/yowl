@@ -48,9 +48,11 @@ module DOWL
       
       label.sub!(/^r29-/, "") # TODO: Make this configurable via setting in ontology
 
-      
       classes.each do |klass|
-        label.chomp!("-#{klass.short_name}")
+        className = klass.short_name
+        label.chomp!("-#{className}")
+        className.sub!(/.*:/, '')
+        label.chomp!("-#{className}")
       end
 
       return label
@@ -260,6 +262,22 @@ sparql
       return @inboundAssociations
     end
     
+    private
+    def labelAsGraphvizRecord
+      lbl = label.gsub("_", " ")
+      if prefix and prefix = "r29" # TODO: make configurable
+        prefix = nil
+      end
+      lbl = prefix.nil? ? lbl : "#{lbl} | #{prefix}"
+      lbl = "#{lbl} |"
+      classes.each do |klass|
+        lbl += " #{klass.short_name} |"
+      end
+      lbl.chomp!(" |")
+      puts "---------#{lbl}------"
+      return lbl    
+    end
+    
     public
     #
     # Add the current Individual as a GraphViz node to the given collection of nodes
@@ -279,17 +297,18 @@ sparql
         return nodes_, edges_
       end
       options = {
-        :label => gvLabel,
+        :shape => :record,
+        :style => "rounded,filled",
+        :label => labelAsGraphvizRecord,
         :tooltip => uri,
         :peripheries => 1, 
-        :margin => "0.11,0.055",
-        :fontcolor => "black",
+        :margin => "0.21,0.055",
+        :fontcolor => :black,
         :fontsize => 8,
         :penwidth => 0.5,
-        :shape => :ellipse,
-        :style => :filled,
-        :color => "black",
-        :fillcolor => "#FCFCFC"
+        :color => :black,
+        :fillcolor => "#FCFCFC",
+        :href => "#individual_#{short_name}"
       }
       if level_ == maxLevel_
         options[:color] = "red"
@@ -297,17 +316,16 @@ sparql
       end
       node = graph_.add_nodes(escaped_uri, options)
       nodes_[uri] = node
-      #node.URL = "#individual#{short_name}"
+      node.URL = "#individual_#{short_name}"
       
-      node.label = gvLabel
       #if hasComment?
       #  node.tooltip = comment
       #end
       
-      classes.each do |klass|
-        nodes_, edges_ = klass.addAsGraphvizNode(graph_, nodes_, edges_)
-        Class.newGraphVizEdge(graph_, node, nodes_[klass.uri], false)
-      end
+      #classes.each do |klass|
+      #  nodes_, edges_ = klass.addAsGraphvizNode(graph_, nodes_, edges_)
+      #  Class.newGraphVizEdge(graph_, node, nodes_[klass.uri], false)
+      #end
 
       inboundAssociations.each do |association|
         nodes_, edges_ = association.addAsGraphVizEdge(graph_, nodes_, edges_, level_ - 1)

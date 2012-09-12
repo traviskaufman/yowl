@@ -25,6 +25,10 @@
 		<h3><a href="#<%= schema.name %>-info"><%= schema.ontology.title %></a></h3>
 		<div>
 			<dl>
+				<% if schema.ontology.hasComment? %>	
+					<dt>Abstract</dt>
+					<dd><%= schema.ontology.comment %></dd>
+				<% end %>
 				<dt>Latest Version</dt>
 					<dd><a href="../ontology/<%= schema.ontology.resourceNameHtml %>"><%= schema.ontology.ns %></a></dd>
 		  		<% if schema.ontology.created %>
@@ -54,13 +58,6 @@
 			</dl>
 		</div>
 	
-		<% if schema.ontology.hasComment? %>	
-			<h3><a href="#<%= schema.name %>-abstract">Abstract</a></h3>
-			<div>
-				<%= schema.ontology.comment %>
-			</div>
-		<% end %>
-		
 		<% if introduction %>
 			<h3><a href="#<%= schema.name %>-intro">Introduction</a></h3>
 			<div>
@@ -411,8 +408,8 @@ end
 	   					rowSpan += 1 if individual.hasComment?
 	   					rowSpan += 1 if individual.classes.length > 0
 	   				%>
-	   				<tr id="class_<%= individual.short_name %>">
-	   					<th colspan="2" class="termName"><%= individual.short_name %></th>
+	   				<tr>
+	   					<th colspan="2" class="termName"><a href="#individual_<%= individual.short_name %>"><%= individual.short_name %></a></th>
 	   					<th rowspan="<%= rowSpan %>" valign="top"><%= individual.asSvg %></th>
 	   				</tr>
 					<% if individual.hasComment? %>

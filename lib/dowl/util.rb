@@ -129,17 +129,17 @@ module DOWL
       g.node[:style] = "rounded,filled"
       g.node[:fillcolor] = "#0861DD" 
       g.node[:fontcolor] = "white"
-      g.node[:fontname] = "Verdana" 
+      g.node[:fontname] = "Helvetica" 
       g.node[:shape] = "box"
       g.node[:fontsize] = 8
       g.node[:fixedsize] = false # Classes with long names need wider boxes
       g.node[:width] = 1
       g.node[:height] = 0.4
         
-      g.edge[:fontname] = "Verdana"
-      g.edge[:fontsize] = 6
+      g.edge[:fontname] = "Helvetica"
+      g.edge[:fontsize] = 7
       g.edge[:fontcolor] = "#0861DD"
-      g.edge[:labeldistance] = 2
+      g.edge[:labeldistance] = 1
         
       return g
     end

@@ -63,14 +63,15 @@ module DOWL
         return nodes_, edges_
       end
       
-      edges_[@key] = graph_.add_edges(
-        domainIndividualNode, 
-        rangeIndividualNode, 
-        :headlabel => label, 
+      options = {
+        :label => label.sub(/.*:/, ''),
+        :tooltip => uri.to_s, 
         :arrowhead => :open, 
         :arrowsize => 0.5,
         :penwidth => 0.5
-      )
+      }
+      
+      edges_[@key] = graph_.add_edges(domainIndividualNode, rangeIndividualNode, options)
       
       return nodes_, edges_
     end

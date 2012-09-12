@@ -51,7 +51,9 @@ module DOWL
     public
     def Schema.fromFile(ontology_file_name, repository)
       
-      puts "Read Schema #{ontology_file_name}"
+      if repository.options.verbose
+        puts "Read Schema #{ontology_file_name}"
+      end
       prefixes = Schema::read_prefixes(ontology_file_name)
       
       format = RDF::Format.for(ontology_file_name)

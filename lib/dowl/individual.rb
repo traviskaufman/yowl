@@ -125,6 +125,42 @@ module DOWL
         end
       end
     end
+
+    public
+    def isSkosConceptScheme?
+      conceptSchemeClassURI = DOWL::Namespaces::SKOS.ConceptScheme.to_s
+      types.each do |type|
+        puts "isSkosConceptScheme #{type.to_s} #{conceptSchemeClassURI}"
+        if type.to_s == conceptSchemeClassURI
+          return true 
+        end
+      end
+      return false
+    end
+    
+    public
+    def isSkosConcept?
+      puts "isSkosConcept #{@resource}"
+      inScheme = get_literal(DOWL::Namespaces::SKOS.inScheme)
+      if not inScheme.nil?
+        return true
+      end
+      topConceptOf = get_literal(DOWL::Namespaces::SKOS.topConceptOf)
+      if not topConceptOf.nil?
+         return true
+      end
+      return false
+    end
+    
+    public
+    def isSkosConceptInScheme?(conceptScheme_)
+      puts "isSkosConceptInScheme #{@resource}"
+      inScheme = get_literal(DOWL::Namespaces::SKOS.inScheme)
+      if inScheme and inScheme.uri == conceptScheme_.uri
+        return true
+      end
+      return false
+    end
     
     public
     #
@@ -265,7 +301,7 @@ sparql
     private
     def labelAsGraphvizRecord
       lbl = label.gsub("_", " ")
-      if prefix and prefix = "r29" # TODO: make configurable
+      if prefix and prefix == "r29" # TODO: make configurable
         prefix = nil
       end
       lbl = prefix.nil? ? lbl : "#{lbl} | #{prefix}"
@@ -274,7 +310,7 @@ sparql
         lbl += " #{klass.short_name} |"
       end
       lbl.chomp!(" |")
-      puts "---------#{lbl}------"
+      #puts "---------#{lbl}------"
       return lbl    
     end
     

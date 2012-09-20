@@ -62,8 +62,11 @@ module DOWL
       end
       begin
         model = RDF::Graph.load(ontology_file_name, { :format => format.to_sym, :prefixes => prefixes })
-      rescue
-        warn "ERROR: Error while parsing #{ontology_file_name}"
+      rescue URI::InvalidURIError => e
+        warn "ERROR: Invalid URI Error while parsing #{ontology_file_name}: #{e.to_s}"
+        return nil
+      rescue Exception => e
+        warn "ERROR: #{e.class.to_s} Error while parsing #{ontology_file_name}: #{e}"
         return nil
       end
       
@@ -83,9 +86,16 @@ module DOWL
         warn "ERROR: Error while parsing prefixes from #{ontology_file_name} (only works for RDF/XML format)"
         return prefixes
       end
-      xmldoc.doctype.entities.each() do |prefix, entity|
-        namespace = entity.normalized()
-        if namespace.include?('://')
+      if xmldoc.doctype
+        xmldoc.doctype.entities.each() do |prefix, entity|
+          namespace = entity.normalized()
+          if namespace.include?('://')
+            prefixes[prefix.to_sym] = namespace
+          end
+        end
+      end
+      if xmldoc.root
+        xmldoc.root.namespaces.each() do |prefix, namespace|
           prefixes[prefix.to_sym] = namespace
         end
       end
@@ -370,7 +380,28 @@ module DOWL
       
       return GraphvizUtility.embeddableSvg(g)
     end
+    
+    public
+    def skosConceptSchemes
+      return individuals.values.find_all do |individual|
+        individual.isSkosConceptScheme?
+      end
+    end
 
+    public
+    def skosConceptsInScheme(conceptScheme)
+      return individuals.values.find_all do |individual|
+        individual.isSkosConceptInScheme?(conceptScheme)
+      end
+    end
+
+    public
+    def individualsNotSkosConcepts
+      return individuals.values.find_all do |individual|
+        not individual.isSkosConceptScheme?
+      end
+    end
+    
     public
     def individuals
       if not defined?(@individuals)

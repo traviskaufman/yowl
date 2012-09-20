@@ -35,6 +35,7 @@ module DOWL
     DCTERMS = RDF::Vocabulary.new("http://purl.org/dc/terms/")
     FOAF = RDF::Vocabulary.new("http://xmlns.com/foaf/0.1/")
     VANN = RDF::Vocabulary.new("http://purl.org/vocab/vann/")
+    SKOS = RDF::Vocabulary.new("http://www.w3.org/2004/02/skos/core#")
         
   end
 

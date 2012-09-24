@@ -14,10 +14,10 @@ module DOWL
       @importedOntology = @importedSchema ? @importedSchema.ontology : nil
       
       if @importedSchema.nil?
-        puts "WARNING: Created Import #{uri} but did not find schema for it "
+        puts "WARNING: #{@schema.fileName}: Created Import #{uri} but did not find schema for it "
       end
       if @importedOntology.nil?
-        puts "WARNING: Created Import #{uri} but did not find ontology for it "
+        puts "WARNING: #{@schema.fileName}: Created Import #{uri} but did not find ontology for it "
       end
     end
     

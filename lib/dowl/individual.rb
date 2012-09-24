@@ -130,7 +130,7 @@ module DOWL
     def isSkosConceptScheme?
       conceptSchemeClassURI = DOWL::Namespaces::SKOS.ConceptScheme.to_s
       types.each do |type|
-        puts "isSkosConceptScheme #{type.to_s} #{conceptSchemeClassURI}"
+        #puts "isSkosConceptScheme #{type.to_s} #{conceptSchemeClassURI}"
         if type.to_s == conceptSchemeClassURI
           return true 
         end
@@ -154,9 +154,9 @@ module DOWL
     
     public
     def isSkosConceptInScheme?(conceptScheme_)
-      puts "isSkosConceptInScheme #{@resource}"
       inScheme = get_literal(DOWL::Namespaces::SKOS.inScheme)
       if inScheme and inScheme.uri == conceptScheme_.uri
+        puts "isSkosConceptInScheme #{@resource}: #{inScheme.uri}"
         return true
       end
       return false

@@ -18,10 +18,14 @@ def doImport(import_, imported_)
   	return result
   end
   imported_ << import_
+  prefix = ""
+  if import_.name != import_.uri
+    prefix = "&nbsp;<b>#{import_.name}</b>"
+  end
   if import_.repository.knowsImport(import_)
-    result = "\n<li><a href=\"#{import_.repository.getSchemaNameForImport(import_)}.html\">#{import_.uri} (#{import_.name})</a></li>"
+    result = "\n<li><a href=\"#{import_.repository.getSchemaNameForImport(import_)}.html\">#{import_.uri}</a>#{prefix}</li>"
   else
-    result = "\n<li><a href=\"#{import_.uri}\">#{import_.uri} (#{import_.name})</a></li>"
+    result = "\n<li><a href=\"#{import_.uri}\">#{import_.uri}</a>#{prefix}</li>"
   end
   imports = import_.imports()
   if ! imports.empty?() 
@@ -52,7 +56,7 @@ end
 		<div class="dowl">
 			<div id="tabs">
 		 		<ul>
-		 			<li><a title="Overview" href="overview.html">Overview</a></li>
+		 			<li><a title="Overview" href="index.html">Overview</a></li>
 		 			<li><a title="Import Diagram" href="import-diagram.html">Import Diagram</a></li>
 					<% schema.repository.ontologies.each do |ontology| %>
 						<% if ontology == schema.ontology %>

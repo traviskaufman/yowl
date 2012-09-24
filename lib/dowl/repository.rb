@@ -21,6 +21,7 @@ module DOWL
         schema = Schema.fromFile(ontology_file_name, self)
         if schema
           @schemas[schema.uri] = schema
+          #puts "Registered schema with URI #{schema.uri}"
         end
       end
     end  

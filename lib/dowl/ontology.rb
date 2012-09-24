@@ -23,7 +23,32 @@ module DOWL
     end
     
     def ns()
-      return @resource.to_s
+      @ns ||= init_ns()
+      return @ns
+    end
+    
+    def init_ns()
+      _uri = @resource.to_s
+      @schema.prefixes.each do |prefix, namespace|
+        if _uri == namespace
+          return namespace
+        end
+        _tmp = "#{_uri}/"
+        if _tmp == namespace
+          return _tmp
+        end
+        _tmp = "#{_uri}#"
+        if "#{_uri}#" == namespace
+          return _tmp
+        end
+      end
+      if _uri[-1..1] == '/' or _uri[-1..1] == '#'
+        return _uri
+      end
+      #
+      # Basically make up a namespace... Don't know if this is such a good plan..
+      #
+      return "#{_uri}#"
     end
     
     def short_name()

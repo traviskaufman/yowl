@@ -14,6 +14,7 @@ module DOWL
     attr_reader :repository
     attr_reader :model
     attr_reader :base
+    attr_reader :fileName
     attr_reader :prefixes
     attr_reader :name
     attr_reader :introduction
@@ -32,10 +33,10 @@ module DOWL
       @prefixes = prefixes_
       @base = base_
       @fileName = fileName_
-
+      
       if options.verbose
         @prefixes.each_pair do |prefix, namespace|
-          puts " PREFIX #{prefix}: #{namespace}"
+          puts "#{fileName_}: PREFIX #{prefix}: #{namespace}"
         end
       end
 
@@ -49,6 +50,14 @@ module DOWL
       
       init_ontology()
       init_name()
+
+      puts "***********************************"
+      puts "* Instantiated Schema"
+      puts "* File: #{@fileName}"
+      puts "* URI : #{uri}"
+      puts "* Base: #{@base}"
+      puts "* Name: #{@name}"
+      puts "***********************************"
     end
     
     public
@@ -94,13 +103,19 @@ module DOWL
         xmldoc.doctype.entities.each() do |prefix, entity|
           namespace = entity.normalized()
           if namespace.include?('://')
-            prefixes[prefix.to_sym] = namespace
+            prefixes[prefix.to_sym] = Schema.isValidNamespace?(namespace, prefix, ontology_file_name)
           end
         end
       end
       if xmldoc.root
         xmldoc.root.namespaces.each() do |prefix, namespace|
-          prefixes[prefix.to_sym] = namespace
+          #
+          # Ignore the default namespace until we know what to do with it
+          #
+          if prefix != "xmlns"
+            #puts "@@@@@@@@@@@@ #{prefix} #{namespace}"
+            prefixes[prefix.to_sym] = Schema.isValidNamespace?(namespace, prefix, ontology_file_name)
+          end
         end
         base = xmldoc.root.attribute('base')
         if base
@@ -111,9 +126,18 @@ module DOWL
       return prefixes, base
     end
     
+    private
+    def Schema.isValidNamespace?(ns_, prefix_, fileName_)
+      #puts "prefix #{prefix_}: #{ns_}"
+      if ns_[-1..-1] != '#' and ns_[-1..-1] != '/'
+        raise "ERROR: Namespace for prefix #{prefix_} in @prefixes of #{fileName_} without trailing hash or slash: #{ns_}"
+      end
+      return ns_
+    end
+    
     public
     def uri
-      return @base.nil? ? @ontology.uri : @base
+      return @ontology ? @ontology.uri : @base
       #return @ontology.nil? ? @base : @ontology.uri
     end
 
@@ -131,9 +155,9 @@ module DOWL
     # When no namespace could be found, return two nils.
     public
     def prefixForNamespace(namespace_)
-      ns = @@PredefinedNamespaces.include?(namespace_) ? @@PredefinedNamespaces[namespace_] : namespace_
+      _ns = @@PredefinedNamespaces.include?(namespace_) ? @@PredefinedNamespaces[namespace_] : namespace_
       @prefixes.each() do |prefix, namespace|
-        if testIsNamespace?(namespace, ns)
+        if testIsNamespace?(namespace, _ns)
           return prefix, namespace
         end
       end
@@ -257,9 +281,9 @@ module DOWL
           #
           ns = @ontology.get_literal(DOWL::Namespaces::VANN.preferredNamespaceUri)
           if ns
-            prefixes[@name] = ns
+            @prefixes[@name.to_sym] = Schema.isValidNamespace?(ns, prefix, @fileName)
           else
-            prefixes[@name] = @ontology.ns
+            @prefixes[@name.to_sym] = Schema.isValidNamespace?(@ontology.ns, prefix, @fileName)
           end
         else
           warn "WARNING: vann:preferredNamespacePrefix not found in #{@fileName}"
@@ -269,7 +293,7 @@ module DOWL
         @name = File.basename(@fileName, File.extname(@fileName))
         #@name = @ontology.escaped_short_name()
       end
-      puts "Schema #{@fileName} gets name #{@name} #{uri}"
+      #puts "Schema #{@fileName} gets name #{@name} #{uri}"
       if (@name.nil? or @name.empty?())
         raise "ERROR: No name found for the schema"
       end
@@ -299,7 +323,10 @@ module DOWL
           return prefix.to_s
         end
         if namespace[-1..-1] != '#' and namespace[-1..-1] != '/'
-          raise "ERROR: Namespace in @prefixes without trailing hash or slash: #{namespace}"
+          @prefixes.each_pair do |prefix, namespace|
+            puts "#{@fileName}: PREFIX #{prefix}: #{namespace}"
+          end
+          raise "ERROR: Namespace in @prefixes of #{@fileName} without trailing hash or slash: #{namespace}"
         end
         if uri.include?(namespace)
           if @ontology and namespace == @ontology.ns

@@ -68,7 +68,7 @@ end
 		 		</ul>
 			</div>
 			<div id="content" class="accordion">                 
-				<h3><a href="#<%= schema.name %>-info">Ontology - <%= schema.ontology.title %></a></h3>
+				<h3><a id="<%= schema.name %>-info">Ontology - <%= schema.ontology.title %></a></h3>
 				<div>
 					<dl>
 						<% if schema.ontology.hasDefinition? %>
@@ -109,14 +109,14 @@ end
 				</div>
 			
 				<% if introduction %>
-					<h3><a href="#<%= schema.name %>-intro">Introduction</a></h3>
+					<h3><a id="<%= schema.name %>-intro">Introduction</a></h3>
 					<div>
 						<%= introduction %>
 					</div>
 				<% end %>
 		
 				<% if schema.ontology.imports.length > 0 %>
-					<h3><a href="#<%= schema.name %>-imports">Imports</a></h3>
+					<h3><a id="<%= schema.name %>-imports">Imports</a></h3>
 					<div>
 						<ul class="class">
 						<% imported = [] %>
@@ -128,7 +128,7 @@ end
 				<% end %>
 
 				<% if schema.hasClasses? %>
-					<h3><a href="#<%= schema.name %>-classes-overview">Classes - Overview</a></h3>
+					<h3><a id="<%= schema.name %>-classes-overview">Classes - Overview</a></h3>
 					<div>
 						<table class="classinfo">
 							<tr>
@@ -148,7 +148,7 @@ end
 			    <% end %>
 				
 				<% if schema.list_properties.length > 0 %>
-					<h3><a href="#<%= schema.name %>-properties">Properties - Overview</a></h3>
+					<h3><a id="<%= schema.name %>-properties">Properties - Overview</a></h3>
 					<div>
 						<ul>
 							<% schema.list_properties().each do |key,val| %>
@@ -159,7 +159,7 @@ end
 				<% end %>				
 		
 				<% if schema.hasClasses? %>
-					<h3><a href="#<%= schema.name %>-classes">Classes</a></h3>
+					<h3><a id="<%= schema.name %>-classes">Classes</a></h3>
 					<div>
 						<table class="terms">
 			   			<%schema.list_classes().each do |t| %>
@@ -174,8 +174,8 @@ end
 			   					rowSpan += 1 if t[1].subClasses.length > 0
 			   					rowSpan += 1 if t[1].see_alsos.length > 0
 			   				%>
-			   				<tr id="class_<%= t[1].short_name %>">
-			   					<th colspan="2" class="termName"><%= t[1].short_name %><% if t[1].hasDifferentLabel? %> (<%= t[1].label %>)<% end %></th>
+			   				<tr>
+			   					<th colspan="2" class="termName"><a id="class_<%= t[1].short_name %>"><%= t[1].short_name %><% if t[1].hasDifferentLabel? %> (<%= t[1].label %>)</a><% end %></th>
 			   					<th rowspan="<%= rowSpan %>" valign="top"><%= t[1].perClassDiagramAsSvg %></th>
 			   				</tr>
 							<% if t[1].hasOtherNamespace? %>
@@ -250,7 +250,7 @@ end
 				<%end%>
 			
 				<% if schema.list_object_properties.length > 0 %>
-					<h3><a href="#<%= schema.name %>-object-properties">Object Properties</a></h3>
+					<h3><a id="<%= schema.name %>-object-properties">Object Properties</a></h3>
 					<div>
 						<table class="terms">
 				   		<% schema.list_object_properties().each do |t| %>
@@ -378,7 +378,7 @@ end
 				<% end %>
 					
 				<% if schema.list_datatype_properties.length > 0 %>
-					<h3><a href="#<%= schema.name %>-datatype-properties">Datatype Properties</a></h3>
+					<h3><a id="<%= schema.name %>-datatype-properties">Datatype Properties</a></h3>
 					<div>
 						<table class="terms">
 				   		<% schema.list_datatype_properties().each do |t| %>
@@ -435,7 +435,7 @@ end
 			   					<% if t[1].sub_property_of.class.to_s == "String" %>	   				
 			   						<tr>
 			   							<td class="label">Has Parent Property</td>
-			   							<td><a href="<%= t[1].sub_property_of %>"><%= t[1].sub_property_of %></a></td>
+			   							<td><a href="#prop_<%= t[1].sub_property_of %>"><%= t[1].sub_property_of %></a></td>
 			   						</tr>
 			   					<% else %>
 			   						<tr>
@@ -463,7 +463,7 @@ end
 			   							<ul>
 					   					<% t[1].range.each do |cls| %>
 					   						<% if cls.class.to_s == "String" %>
-					   							<li><a href="<%= cls %>"><%= cls %></a></li>
+					   							<li><a href="#class_<%= cls %>"><%= cls %></a></li>
 					   						<% else %>
 					   							<li><a href="#class_<%= cls.short_name %>"><%= cls.short_name %></a></li>
 					   						<% end %>
@@ -479,7 +479,7 @@ end
 			   							<ul>
 					   					<% t[1].domain.each do |cls| %>
 					   						<% if cls.class.to_s == "String" %>
-					   							<li><a href="<%= cls %>"><%= cls %></a></li>
+					   							<li><a href="#class_<%= cls %>"><%= cls %></a></li>
 					   						<% else %>
 					   							<li><a href="#class_<%= cls.short_name %>"><%= cls.short_name %></a></li>
 					   						<% end %>
@@ -506,7 +506,7 @@ end
 				<%end%>
 		
 				<% schema.skosConceptSchemes.each do |conceptScheme| %>
-					<h3><a href="#<%= schema.name %><%= conceptScheme.short_name %>-taxonomy">SKOS Concept Scheme <%= conceptScheme.short_name %></a></h3>
+					<h3><a id="<%= schema.name %><%= conceptScheme.short_name %>-taxonomy">SKOS Concept Scheme <%= conceptScheme.short_name %></a></h3>
 					<div>
 						<table class="terms">
 			   			<% schema.skosConceptsInScheme(conceptScheme).each do |individual| %>
@@ -557,7 +557,7 @@ end
 				<%end%>
 				
 				<% if schema.individualsNotSkosConcepts.length > 0 %>
-					<h3><a href="#<%= schema.name %>-individuals">Individuals</a></h3>
+					<h3><a id="<%= schema.name %>-individuals">Individuals</a></h3>
 					<div>
 						<table class="terms">
 			   			<%schema.individualsNotSkosConcepts.each do |individual| %>

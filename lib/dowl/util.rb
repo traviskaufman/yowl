@@ -39,7 +39,16 @@ module DOWL
     end
     
     def hasOtherNamespace?
-      return ns != @schema.base
+      schemaUri = @schema.uri
+      case
+      when schemaUri == ns
+        return false
+      when "#{schemaUri}#" == ns
+        return false
+      when "#{schemaUri}/" == ns
+        return false
+      end
+      return true
     end
 
     def short_name()

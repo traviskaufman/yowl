@@ -198,6 +198,11 @@ table.terms li {
 	margin-bottom: 0px;
 }
 
+.styleTable { border-collapse: separate; }
+.styleTable TD { font-weight: normal !important; padding: .4em; border-top-width: 0px !important; }
+.styleTable TH { padding: .8em .4em; }
+.styleTable TD.first, .styleTable TH.first { border-left-width: 0px !important; }
+
 /* new styles for demo pages, added by Filament 12.29.08
 eventually we should convert the font sizes to ems -- using px for now to minimize style conflicts
 */

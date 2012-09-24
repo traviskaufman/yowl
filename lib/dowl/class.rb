@@ -1,6 +1,7 @@
-
 module DOWL
+
   class Class < DOWL::LabelledDocObject
+    
     include Comparable
 
     attr_reader :resource
@@ -34,12 +35,6 @@ module DOWL
     end
 
     public
-    def ns()
-      lastChar = uri[-1,1] 
-      return (lastChar == '/' or lastChar == '#') ? uri : uri + '#'
-    end
-    
-    public
     def short_name()
       sn = super()
       if sn[0,7] == "http://" or sn[0,8] == "https://"
@@ -54,23 +49,6 @@ module DOWL
     end
 
     public
-    def definition()
-      return get_literal(DOWL::Namespaces::SKOS.definition)
-    end
-
-    public
-    def see_alsos()
-      links = []
-      @schema.model.query(
-      RDF::Query::Pattern.new(@resource, DOWL::Namespaces::RDFS.seeAlso)
-      ) do |statement|
-        links << statement.object.to_s
-      end
-      return links
-    end
-
-    public
-
     def super_classes()
       if not @super_classes.nil?
         return @super_classes
@@ -110,13 +88,11 @@ module DOWL
     end
 
     public
-
     def hasSuperClasses?
       return ! super_classes.empty?()
     end
 
     public
-
     def hasSuperClassesInSchema?
       super_classes.each() do |klass|
         if @schema.classes.include?(klass.uri)
@@ -127,7 +103,6 @@ module DOWL
     end
 
     public
-
     def subClasses()
       if @subClasses
         return @subClasses
@@ -151,13 +126,11 @@ module DOWL
     end
 
     public
-
     def hasSubClasses?
       return ! subClasses.empty?()
     end
 
     public
-
     #
     # Return a collection of Associations representing ObjectProperties
     # where the current class is one of the Domain classes.
@@ -228,19 +201,27 @@ module DOWL
       node = graph_.add_nodes(escaped_uri)
       node.URL = "#class_#{short_name}"
       
+      prefix = nil
       if name.include?(':')
         prefix = name.sub(/:\s*(.*)/, "")
         name = name.sub(/(.*)\s*:/, "")
+      end
+      name = name.split(/(?=[A-Z])/).join(' ')
+      if prefix
         #
         # Can't get HTML labels to work
         #
-        #node.label = "<TABLE BORDER=\"0\" CELLBORDER=\"1\" CELLSPACING=\"0\"><TR><TD>#{name}</TD></TR><TR><TD><I>(#{prefix})</I></TD></TR></TABLE>"
-        node.label = "#{name}\n(#{prefix})"
-      else
-        node.label = name
-      end 
+        #name = "<TABLE BORDER=\"0\" CELLBORDER=\"1\" CELLSPACING=\"0\"><TR><TD>#{name}</TD></TR><TR><TD><I>(#{prefix})</I></TD></TR></TABLE>"
+        name = "#{name}\n(#{prefix})"
+      end
+      node.label = name
+      
       if hasComment?
         node.tooltip = comment
+      else 
+        if hasDefinition?
+          node.tooltip = definition
+        end
       end
       nodes_[uri] = node
       return nodes_, edges_
@@ -292,10 +273,11 @@ module DOWL
     #
     def Class.newGraphVizEdge(graph_, domainNode_, rangeNode_, constraint_ = true)
       options = {
-        :arrowhead => "empty", 
-        :dir => "back",
+        :arrowhead => :empty,
+        :arrowsize => 0.5,  
+        :dir => :back,
         :label => "is a", 
-        :arrowsize => 0.5,
+        :labeldistance => 2,
         :penwidth => 0.5,
         :constraint => constraint_
       }

@@ -27,7 +27,20 @@ module DOWL
         return uri == uri_
       end
       return @resource == uri_
-    end   
+    end  
+    
+    def ns()
+      _uri = uri()
+      lastChar = _uri[-1,1]
+      if  lastChar == '/' or lastChar == '#'
+        return _uri
+      end
+      return _uri[0.._uri.rindex(/[#\/]/)]
+    end
+    
+    def hasOtherNamespace?
+      return ns != @schema.base
+    end
 
     def short_name()
       name = @schema.prefixedUri(uri)
@@ -116,6 +129,39 @@ module DOWL
       return (comment and not comment.empty?)
     end
     
+    def definition()
+      return get_literal(DOWL::Namespaces::SKOS.definition)
+    end
+    
+    def hasDefinition?
+      definition = definition()
+      return (definition and not definition.empty?)
+    end
+
+    def editorialNotes()
+      notes = []
+      @schema.model.query(
+        RDF::Query::Pattern.new(@resource, DOWL::Namespaces::SKOS.editorialNote)
+      ) do |statement|
+        notes << statement.object.to_s
+      end
+      return notes
+    end
+
+    def hasEditorialNotes?
+      return editorialNotes.length > 0
+    end
+    
+    def see_alsos()
+      links = []
+      @schema.model.query(
+      RDF::Query::Pattern.new(@resource, DOWL::Namespaces::RDFS.seeAlso)
+      ) do |statement|
+        links << statement.object.to_s
+      end
+      return links
+    end            
+    
     def status()      
       return get_literal(DOWL::Namespaces::VS.status)
     end
@@ -131,8 +177,8 @@ module DOWL
     def GraphvizUtility.setDefaults(g)
   	  
       g[:rankdir] = "BT"
-        
-      g.node[:peripheries] = 0
+
+      #g.node[:peripheries] = 0
       g.node[:style] = "rounded,filled"
       g.node[:fillcolor] = "#0861DD" 
       g.node[:fontcolor] = "white"
@@ -140,7 +186,7 @@ module DOWL
       g.node[:shape] = "box"
       g.node[:fontsize] = 8
       g.node[:fixedsize] = false # Classes with long names need wider boxes
-      g.node[:width] = 1
+      #g.node[:width] = 1
       g.node[:height] = 0.4
         
       g.edge[:fontname] = "Helvetica"

@@ -1,5 +1,3 @@
-require 'dowl'
-
 module DOWL
 
   class Ontology < DOWL::LabelledDocObject
@@ -8,13 +6,7 @@ module DOWL
       super(resource, schema)  
     end
     
-    def ns()
-      lastChar = uri[-1,1] 
-      return (lastChar == '/' or lastChar == '#') ? uri : uri + '#'
-    end
-    
     def resourceNameHtml
-      
       return "#{@schema.name}.html"
     end
     
@@ -28,6 +20,10 @@ module DOWL
         return dcTitle
       end
       return short_name() # We have to have a title
+    end
+    
+    def ns()
+      return @resource.to_s
     end
     
     def short_name()

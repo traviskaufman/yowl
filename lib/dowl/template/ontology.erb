@@ -67,7 +67,7 @@ end
 				<h3><a href="#<%= schema.name %>-info">Ontology - <%= schema.ontology.title %></a></h3>
 				<div>
 					<dl>
-						<% if schema.ontology.definition %>
+						<% if schema.ontology.hasDefinition? %>
 							<dt>Definition</dt>
 							<dd><%= schema.ontology.definition %></dd>
 						<% end %>
@@ -146,9 +146,11 @@ end
 				<% if schema.list_properties.length > 0 %>
 					<h3><a href="#<%= schema.name %>-properties">Properties - Overview</a></h3>
 					<div>
-						<% schema.list_properties().each do |key,val| %>
-					 	| <a href="#prop_<%= val.short_name %>"><%= val.short_name %></a>
-						<% end %>
+						<ul>
+							<% schema.list_properties().each do |key,val| %>
+					 			<li><a href="#prop_<%= val.short_name %>"><%= val.short_name %></a></li>
+							<% end %>
+						</ul>
 					</div>
 				<% end %>				
 		
@@ -159,7 +161,10 @@ end
 			   			<%schema.list_classes().each do |t| %>
 			   				<%
 			   					rowSpan = 1
+			   					rowSpan += 1 if t[1].hasOtherNamespace?
+			   					rowSpan += 1 if t[1].hasDefinition?
 			   					rowSpan += 1 if t[1].hasComment?
+			   					rowSpan += 1 if t[1].hasEditorialNotes?
 			   					rowSpan += 1 if t[1].status
 			   					rowSpan += 1 if t[1].super_classes.length > 0
 			   					rowSpan += 1 if t[1].subClasses.length > 0
@@ -169,28 +174,30 @@ end
 			   					<th colspan="2" class="termName"><%= t[1].short_name %><% if t[1].hasDifferentLabel? %> (<%= t[1].label %>)<% end %></th>
 			   					<th rowspan="<%= rowSpan %>" valign="top"><%= t[1].perClassDiagramAsSvg %></th>
 			   				</tr>
+							<% if t[1].hasOtherNamespace? %>
+								<tr>
+									<td class="label">Namespace</td>
+									<td><%= t[1].ns %></td>
+								</tr>
+							<% end %>
+							<% if t[1].hasDefinition? %>
+								<td>Definition</td>
+								<td><%= t[1].definition %></td>
+							<% end %>
 							<% if t[1].hasComment? %>
 								<tr>
 									<td class="label">Abstract</td>
-									<td> 				
-										<%= t[1].comment %>
-									</td>
+									<td><%= t[1].comment %></td>
 								</tr>
 							<% end %>
-							<% if t[1].definition %>
-								<tr>
-									<td class="label">Definition</td>
-									<td> 				
-										<%= t[1].definition %>
-									</td>
-								</tr>
+							<% if t[1].hasEditorialNotes? %>
+								<% t[1].editorialNotes.each do |note| %>
+									<tr>
+										<td>Editorial Note</td>
+										<td><%= note %></td>
+									</tr>
+								<% end %>
 							<% end %>
-								<tr>
-									<td class="label">Namespace</td>
-									<td> 				
-										<%= t[1].ns %>
-									</td>
-								</tr>
 							<% if t[1].status %>
 			   					<tr>
 			   						<td class="label">Status</td>
@@ -243,15 +250,49 @@ end
 					<div>
 						<table class="terms">
 				   		<% schema.list_object_properties().each do |t| %>
+			   				<%
+			   					rowSpan = 1
+			   					rowSpan += 1 if t[1].hasOtherNamespace?
+			   					rowSpan += 1 if t[1].hasDefinition?
+			   					rowSpan += 1 if t[1].hasComment?
+			   					rowSpan += 1 if t[1].hasEditorialNotes?
+			   					rowSpan += 1 if t[1].status
+			   					rowSpan += 1 if t[1].sub_property_of
+			   					rowSpan += 1 if t[1].sub_properties.length > 0
+			   					rowSpan += 1 if t[1].range.length > 0
+			   					rowSpan += 1 if t[1].domain.length > 0
+			   					rowSpan += 1 if t[1].see_alsos.length > 0
+			   				%>
 							<tr id="prop_<%= t[1].short_name %>">
 								<th colspan="2" class="termName"><%= t[1].short_name %><% if t[1].hasDifferentLabel? %> (<%= t[1].label %>)<% end %></th>
+			   					<th rowspan="<%= rowSpan %>" valign="top"><%= t[1].perPropertyDiagramAsSvg %></th>
 							</tr>
+							<% if t[1].hasOtherNamespace? %>
+								<tr>
+									<td>Namespace</td>
+									<td><%= t[1].ns %></td>
+								</tr>
+							<% end %>
+							<% if t[1].hasDefinition? %>
+								<tr>
+									<td>Definition</td>
+									<td><%= t[1].definition %></td>
+								</tr>
+							<% end %>
 							<% if t[1].hasComment? %>
 								<tr>
 									<td class="label">Abstract</td>
 									<td><%= t[1].comment %></td>
 								</tr>
 							<% end %>				
+							<% if t[1].hasEditorialNotes? %>
+								<% t[1].editorialNotes.each do |note| %>
+									<tr>
+										<td>Editorial Note</td>
+										<td><%= note %></td>
+									</tr>
+								<% end %>
+							<% end %>
 							<% if t[1].status %>
 			   					<tr>
 			   						<td class="label">Status</td>
@@ -337,15 +378,49 @@ end
 					<div>
 						<table class="terms">
 				   		<% schema.list_datatype_properties().each do |t| %>
+			   				<%
+			   					rowSpan = 1
+			   					rowSpan += 1 if t[1].hasOtherNamespace?
+			   					rowSpan += 1 if t[1].hasDefinition?
+			   					rowSpan += 1 if t[1].hasComment?
+			   					rowSpan += 1 if t[1].hasEditorialNotes?
+			   					rowSpan += 1 if t[1].status
+			   					rowSpan += 1 if t[1].sub_property_of
+			   					rowSpan += 1 if t[1].sub_properties.length > 0
+			   					rowSpan += 1 if t[1].range.length > 0
+			   					rowSpan += 1 if t[1].domain.length > 0
+			   					rowSpan += 1 if t[1].see_alsos.length > 0
+			   				%>
 							<tr id="prop_<%= t[1].short_name %>">
 								<th colspan="2" class="termName"><%= t[1].short_name %><% if t[1].hasDifferentLabel? %> (<%= t[1].label %>)<% end %></th>
+			   					<th rowspan="<%= rowSpan %>" valign="top"><%= t[1].perPropertyDiagramAsSvg %></th>
 							</tr>
+							<% if t[1].hasOtherNamespace? %>
+								<tr>
+									<td>Namespace</td>
+									<td><%= t[1].ns %></td>
+								</tr>
+							<% end %>
+							<% if t[1].hasDefinition? %>
+								<tr>
+									<td>Definition</td>
+									<td><%= t[1].definition %></td>
+								</tr>
+							<% end %>
 							<% if t[1].hasComment? %>
 								<tr>
 									<td class="label">Abstract</td>
 									<td><%= t[1].comment %></td>
 								</tr>
 							<% end %>				
+							<% if t[1].hasEditorialNotes? %>
+								<% t[1].editorialNotes.each do |note| %>
+									<tr>
+										<td>Editorial Note</td>
+										<td><%= note %></td>
+									</tr>
+								<% end %>
+							<% end %>
 							<% if t[1].status %>
 			   					<tr>
 			   						<td class="label">Status</td>
@@ -433,19 +508,33 @@ end
 			   			<% schema.skosConceptsInScheme(conceptScheme).each do |individual| %>
 			   				<%
 			   					rowSpan = 1
+			   					rowSpan += 1 if individual.hasDefinition?
 			   					rowSpan += 1 if individual.hasComment?
+			   					rowSpan += 1 if individual.hasEditorialNotes?
 			   					rowSpan += 1 if individual.classes.length > 0
 			   				%>
 			   				<tr>
 			   					<th colspan="2" class="termName"><a href="#individual_<%= individual.short_name %>"><%= individual.short_name %></a></th>
 			   					<th rowspan="<%= rowSpan %>" valign="top"><%= individual.asSvg %></th>
 			   				</tr>
+							<% if individual.hasDefinition? %>
+								<td>Definition</td>
+								<td><%= t[1].definition %></td>
+							<% end %>
 							<% if individual.hasComment? %>
 								<tr>
 									<td class="label">Abstract</td>
 									<td><%= individual.comment %></td>
 								</tr>
 							<% end %>				
+							<% if individual.hasEditorialNotes? %>
+								<% individual.editorialNotes.each do |note| %>
+									<tr>
+										<td>Editorial Note</td>
+										<td><%= note %></td>
+									</tr>
+								<% end %>
+							<% end %>
 							<% if individual.classes.length > 0 %>
 								<tr>
 									<td class="label">Class</td>

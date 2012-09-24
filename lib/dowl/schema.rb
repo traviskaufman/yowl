@@ -13,6 +13,7 @@ module DOWL
     attr_reader :options
     attr_reader :repository
     attr_reader :model
+    attr_reader :base
     attr_reader :prefixes
     attr_reader :name
     attr_reader :introduction

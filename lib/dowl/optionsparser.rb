@@ -31,6 +31,10 @@ module DOWL
         opts.on('-t', '--template DIR', 'Use ERB templates in DIR') do |dir|
           options.template_dir = dir
         end
+        
+        opts.on('--no-vann', 'Skip looking for vann:preferedNamespacePrefix') do |value|
+          options.noVann = true
+        end
 
         opts.separator ""
         opts.separator "Common options:"

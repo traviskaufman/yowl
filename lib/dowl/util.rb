@@ -67,7 +67,14 @@ module DOWL
     end    
     
     def get_literal(property)
-      return @resource ? @schema.model.first_value(RDF::Query::Pattern.new(@resource, property)) : nil
+      if @resource.nil?
+        return nil
+      end
+      value = @schema.model.first_value(RDF::Query::Pattern.new(@resource, property))
+      if not value
+        return nil
+      end
+      return value.strip
     end
     
     def ontology

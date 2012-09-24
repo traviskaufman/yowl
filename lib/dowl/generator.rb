@@ -9,7 +9,7 @@ module DOWL
     
     private
     def generateOntologyHtmlFiles()
-      @repository.schemas.each() do |schema|
+      @repository.schemas.values.each() do |schema|
         generateOntologyHtmlFile(schema)
       end
     end
@@ -20,19 +20,17 @@ module DOWL
         puts "Generating documentation for ontology #{schema.ontology.title}"
       end
       
-      introduction = @introduction
-      repository = @repository
+      introduction  = @introduction
+      repository    = @repository
       
       b = binding
       
-      dir = File.join(@options.output_dir, "ontology")
-      
       begin
-        Dir.mkdir(dir)
+        Dir.mkdir(@options.output_dir)
       rescue Errno::EEXIST
       end
       
-      ontologyFile = File.join(dir, "#{schema.name}.html")
+      ontologyFile = File.join(@options.output_dir, "#{schema.name}.html")
       if @options.verbose
         puts "Generating #{ontologyFile}"
       end
@@ -55,9 +53,9 @@ module DOWL
         puts "Generating #{fileName}"
       end
       
-      repository = @repository
-      schemas = @repository.schemas
-      ontologies = @repository.ontologies()
+      repository  = @repository
+      schemas     = @repository.schemas.values
+      ontologies  = @repository.ontologies()
       
       b = binding
       
@@ -79,10 +77,10 @@ module DOWL
     def copyTemplates()
       
       @options.template_dirs.each do |template_dir|
-        copyTemplateDir("#{template_dir}/js", "#{@options.output_dir}")
-        copyTemplateDir("#{template_dir}/css", "#{@options.output_dir}")
+        copyTemplateDir("#{template_dir}/js",     "#{@options.output_dir}")
+        copyTemplateDir("#{template_dir}/css",    "#{@options.output_dir}")
         copyTemplateDir("#{template_dir}/themes", "#{@options.output_dir}")
-        copyTemplateDir("#{template_dir}/img", "#{@options.output_dir}")
+        copyTemplateDir("#{template_dir}/img",    "#{@options.output_dir}")
       end
     end
     
@@ -90,7 +88,6 @@ module DOWL
     def run()
       copyTemplates()
       generateHtmlFile('index')
-      generateHtmlFile('overview')
       generateHtmlFile('introduction')
       generateHtmlFile('import-diagram')
       generateOntologyHtmlFiles()

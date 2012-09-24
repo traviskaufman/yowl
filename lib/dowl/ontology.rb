@@ -9,7 +9,6 @@ module DOWL
     end
     
     def ns()
-      uri = uri()
       lastChar = uri[-1,1] 
       return (lastChar == '/' or lastChar == '#') ? uri : uri + '#'
     end
@@ -31,12 +30,20 @@ module DOWL
       return short_name() # We have to have a title
     end
     
+    def short_name()
+      return @schema.name
+    end
+    
     def comment()
       dctermsAbstract = get_literal(DOWL::Namespaces::DCTERMS.abstract)
       if dctermsAbstract
         return dctermsAbstract
       end
       return super
+    end
+    
+    def definition()
+      return get_literal(DOWL::Namespaces::SKOS.definition)
     end
 
     def created()
@@ -118,13 +125,16 @@ module DOWL
     
     private
     def init_imports
-      imports = []
+      imports = {}
       @schema.model.query( 
         RDF::Query::Pattern.new(@resource, DOWL::Namespaces::OWL.imports)
       ) do |statement|
-        imports << Import.new(statement.object, @schema)
+        importUri = statement.object.to_s
+        if importUri != uri
+          imports[importUri] = Import.new(statement.object, @schema)
+        end
       end
-      return imports
+      return imports.values
     end
     
     public

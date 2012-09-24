@@ -12,7 +12,7 @@ module DOWL
     
     private
     def init_schemas()
-      @schemas = []
+      @schemas = {}
         
       @options.ontology_file_names.each() do | ontology_file_name |
         if options.verbose
@@ -20,40 +20,36 @@ module DOWL
         end
         schema = Schema.fromFile(ontology_file_name, self)
         if schema
-          schemas << schema
+          @schemas[schema.uri] = schema
         end
       end
     end  
     
     public
     def ontologies()
-      ontologies = []
-      @schemas.each() do |schema|
-        ontologies << schema.ontology
-      end
+      ontologies = @schemas.values.collect() { |schema|
+        schema.ontology
+      }
       return ontologies.sort { |x,y| x.short_name <=> y.short_name }
     end
  
     public
-    def getSchemaForImport(import)
-      importUri = import.uri
-      @schemas.each() do |schema|
-        #puts "Checking whether schema #{schema.uri} matches import #{importUri}"
-        if schema.uri == importUri
-          return schema
-        end
+    def getSchemaForImport(import_)
+      begin
+        return @schemas[import_.uri]
+      rescue => exception
+        puts exception.backtrace
       end
-      return nil
     end
        
     public
-    def knowsImport(import)
-      return ! getSchemaForImport(import).nil?
+    def knowsImport(import_)
+      return ! getSchemaForImport(import_).nil?
     end
     
     public
-    def getSchemaNameForImport(import)
-      schema = getSchemaForImport(import)
+    def getSchemaNameForImport(import_)
+      schema = getSchemaForImport(import_)
       return schema.nil? ? '' : schema.name
     end
     
@@ -69,30 +65,32 @@ module DOWL
       ontologies.each() do |ontology|
         nodeID = ontology.escaped_uri
         node = g.add_nodes(nodeID)
-        node.URL = "../ontology/#{ontology.resourceNameHtml}"
+        node.URL = ontology.resourceNameHtml
         node.label = ontology.short_name
         node.tooltip = ontology.commentOrLabel
         nodes[nodeID] = node
       end
+     
       ontologies.each() do |ontology|
         if @options.verbose
           puts "- Processing ontology #{ontology.escaped_uri}"
         end
         ontology.imports.each() do |import|
-          importNode = nodes[import.escaped_uri]
+          importNode = nodes[import.name]
           if importNode
             if @options.verbose
-              puts "  - Processing import #{import.escaped_uri}"
+              puts "  - Processing import #{import.name}"
             end
-            g.add_edges(nodes[ontology.escaped_uri], importNode)
+            g.add_edges(nodes[ontology.short_name], importNode)
           else
             if @options.verbose
-              puts "  - Processing import #{import.escaped_uri}, not found"
+              puts "  - Processing import #{import.name}, not found"
             end
           end
         end
       end
-      # puts g.to_dot()
+
+      #puts g.to_dot()
       return GraphvizUtility.embeddableSvg(g)
     end
     

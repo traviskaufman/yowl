@@ -23,12 +23,14 @@ module DOWL
     attr_reader :ontology
     
     private
-    def initialize(repository, model, prefixes)
+    def initialize(repository_, model_, prefixes_, base_, fileName_)
 
-      @repository = repository
-      @options = repository.options
-      @model = model
-      @prefixes = prefixes
+      @repository = repository_
+      @options = repository_.options
+      @model = model_
+      @prefixes = prefixes_
+      @base = base_
+      @fileName = fileName_
 
       if options.verbose
         @prefixes.each_pair do |prefix, namespace|
@@ -54,7 +56,7 @@ module DOWL
       if repository.options.verbose
         puts "Read Schema #{ontology_file_name}"
       end
-      prefixes = Schema::read_prefixes(ontology_file_name)
+      prefixes, base = Schema::read_prefixes(ontology_file_name)
       
       format = RDF::Format.for(ontology_file_name)
       if format.nil?()
@@ -62,7 +64,7 @@ module DOWL
       end
       begin
         model = RDF::Graph.load(ontology_file_name, { :format => format.to_sym, :prefixes => prefixes })
-      rescue URI::InvalidURIError => e
+      rescue Addressable::URI::InvalidURIError => e
         warn "ERROR: Invalid URI Error while parsing #{ontology_file_name}: #{e.to_s}"
         return nil
       rescue Exception => e
@@ -70,7 +72,7 @@ module DOWL
         return nil
       end
       
-      return Schema.new(repository, model, prefixes)
+      return Schema.new(repository, model, prefixes, base, ontology_file_name)
     end
 
     #
@@ -80,6 +82,7 @@ module DOWL
     def Schema.read_prefixes(ontology_file_name)
       prefixes = {}
       xmldoc = nil
+      base = nil
       begin
         xmldoc = REXML::Document.new(IO.read(ontology_file_name))
       rescue REXML::ParseException => bang
@@ -98,14 +101,19 @@ module DOWL
         xmldoc.root.namespaces.each() do |prefix, namespace|
           prefixes[prefix.to_sym] = namespace
         end
+        base = xmldoc.root.attribute('base')
+        if base
+          base = base.to_s
+        end
       end
       
-      return prefixes
+      return prefixes, base
     end
     
     public
     def uri
-      return @ontology.nil? ? nil : @ontology.uri
+      return @base.nil? ? @ontology.uri : @base
+      #return @ontology.nil? ? @base : @ontology.uri
     end
 
     private 
@@ -232,7 +240,7 @@ module DOWL
           @name = prefix.to_s
         end
       end
-      if @name.nil? and @ontology
+      if @name.nil? and @ontology and not @options.noVann
         #
         # Searching for vann:preferredNamespacePrefix to use as the name for the schema
         #
@@ -253,12 +261,14 @@ module DOWL
             prefixes[@name] = @ontology.ns
           end
         else
-          warn "WARNING: vann:preferredNamespacePrefix not found"
+          warn "WARNING: vann:preferredNamespacePrefix not found in #{@fileName}"
         end
       end
       if @name.nil? and @ontology
-        @name = @ontology.escaped_short_name()
+        @name = File.basename(@fileName, File.extname(@fileName))
+        #@name = @ontology.escaped_short_name()
       end
+      puts "Schema #{@fileName} gets name #{@name} #{uri}"
       if (@name.nil? or @name.empty?())
         raise "ERROR: No name found for the schema"
       end
@@ -297,6 +307,33 @@ module DOWL
           return uri.gsub(namespace, "#{prefix.to_s}:")
         end
       end
+=begin
+      #
+      # First look up in the import hierarchy to see if we can find a prefix definition
+      # there that we can use...
+      #
+      if @ontology
+        @ontology.imports.each do |import|
+          if import.importedSchema and import.importedSchema != self
+            uri = import.importedSchema.prefixedUri(uri)
+            if uri
+              return uri
+            end
+          end
+        end
+      end
+      #
+      # If all else failed, lets scan all schema's for a usable prefix
+      #
+      @repository.schemas.values.each do |otherSchema|
+        if otherSchema != self
+          uri = otherSchema.prefixedUri(uri)
+          if uri
+            return uri
+          end
+        end
+      end
+=end
       if @ontology
         ontology_uri = @ontology.uri
         if ontology_uri == uri

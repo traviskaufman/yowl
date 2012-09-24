@@ -7,13 +7,12 @@ module DOWL
     attr_reader :importedSchema
     attr_reader :importedOntology
  
-    def initialize(resource, schema)
-      super(resource, schema)
+    def initialize(resource_, schema_)
+      super(resource_, schema_)
       
-      @importedSchema = @schema.repository.getSchemaForImport(self)
+      @importedSchema = schema_.repository.getSchemaForImport(self)
       @importedOntology = @importedSchema ? @importedSchema.ontology : nil
       
-      #puts "Created Import #{uri}->#{escaped_uri}"
       if @importedSchema.nil?
         puts "WARNING: Created Import #{uri} but did not find schema for it "
       end

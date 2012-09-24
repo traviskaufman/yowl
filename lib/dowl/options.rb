@@ -7,6 +7,7 @@ module DOWL
     attr_accessor :ontology_file_names
     attr_accessor :output_dir
     attr_accessor :template_dirs
+    attr_accessor :noVann
     
     attr_reader :templates
     
@@ -19,6 +20,7 @@ module DOWL
       @output_dir = Dir.pwd()
       @template_dirs = []
       @templates = Hash.new
+      @noVann = false
     end
     
     def validate()
@@ -96,7 +98,7 @@ module DOWL
     def validate_templates()
       
       load_template('index');
-      load_template('overview');
+      #load_template('overview');
       load_template('introduction', false);
       load_template('import-diagram');
       load_template('ontology');

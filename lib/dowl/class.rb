@@ -34,7 +34,31 @@ module DOWL
     end
 
     public
+    def ns()
+      lastChar = uri[-1,1] 
+      return (lastChar == '/' or lastChar == '#') ? uri : uri + '#'
+    end
+    
+    public
+    def short_name()
+      sn = super()
+      if sn[0,7] == "http://" or sn[0,8] == "https://"
+        if sn.include?('#')
+          ns = sn.slice(/.*#/)
+        else
+          ns = sn.slice(/.*\//)
+        end
+        return sn[ns.length..-1]
+      end
+      return sn
+    end
 
+    public
+    def definition()
+      return get_literal(DOWL::Namespaces::SKOS.definition)
+    end
+
+    public
     def see_alsos()
       links = []
       @schema.model.query(

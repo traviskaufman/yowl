@@ -42,5 +42,22 @@ sudo rake install
 
 ### Usage
 
-  Execute bin/dowl to see usage options.
+Execute bin/dowl to see usage options:
+
+```bash
+user@host:/opt/dowl# /opt/dowl/bin/dowl 
+Output will be generated in this directory: /opt/dowl
+Usage: dowl [<options>]
+
+Specific options:
+    -i, --ontology FILES             Read input FILES
+    -o, --output DIR                 Write HTML output to DIR
+    -t, --template DIR               Use ERB templates in DIR
+        --no-vann                    Skip looking for vann:preferedNamespacePrefix
+
+Common options:
+    -?, -h, --help                   Show this message
+    -V, --version                    Show version
+    -v, --verbose                    Show verbose logging
+```
 

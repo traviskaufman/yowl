@@ -9,6 +9,8 @@ module DOWL
 
     @@PredefinedNamespaces = Hash.new
     @@PredefinedNamespaces["http://protege.stanford.edu/plugins/owl/dc/protege-dc.owl"] = "http://purl.org/dc/elements/1.1/"
+      
+    @@LastUsedOntologyNumber = 0
     
     attr_reader :options
     attr_reader :repository
@@ -296,6 +298,9 @@ module DOWL
       #puts "Schema #{@fileName} gets name #{@name} #{uri}"
       if (@name.nil? or @name.empty?())
         raise "ERROR: No name found for the schema"
+      end
+      if @options.verbose
+        puts "Schema has name #{name}"
       end
     end
     

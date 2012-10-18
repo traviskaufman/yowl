@@ -1,4 +1,11 @@
-A simple command-line tool for generating HTML documentation from RDFS/OWL schemas
+A simple command-line tool for generating HTML documentation from RDFS/OWL schemas.
+
+This is a fork of the original DOWL project at https://github.com/ldodds/dowl.
+This fork adds the following features:
+
+  - It reads a whole directory of .owl files and generates one site for them
+  - It generates all kinds of diagrams: Class Diagrams, Individuals Diagrams, Import Diagram
+  - It detects more Dublin Core statements
 
 INSTALLATION
 

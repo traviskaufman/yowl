@@ -7,22 +7,37 @@ This fork adds the following features:
   - It generates all kinds of diagrams: Class Diagrams, Individuals Diagrams, Import Diagram
   - It detects more Dublin Core statements
 
-INSTALLATION
+### INSTALLATION
 
-Installation on Mac OS X:
+#### Installation on Mac OS X:
 
   - Download and install MacPorts
   - sudo port install libraptor
 
-General
+NOTE: There are issues with installing libraptor on Mac OS X. It seems that the Ruby RDF library depends on libraptor 1 whereas MacPorts installs libraptor 2.
 
-  dowl is available as a gem, so you can just do:
+#### Installation on Ubuntu
 
-    [sudo] gem install ffi rdf rdf-raptor rdf-json rdf-trix sxp sparql ruby-graphviz dowl
+```bash
+apt-get install ruby
+```
+
+#### General
+
+Install all libraries used by DOWL:
+
+```bash
+[sudo] gem install ffi rdf rdf-raptor rdf-json rdf-trix sxp sparql ruby-graphviz
+```
+
+This version of DOWL is not yet available as a "gem" itself so it needs to be downloaded from Github:
+
 
   To install from a source simply do:
 
+```bash
     [sudo] rake install
+```
 
   Both options will give you a new command-line application called dowl.
 

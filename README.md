@@ -61,3 +61,11 @@ Common options:
     -v, --verbose                    Show verbose logging
 ```
 
+For example, to generate a site for the PROV ontology,
+download the prov owl file and run DOWL as follows:
+
+```bash
+/opt/dowl/bin/dowl -i /root/downloads/prov/*.owl -o /var/www/prov
+```
+
+

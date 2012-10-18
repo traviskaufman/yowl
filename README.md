@@ -32,16 +32,15 @@ Install all libraries used by DOWL:
 
 This version of DOWL is not yet available as a "gem" itself so it needs to be downloaded from Github:
 
-
-  To install from a source simply do:
-
 ```bash
-    [sudo] rake install
+rm -rf /opt/dowl
+cd /opt
+git clone git@github.com:jgeluk/dowl.git
+cd /opt/dowl
+sudo rake install
 ```
 
-  Both options will give you a new command-line application called dowl.
-
-Usage
+### Usage
 
   Execute bin/dowl to see usage options.
 

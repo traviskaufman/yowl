@@ -11,10 +11,7 @@ This fork adds the following features:
 
 ## Installation on Mac OS X:
 
-  - Download and install MacPorts
-  - ```sudo port install libraptor graphviz```
-
-NOTE: There are issues with installing libraptor on Mac OS X. It seems that the Ruby RDF library depends on libraptor 1 whereas MacPorts installs libraptor 2.
+[Installation on Mac OS X](INSTALL-MACOSX.md)
 
 ## Installation on Ubuntu
 

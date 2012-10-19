@@ -7,22 +7,22 @@ This fork adds the following features:
   - It generates all kinds of diagrams: Class Diagrams, Individuals Diagrams, Import Diagram
   - It detects more Dublin Core statements
 
-### INSTALLATION
+# INSTALLATION
 
-#### Installation on Mac OS X:
+## Installation on Mac OS X:
 
   - Download and install MacPorts
-  - sudo port install libraptor
+  - ```sudo port install libraptor graphviz```
 
 NOTE: There are issues with installing libraptor on Mac OS X. It seems that the Ruby RDF library depends on libraptor 1 whereas MacPorts installs libraptor 2.
 
-#### Installation on Ubuntu
+## Installation on Ubuntu
 
 ```bash
 apt-get install ruby
 ```
 
-#### General
+## General
 
 Install all libraries used by DOWL:
 
@@ -40,7 +40,7 @@ cd /opt/dowl
 sudo rake install
 ```
 
-### Usage
+# Usage
 
 Execute bin/dowl to see usage options:
 

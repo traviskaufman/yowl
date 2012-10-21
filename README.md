@@ -16,7 +16,7 @@ This fork adds the following features:
 ## Installation on Ubuntu
 
 ```bash
-apt-get install ruby
+apt-get install ruby rake gem
 ```
 
 ## General

@@ -30,6 +30,23 @@ Install all libraries used by DOWL:
 This version of DOWL is not yet available as a "gem" itself so it needs to be downloaded from Github:
 
 ```bash
+mkdir ~/downloads
+cd ~/downloads
+wget http://github.com/jgeluk/dowl/tarball/master -O dowl.tar.gz
+tar xvf dowl.tar.gz
+#
+# Remember the name of the root directory of the unpacked tarball
+# which looks like jgeluk-dowl-5ba77f5
+#
+sudo rm -rf /opt/dowl
+sudo mv ~/dowloads/jgeluk-dowl-5ba77f5 /opt/dowl
+cd /opt/dowl
+sudo rake install
+```
+
+Or get it with git:
+
+```bash
 rm -rf /opt/dowl
 cd /opt
 git clone git@github.com:jgeluk/dowl.git

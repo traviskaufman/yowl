@@ -1,12 +1,28 @@
 # Installation on Mac OS X
 
 Unfortunately, its not trivial to get DOWL to run on Mac OS X.
+
+You can either use MacPorts or Brew to install some of the components that DOWL needs.
+
+## MacPorts
+
 You first have to download and install MacPorts: http://www.macports.org/install.php
 
-Then use MacPorts to install GraphViz (which is used to generate the graphics):
+Then use MacPorts to install GraphViz (which is used to generate the graphics) and wget:
 
 ```
-sudo port install graphviz
+sudo port install graphviz wget
+```
+
+## Brew
+
+As an alternative to MacPorts, you can install Brew and use that to install Graphviz,
+for installation instructions of Brew look here: https://github.com/mxcl/homebrew/wiki/Installation
+
+Once Brew is installed, install Graphviz and wget:
+
+```
+sudo brew install graphviz wget
 ```
 
 ## Raptor 1

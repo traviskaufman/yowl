@@ -1,5 +1,6 @@
 # Ontology Test Cases #
- 
+
+* [Empty ontology](input/empty.ttl).
 * 'sameAs' relationships between classes, properties and/or individuals. 
 * OWL class with one or more keys. 
 * OWL individuals with simple/compound key values.

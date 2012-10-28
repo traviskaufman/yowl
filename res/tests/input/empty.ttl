@@ -5,6 +5,4 @@
 @prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
 
 <http://example.org/dowl/tests/ontology/empty>
-      rdf:type <http://www.w3.org/2002/07/owl#Ontology> ;
-      <http://www.w3.org/2002/07/owl#versionInfo>
-              "Created with TopBraid Composer"^^xsd:string .
+      rdf:type <http://www.w3.org/2002/07/owl#Ontology> .

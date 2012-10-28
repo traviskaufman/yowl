@@ -1,6 +1,7 @@
 # Ontology Test Cases #
 
 * [Empty ontology](input/empty.ttl).
+* [Class/property/individual labels and comments](input/base-with-comments.ttl).
 * 'sameAs' relationships between classes, properties and/or individuals. 
 * OWL class with one or more keys. 
 * OWL individuals with simple/compound key values.
@@ -16,7 +17,6 @@
 * Class with huge number of subclasses, property with huge number of sub properties.
 * Class with huge number of constraints.
 * Property with huge number of domains, property with huge number of ranges.
-* Class/property/individual labels and comments.
 * Classes with annotations. 
 * Use of namespace prefixes in documentation & diagrams. 
 * OWL property chains. 

@@ -1,0 +1,221 @@
+# baseURI: http://example.org/dowl/tests/ontology/base
+
+@prefix :        <http://example.org/dowl/tests/ontology/base#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.org/dowl/tests/ontology/base>
+      rdf:type owl:Ontology ;
+      rdfs:comment "Base test ontology, designed to be imported into other test ontologies to provide a selection of classes, properties & individuals."^^xsd:string .
+
+:ClassA
+      rdf:type owl:Class ;
+      rdfs:label "Class A"^^xsd:string ;
+      rdfs:subClassOf owl:Thing .
+
+:ClassB
+      rdf:type owl:Class ;
+      rdfs:label "Class B"^^xsd:string ;
+      rdfs:subClassOf owl:Thing .
+
+:ClassC
+      rdf:type owl:Class ;
+      rdfs:label "Class C"^^xsd:string ;
+      rdfs:subClassOf owl:Thing .
+
+:ClassD
+      rdf:type owl:Class ;
+      rdfs:label "Class D"^^xsd:string ;
+      rdfs:subClassOf owl:Thing .
+
+:ClassE
+      rdf:type owl:Class ;
+      rdfs:label "Class E"^^xsd:string ;
+      rdfs:subClassOf owl:Thing .
+
+:ClassF
+      rdf:type owl:Class ;
+      rdfs:label "Class F"^^xsd:string ;
+      rdfs:subClassOf owl:Thing .
+
+:ClassG
+      rdf:type owl:Class ;
+      rdfs:label "Class G"^^xsd:string ;
+      rdfs:subClassOf owl:Thing .
+
+:ClassH
+      rdf:type owl:Class ;
+      rdfs:label "Class H"^^xsd:string ;
+      rdfs:subClassOf owl:Thing .
+
+:ClassJ
+      rdf:type owl:Class ;
+      rdfs:label "Class J"^^xsd:string ;
+      rdfs:subClassOf owl:Thing .
+
+:ClassK
+      rdf:type owl:Class ;
+      rdfs:label "Class K"^^xsd:string ;
+      rdfs:subClassOf owl:Thing .
+
+:IndividualA1
+      rdf:type :ClassA ;
+      rdfs:label "Individual A1"^^xsd:string .
+
+:IndividualA2
+      rdf:type :ClassA ;
+      rdfs:label "Individual A2"^^xsd:string .
+
+:IndividualB1
+      rdf:type :ClassB ;
+      rdfs:label "Individual B1"^^xsd:string .
+
+:IndividualB2
+      rdf:type :ClassB ;
+      rdfs:label "Individual B2"^^xsd:string .
+
+:IndividualC1
+      rdf:type :ClassC ;
+      rdfs:label "Individual C1"^^xsd:string .
+
+:IndividualC2
+      rdf:type :ClassC ;
+      rdfs:label "Individual C2"^^xsd:string .
+
+:IndividualD1
+      rdf:type :ClassD ;
+      rdfs:label "Individual D1"^^xsd:string .
+
+:IndividualD2
+      rdf:type :ClassD ;
+      rdfs:label "Individual D2"^^xsd:string .
+
+:IndividualE1
+      rdf:type :ClassE ;
+      rdfs:label "Individual E1"^^xsd:string .
+
+:IndividualE2
+      rdf:type :ClassE ;
+      rdfs:label "Individual E2"^^xsd:string .
+
+:IndividualF1
+      rdf:type :ClassF ;
+      rdfs:label "Individual F1"^^xsd:string .
+
+:IndividualF2
+      rdf:type :ClassF ;
+      rdfs:label "Individual F2"^^xsd:string .
+
+:IndividualG1
+      rdf:type :ClassG ;
+      rdfs:label "Individual G1"^^xsd:string .
+
+:IndividualG2
+      rdf:type :ClassG ;
+      rdfs:label "Individual G2"^^xsd:string .
+
+:IndividualH1
+      rdf:type :ClassH ;
+      rdfs:label "Individual H1"^^xsd:string .
+
+:IndividualH2
+      rdf:type :ClassH ;
+      rdfs:label "Individual H2"^^xsd:string .
+
+:IndividualJ1
+      rdf:type :ClassJ ;
+      rdfs:label "Individual J1"^^xsd:string .
+
+:IndividualJ2
+      rdf:type :ClassJ ;
+      rdfs:label "Individual J2"^^xsd:string .
+
+:IndividualK1
+      rdf:type :ClassK ;
+      rdfs:label "Individual K1"^^xsd:string .
+
+:IndividualK2
+      rdf:type :ClassK ;
+      rdfs:label "Individual K2"^^xsd:string .
+
+:dPropertyA
+      rdf:type owl:DatatypeProperty ;
+      rdfs:label "datatype property A"^^xsd:string .
+
+:dPropertyB
+      rdf:type owl:DatatypeProperty ;
+      rdfs:label "datatype property B"^^xsd:string .
+
+:dPropertyC
+      rdf:type owl:DatatypeProperty ;
+      rdfs:label "datatype property C"^^xsd:string .
+
+:dPropertyD
+      rdf:type owl:DatatypeProperty ;
+      rdfs:label "datatype property D"^^xsd:string .
+
+:dPropertyE
+      rdf:type owl:DatatypeProperty ;
+      rdfs:label "datatype property E"^^xsd:string .
+
+:dPropertyF
+      rdf:type owl:DatatypeProperty ;
+      rdfs:label "datatype property F"^^xsd:string .
+
+:dPropertyG
+      rdf:type owl:DatatypeProperty ;
+      rdfs:label "datatype property G"^^xsd:string .
+
+:dPropertyH
+      rdf:type owl:DatatypeProperty ;
+      rdfs:label "datatype property H"^^xsd:string .
+
+:dPropertyJ
+      rdf:type owl:DatatypeProperty ;
+      rdfs:label "datatype property J"^^xsd:string .
+
+:dPropertyK
+      rdf:type owl:DatatypeProperty ;
+      rdfs:label "datatype property K"^^xsd:string .
+
+:oPropertyA
+      rdf:type owl:ObjectProperty ;
+      rdfs:label "object property A"^^xsd:string .
+
+:oPropertyB
+      rdf:type owl:ObjectProperty ;
+      rdfs:label "object property B"^^xsd:string .
+
+:oPropertyC
+      rdf:type owl:ObjectProperty ;
+      rdfs:label "object property C"^^xsd:string .
+
+:oPropertyD
+      rdf:type owl:ObjectProperty ;
+      rdfs:label "object property D"^^xsd:string .
+
+:oPropertyE
+      rdf:type owl:ObjectProperty ;
+      rdfs:label "object property E"^^xsd:string .
+
+:oPropertyF
+      rdf:type owl:ObjectProperty ;
+      rdfs:label "object property F"^^xsd:string .
+
+:oPropertyG
+      rdf:type owl:ObjectProperty ;
+      rdfs:label "object property G"^^xsd:string .
+
+:oPropertyH
+      rdf:type owl:ObjectProperty ;
+      rdfs:label "object property H"^^xsd:string .
+
+:oPropertyJ
+      rdf:type owl:ObjectProperty ;
+      rdfs:label "object property J"^^xsd:string .
+
+:oPropertyK
+      rdf:type owl:ObjectProperty ;
+      rdfs:label "object property K"^^xsd:string .

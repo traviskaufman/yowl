@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="robots" content="noindex, nofollow" />
+		<title><%= schema.ontology.title %></title>
+		<link type="text/css" href="css/smoothness/jquery-ui-1.8.23.custom.css" rel="Stylesheet" />
+		<link rel="stylesheet" href="css/yowl.css" rel="Stylesheet" />
+		<script src="js/jquery-1.7.2.min.js"></script>
+		<script src="js/jquery-ui-1.8.23.custom.min.js"></script>
+		<script src="js/jquery.ui.accordion.js"></script>
+		<script src="js/yowl.js"></script>
+	</head>
+<%
+def doImport(import_, imported_)
+  if imported_.include?(import_)
+  	result = "\n<li>#{import_.uri} (#{import_.name})&nbsp;Recursive import</li>"
+  	return result
+  end
+  imported_ << import_
+  prefix = ""
+  if import_.name != import_.uri
+    prefix = "&nbsp;<b>#{import_.name}</b>"
+  end
+  if import_.repository.knowsImport(import_)
+    result = "\n<li><a href=\"#{import_.repository.getSchemaNameForImport(import_)}.html\">#{import_.uri}</a>#{prefix}</li>"
+  else
+    result = "\n<li><a href=\"#{import_.uri}\">#{import_.uri}</a>#{prefix}</li>"
+  end
+  imports = import_.imports()
+  if ! imports.empty?() 
+    result += "\n<ul>"
+    imports.each do |subImport|
+      result += doImport(subImport, imported_)
+    end
+    result += "\n</ul>"
+  end
+  return result
+end
+
+def doClass(klass)
+  name = klass.short_name 
+  result = "\n<li><a href=\"#class_#{name}\">#{name}</a></li>"
+  subclasses = klass.subClasses()
+  if ! subclasses.empty?() 
+    result += "\n<ul>"
+    subclasses.each do |subclass|
+      result += doClass(subclass)
+    end
+    result += "\n</ul>"
+  end
+  return result
+end
+%>
+	<body>
+		<div class="yowl">
+			<div id="tabs">
+		 		<ul>
+		 			<li><a title="Overview" href="index.html">Overview</a></li>
+		 			<li><a title="Import Diagram" href="import-diagram.html">Import Diagram</a></li>
+					<% schema.repository.ontologies.each do |ontology| %>
+						<% if ontology == schema.ontology %>
+		     				<li><a title="<%= ontology.short_name %>" href="<%= ontology.resourceNameHtml %>#content"><%= ontology.short_name %></a></li>
+						<% else %>
+		     				<li><a title="<%= ontology.short_name %>" href="<%= ontology.resourceNameHtml %>"><%= ontology.short_name %></a></li>
+						<% end %>
+					<% end %>
+		 		</ul>
+			</div>
+			<div id="content" class="accordion">                 
+				<h3><a id="<%= schema.name %>-info">Ontology - <%= schema.ontology.title %></a></h3>
+				<div>
+					<dl>
+						<% if schema.ontology.hasDefinition? %>
+							<dt>Definition</dt>
+							<dd><%= schema.ontology.definition %></dd>
+						<% end %>
+						<% if schema.ontology.hasComment? %>	
+							<dt>Abstract</dt>
+							<dd><%= schema.ontology.comment %></dd>
+						<% end %>
+						<dt>Latest Version</dt>
+							<dd><a href="<%= schema.ontology.resourceNameHtml %>"><%= schema.ontology.ns %></a></dd>
+				  		<% if schema.ontology.created %>
+				  		<dt>Created</dt>
+				  			<dd><%= schema.ontology.created %></dd>
+					  	<% end %>
+					  	<% if schema.ontology.modified %>		  	
+					  		<dt>Last Modified</dt>
+					  			<dd><%= schema.ontology.modified %></dd>
+					  	<% end %>		  		  
+				  		<% if schema.ontology.hasAuthors? %>		  	
+							<dt>Authors & Contributors</dt>
+							<% schema.ontology.authors.each() do |author| %>
+								<dd><a href="<%= author.uri %>"><%= author.name %></a></dd>
+							<% end %>
+				  		<% end %>
+				  		<% if schema.ontology.rights %>
+				  			<dt>Copy Rights</dt>
+				  				<dd><%= schema.ontology.rights %></dd>
+				  		<% end %>
+				  		<% if not schema.ontology.see_alsos.empty?() %>
+				  			<dt>See Also</dt>
+								<% schema.ontology.see_alsos.each() do |see_also| %>
+									<dd><a href="<%= see_also %>"><%= see_also %></a></dd>
+								<% end %>
+				  		<% end %>
+					</dl>
+				</div>
+			
+				<% if introduction %>
+					<h3><a id="<%= schema.name %>-intro">Introduction</a></h3>
+					<div>
+						<%= introduction %>
+					</div>
+				<% end %>
+		
+				<% if schema.ontology.imports.length > 0 %>
+					<h3><a id="<%= schema.name %>-imports">Imports</a></h3>
+					<div>
+						<ul class="class">
+						<% imported = [] %>
+						<% schema.ontology.imports.each() do |import| %>
+			   				<%= doImport(import, imported) %>
+						<% end %>
+						</ul>
+					</div>
+				<% end %>
+
+				<% if schema.hasClasses? %>
+					<h3><a id="<%= schema.name %>-classes-overview">Classes - Overview</a></h3>
+					<div>
+						<table class="classinfo">
+							<tr>
+								<td class="classhierarchy" valign="top">
+									<ul class="class">
+			   						<% schema.root_classes().each do |klass| %>
+					       				<%= doClass(klass) %>
+			   						<% end %>
+			       					</ul>
+			       				</td>
+			       				<td>
+								<%= schema.classDiagramAsSvg %>
+								</td>
+							</tr>
+						</table>
+			        </div>
+			    <% end %>
+				
+				<% if schema.list_properties.length > 0 %>
+					<h3><a id="<%= schema.name %>-properties">Properties - Overview</a></h3>
+					<div>
+						<ul>
+							<% schema.list_properties().each do |key,val| %>
+					 			<li><a href="#prop_<%= val.short_name %>"><%= val.short_name %></a></li>
+							<% end %>
+						</ul>
+					</div>
+				<% end %>				
+		
+				<% if schema.hasClasses? %>
+					<h3><a id="<%= schema.name %>-classes">Classes</a></h3>
+					<div>
+						<table class="terms">
+			   			<%schema.list_classes().each do |t| %>
+			   				<%
+			   					rowSpan = 1
+			   					rowSpan += 1 if t[1].hasOtherNamespace?
+			   					rowSpan += 1 if t[1].hasDefinition?
+			   					rowSpan += 1 if t[1].hasComment?
+			   					rowSpan += 1 if t[1].hasEditorialNotes?
+			   					rowSpan += 1 if t[1].status
+			   					rowSpan += 1 if t[1].super_classes.length > 0
+			   					rowSpan += 1 if t[1].subClasses.length > 0
+			   					rowSpan += 1 if t[1].see_alsos.length > 0
+			   				%>
+			   				<tr>
+			   					<th colspan="2" class="termName"><a id="class_<%= t[1].short_name %>"><%= t[1].short_name %><% if t[1].hasDifferentLabel? %> (<%= t[1].label %>)</a><% end %></th>
+			   					<th rowspan="<%= rowSpan %>" valign="top"><%= t[1].perClassDiagramAsSvg %></th>
+			   				</tr>
+							<% if t[1].hasOtherNamespace? %>
+								<tr>
+									<td class="label">Namespace</td>
+									<td><%= t[1].ns %></td>
+								</tr>
+							<% end %>
+							<% if t[1].hasDefinition? %>
+								<td>Definition</td>
+								<td><%= t[1].definition %></td>
+							<% end %>
+							<% if t[1].hasComment? %>
+								<tr>
+									<td class="label">Abstract</td>
+									<td><%= t[1].comment %></td>
+								</tr>
+							<% end %>
+							<% if t[1].hasEditorialNotes? %>
+								<% t[1].editorialNotes.each do |note| %>
+									<tr>
+										<td>Editorial Note</td>
+										<td><%= note %></td>
+									</tr>
+								<% end %>
+							<% end %>
+							<% if t[1].status %>
+			   					<tr>
+			   						<td class="label">Status</td>
+			   						<td><%= t[1].status %></td>
+			   					</tr>
+							<% end %>
+							<% if t[1].hasSuperClasses? %>
+								<tr>
+									<td class="label">SubClass Of</td>
+									<td>
+										<ul>
+										<% t[1].super_classes.each do |parent| %>
+											<li><a href="#class_<%= parent.short_name %>"><%= parent.short_name %></a></li>
+										<% end %>
+										</ul>
+									</td>
+								</tr>
+							<% end %>
+							<% if t[1].hasSubClasses? %>
+								<tr>
+									<td class="label">Sub-Classes</td>
+									<td>
+										<ul>
+										<% t[1].subClasses.each do |child| %>
+											<li><a href="#class_<%= child.short_name %>"><%= child.short_name %></a></li>
+										<% end %>
+										</ul>
+									</td>
+								</tr>
+							<% end %>	   				
+							<% if t[1].see_alsos.length > 0 %>
+								<tr>
+									<td class="label">See Also:</td>
+									<td>
+					   					<ul>	   			
+										<% t[1].see_alsos.each do |link| %>
+											<li><a href="<%= link %>"><%= link %></a></li>
+										<% end %>
+										</ul>
+									</td>
+								</tr>
+							<% end %>
+			  			<%end%>
+						</table>
+			  		</div>	
+				<%end%>
+			
+				<% if schema.list_object_properties.length > 0 %>
+					<h3><a id="<%= schema.name %>-object-properties">Object Properties</a></h3>
+					<div>
+						<table class="terms">
+				   		<% schema.list_object_properties().each do |t| %>
+			   				<%
+			   					rowSpan = 1
+			   					rowSpan += 1 if t[1].hasOtherNamespace?
+			   					rowSpan += 1 if t[1].hasDefinition?
+			   					rowSpan += 1 if t[1].hasComment?
+			   					rowSpan += 1 if t[1].hasEditorialNotes?
+			   					rowSpan += 1 if t[1].status
+			   					rowSpan += 1 if t[1].sub_property_of
+			   					rowSpan += 1 if t[1].sub_properties.length > 0
+			   					rowSpan += 1 if t[1].range.length > 0
+			   					rowSpan += 1 if t[1].domain.length > 0
+			   					rowSpan += 1 if t[1].see_alsos.length > 0
+			   				%>
+							<tr id="prop_<%= t[1].short_name %>">
+								<th colspan="2" class="termName"><%= t[1].short_name %><% if t[1].hasDifferentLabel? %> (<%= t[1].label %>)<% end %></th>
+			   					<th rowspan="<%= rowSpan %>" valign="top"><%= t[1].perPropertyDiagramAsSvg %></th>
+							</tr>
+							<% if t[1].hasOtherNamespace? %>
+								<tr>
+									<td>Namespace</td>
+									<td><%= t[1].ns %></td>
+								</tr>
+							<% end %>
+							<% if t[1].hasDefinition? %>
+								<tr>
+									<td>Definition</td>
+									<td><%= t[1].definition %></td>
+								</tr>
+							<% end %>
+							<% if t[1].hasComment? %>
+								<tr>
+									<td class="label">Abstract</td>
+									<td><%= t[1].comment %></td>
+								</tr>
+							<% end %>				
+							<% if t[1].hasEditorialNotes? %>
+								<% t[1].editorialNotes.each do |note| %>
+									<tr>
+										<td>Editorial Note</td>
+										<td><%= note %></td>
+									</tr>
+								<% end %>
+							<% end %>
+							<% if t[1].status %>
+			   					<tr>
+			   						<td class="label">Status</td>
+			   						<td><%= t[1].status %></td>
+			   					</tr>
+							<% end %>
+							<% if t[1].sub_property_of %>
+								<% if t[1].sub_property_of.class.to_s == "String" %>	   				
+									<tr>
+										<td class="label">Has Parent Property</td>
+										<td><a href="<%= t[1].sub_property_of %>"><%= t[1].sub_property_of %></a></td>
+									</tr>
+								<% else %>
+									<tr>
+										<td class="label">Has Parent Property</td>
+										<td><a href="#prop_<%= t[1].sub_property_of.short_name %>"><%= t[1].sub_property_of.short_name %></a></td>
+									</tr>
+								<% end %>
+							<% end %>
+							<% if t[1].sub_properties.length > 0 %>
+								<tr>
+									<td class="label">Sub-Properties</td>
+									<td>
+										<ul>
+										<% t[1].sub_properties.each do |child| %>
+											<li><a href="#class_<%= child.short_name %>"><%= child.short_name %></a></li>
+										<% end %>
+										</ul>
+									</td>
+								</tr>
+							<% end %>		   				
+							<% if t[1].range.length > 0 %>
+								<tr>
+									<td class="label">Range</td>
+									<td>
+										<ul>
+										<% t[1].range.each do |cls| %>
+											<% if cls.class.to_s == "String" %>
+												<li><a href="<%= cls %>"><%= cls %></a></li>
+											<% else %>
+												<li><a href="#class_<%= cls.short_name %>"><%= cls.short_name %></a></li>
+											<% end %>
+										<% end %>
+										</ul>		   				
+									</td>
+								</tr>
+							<% end %>
+							<% if t[1].domain.length > 0 %>
+								<tr>
+									<td class="label">Domain</td>
+									<td>
+										<ul>
+										<% t[1].domain.each do |cls| %>
+											<% if cls.class.to_s == "String" %>
+												<li><a href="<%= cls %>"><%= cls %></a></li>
+											<% else %>
+												<li><a href="#class_<%= cls.short_name %>"><%= cls.short_name %></a></li>
+											<% end %>
+										<% end %>
+										</ul>		   				
+									</td>
+								</tr>
+							<% end %>		   				
+							<% if t[1].see_alsos.length > 0 %>
+								<tr>
+									<td class="label">See Also</td>
+									<td>
+					   					<ul>	   			
+										<% t[1].see_alsos.each do |link| %>
+											<li><a href="<%= link %>"><%= link %></a></li>
+										<% end %>
+										</ul>
+									</td>
+								</tr>
+							<% end %>
+			  			<%end%>
+						</table>	   				
+			  		</div>	
+				<% end %>
+					
+				<% if schema.list_datatype_properties.length > 0 %>
+					<h3><a id="<%= schema.name %>-datatype-properties">Datatype Properties</a></h3>
+					<div>
+						<table class="terms">
+				   		<% schema.list_datatype_properties().each do |t| %>
+			   				<%
+			   					rowSpan = 1
+			   					rowSpan += 1 if t[1].hasOtherNamespace?
+			   					rowSpan += 1 if t[1].hasDefinition?
+			   					rowSpan += 1 if t[1].hasComment?
+			   					rowSpan += 1 if t[1].hasEditorialNotes?
+			   					rowSpan += 1 if t[1].status
+			   					rowSpan += 1 if t[1].sub_property_of
+			   					rowSpan += 1 if t[1].sub_properties.length > 0
+			   					rowSpan += 1 if t[1].range.length > 0
+			   					rowSpan += 1 if t[1].domain.length > 0
+			   					rowSpan += 1 if t[1].see_alsos.length > 0
+			   				%>
+							<tr id="prop_<%= t[1].short_name %>">
+								<th colspan="2" class="termName"><%= t[1].short_name %><% if t[1].hasDifferentLabel? %> (<%= t[1].label %>)<% end %></th>
+			   					<th rowspan="<%= rowSpan %>" valign="top"><%= t[1].perPropertyDiagramAsSvg %></th>
+							</tr>
+							<% if t[1].hasOtherNamespace? %>
+								<tr>
+									<td>Namespace</td>
+									<td><%= t[1].ns %></td>
+								</tr>
+							<% end %>
+							<% if t[1].hasDefinition? %>
+								<tr>
+									<td>Definition</td>
+									<td><%= t[1].definition %></td>
+								</tr>
+							<% end %>
+							<% if t[1].hasComment? %>
+								<tr>
+									<td class="label">Abstract</td>
+									<td><%= t[1].comment %></td>
+								</tr>
+							<% end %>				
+							<% if t[1].hasEditorialNotes? %>
+								<% t[1].editorialNotes.each do |note| %>
+									<tr>
+										<td>Editorial Note</td>
+										<td><%= note %></td>
+									</tr>
+								<% end %>
+							<% end %>
+							<% if t[1].status %>
+			   					<tr>
+			   						<td class="label">Status</td>
+			   						<td><%= t[1].status %></td>
+			   					</tr>
+							<% end %>
+			   				<% if t[1].sub_property_of %>
+			   					<% if t[1].sub_property_of.class.to_s == "String" %>	   				
+			   						<tr>
+			   							<td class="label">Has Parent Property</td>
+			   							<td><a href="#prop_<%= t[1].sub_property_of %>"><%= t[1].sub_property_of %></a></td>
+			   						</tr>
+			   					<% else %>
+			   						<tr>
+			   							<td class="label">Has Parent Property</td>
+			   							<td><a href="#prop_<%= t[1].sub_property_of.short_name %>"><%= t[1].sub_property_of.short_name %></a></td>
+			   						</tr>
+			   					<% end %>
+			   				<% end %>
+			   				<% if t[1].sub_properties.length > 0 %>
+								<tr>
+									<td class="label">Sub-Properties</td>
+									<td>
+										<ul>
+										<% t[1].sub_properties.each do |child| %>
+											<li><a href="#class_<%= child.short_name %>"><%= child.short_name %></a></li>
+										<% end %>
+										</ul>
+									</td>
+								</tr>
+			   				<% end %>		   				
+			   				<% if t[1].range.length > 0 %>
+			   					<tr>f
+			   						<td class="label">Range</td>
+			   						<td>
+			   							<ul>
+					   					<% t[1].range.each do |cls| %>
+					   						<% if cls.class.to_s == "String" %>
+					   							<li><a href="#class_<%= cls %>"><%= cls %></a></li>
+					   						<% else %>
+					   							<li><a href="#class_<%= cls.short_name %>"><%= cls.short_name %></a></li>
+					   						<% end %>
+					   					<% end %>
+					   					</ul>		   				
+				   					</td>
+			   					</tr>
+			   				<% end %>
+			   				<% if t[1].domain.length > 0 %>
+			   					<tr>
+			   						<td class="label">Domain</td>
+			   						<td>
+			   							<ul>
+					   					<% t[1].domain.each do |cls| %>
+					   						<% if cls.class.to_s == "String" %>
+					   							<li><a href="#class_<%= cls %>"><%= cls %></a></li>
+					   						<% else %>
+					   							<li><a href="#class_<%= cls.short_name %>"><%= cls.short_name %></a></li>
+					   						<% end %>
+					   					<% end %>
+					   					</ul>		   				
+			   						</td>
+			   					</tr>
+			   				<% end %>				
+							<% if t[1].see_alsos.length > 0 %>
+								<tr>
+									<td class="label">See Also</td>
+									<td>
+					   					<ul>	   			
+										<% t[1].see_alsos.each do |link| %>
+											<li><a href="<%= link %>"><%= link %></a></li>
+										<% end %>
+										</ul>
+									</td>
+								</tr>
+							<% end %>
+			  			<%end%>
+						</table>	   				
+			  		</div>	
+				<%end%>
+		
+				<% schema.skosConceptSchemes.each do |conceptScheme| %>
+					<h3><a id="<%= schema.name %><%= conceptScheme.short_name %>-taxonomy">SKOS Concept Scheme <%= conceptScheme.short_name %></a></h3>
+					<div>
+						<table class="terms">
+			   			<% schema.skosConceptsInScheme(conceptScheme).each do |individual| %>
+			   				<%
+			   					rowSpan = 1
+			   					rowSpan += 1 if individual.hasDefinition?
+			   					rowSpan += 1 if individual.hasComment?
+			   					rowSpan += 1 if individual.hasEditorialNotes?
+			   					rowSpan += 1 if individual.classes.length > 0
+			   				%>
+			   				<tr>
+			   					<th colspan="2" class="termName"><a href="#individual_<%= individual.short_name %>"><%= individual.short_name %></a></th>
+			   					<th rowspan="<%= rowSpan %>" valign="top"><%= individual.asSvg %></th>
+			   				</tr>
+							<% if individual.hasDefinition? %>
+								<td>Definition</td>
+								<td><%= t[1].definition %></td>
+							<% end %>
+							<% if individual.hasComment? %>
+								<tr>
+									<td class="label">Abstract</td>
+									<td><%= individual.comment %></td>
+								</tr>
+							<% end %>				
+							<% if individual.hasEditorialNotes? %>
+								<% individual.editorialNotes.each do |note| %>
+									<tr>
+										<td>Editorial Note</td>
+										<td><%= note %></td>
+									</tr>
+								<% end %>
+							<% end %>
+							<% if individual.classes.length > 0 %>
+								<tr>
+									<td class="label">Class</td>
+									<td>
+										<ul>
+										<% individual.classes.each do |klass| %>
+											<li><a href="<% klass.schema.name %>.html#class_<%= klass.short_name %>"><%= klass.short_name %></a></li>
+										<% end %>
+										</ul>
+									</td>
+								</tr>
+							<% end %>
+			  			<%end%>
+						</table>
+			  		</div>	
+				<%end%>
+				
+				<% if schema.individualsNotSkosConcepts.length > 0 %>
+					<h3><a id="<%= schema.name %>-individuals">Individuals</a></h3>
+					<div>
+						<table class="terms">
+			   			<%schema.individualsNotSkosConcepts.each do |individual| %>
+			   				<%
+			   					rowSpan = 1
+			   					rowSpan += 1 if individual.hasComment?
+			   					rowSpan += 1 if individual.classes.length > 0
+			   				%>
+			   				<tr>
+			   					<th colspan="2" class="termName"><a href="#individual_<%= individual.short_name %>"><%= individual.short_name %></a></th>
+			   					<th rowspan="<%= rowSpan %>" valign="top"><%= individual.asSvg %></th>
+			   				</tr>
+							<% if individual.hasComment? %>
+								<tr>
+									<td class="label">Abstract</td>
+									<td><%= individual.comment %></td>
+								</tr>
+							<% end %>				
+							<% if individual.classes.length > 0 %>
+								<tr>
+									<td class="label">Class</td>
+									<td>
+										<ul>
+										<% individual.classes.each do |klass| %>
+											<li><a href="<% klass.schema.name %>.html#class_<%= klass.short_name %>"><%= klass.short_name %></a></li>
+										<% end %>
+										</ul>
+									</td>
+								</tr>
+							<% end %>
+			  			<%end%>
+						</table>
+			  		</div>	
+				<%end%>
+			</div>
+		</div>
+	</body>
+</html>

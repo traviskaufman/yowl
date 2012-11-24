@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="robots" content="noindex, nofollow" />
+		<title>Import Diagram</title>
+		<link type="text/css" href="css/smoothness/jquery-ui-1.8.23.custom.css" rel="Stylesheet" />
+		<link rel="stylesheet" href="css/yowl.css" rel="Stylesheet" />
+		<script src="js/jquery-1.7.2.min.js"></script>
+		<script src="js/jquery-ui-1.8.23.custom.min.js"></script>
+		<script src="js/yowl.js"></script>
+	</head>
+	<body>
+		<div class="yowl">
+			<div id="tabs">
+		 		<ul>
+		 			<li><a title="Overview" href="index.html">Overview</a></li>
+		 			<li><a title="Import Diagram" href="import-diagram.html#content">Import Diagram</a></li>
+					<% ontologies.each do |ontology| %>
+		     			<li><a title="<%= ontology.short_name %>" href="<%= ontology.resourceNameHtml %>"><%= ontology.short_name %></a></li>
+					<% end %>
+		 		</ul>
+			</div>
+			<div id="content">                 
+				<%= repository.ontologiesAsSvg %>
+			</div>
+		</div>
+	</body>
+</html>

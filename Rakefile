@@ -6,15 +6,16 @@ require 'rake/rdoctask'
 require 'rake/testtask'
 require 'rake/clean'
 
-NAME = "dowl"
-VER = "0.3"
+NAME = "yowl"
+VER = "0.4"
 
-RDOC_OPTS = ['--quiet', '--title', 'dowl Reference', '--main', 'README.md']
+RDOC_OPTS = ['--quiet', '--title', 'yowl reference', '--main', 'README.md']
 
-PKG_FILES = %w( README.md Rakefile CHANGES ) + 
-  Dir.glob("{bin,doc,tests,examples,lib}/**/*")
+PKG_FILES = %w(README.md INSTALL-MACOSX.md Rakefile CHANGES) + 
+  Dir.glob("{bin,test,examples,lib}/**/*")
 
-CLEAN.include ['*.gem', 'pkg']  
+CLEAN.include ['*.gem', 'pkg']
+    
 SPEC =
   Gem::Specification.new do |s|
     s.name = NAME
@@ -22,20 +23,20 @@ SPEC =
     s.platform = Gem::Platform::RUBY
     s.required_ruby_version = ">= 1.8.7"    
     s.has_rdoc = true
-    s.extra_rdoc_files = ["README.md", "CHANGES"]
+    s.extra_rdoc_files = ["README.md", "INSTALL-MACOSX.md", "CHANGES"]
     s.rdoc_options = RDOC_OPTS
-    s.summary = "dowl OWL/RDF doc generator"
+    s.summary = "YOWL OWL visualization and documentation generator"
     s.description = s.summary
     s.author = "Leigh Dodds"
     s.author = "Jacobus Geluk"
     s.email = 'leigh.dodds@talis.com'
     s.email = 'jacobus.geluk@gmail.com'
-    s.homepage = 'http://github.com/jgeluk/dowl'
+    s.homepage = 'http://github.com/jgeluk/yowl'
     s.files = PKG_FILES
     s.require_path = "lib" 
     s.bindir = "bin"
-    s.executables = ["dowl"]
-    s.test_file = "tests/ts_dowl.rb"
+    s.executables = ["yowl"]
+    s.test_file = "test/test_yowl.rb"
     s.add_dependency("rdf-raptor", ">= 0.4.0")
     s.add_dependency("ffi", ">= 1.1.5")
     s.add_dependency("rdf", ">= 0.3.8")
@@ -54,13 +55,12 @@ end
 Rake::RDocTask.new do |rdoc|
     rdoc.rdoc_dir = 'doc/rdoc'
     rdoc.options += RDOC_OPTS
-    rdoc.rdoc_files.include("README.md", "CHANGES", "lib/**/*.rb")
+    rdoc.rdoc_files.include("README.md", "INSTALL-MACOSX.md", "CHANGES", "lib/**/*.rb")
     rdoc.main = "README.md"
-    
 end
 
 Rake::TestTask.new do |test|
-  test.test_files = FileList['tests/tc_*.rb']
+  test.verbose = true
 end
 
 desc "Install from a locally built copy of the gem"

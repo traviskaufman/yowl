@@ -1,8 +1,8 @@
 # Installation on Mac OS X
 
-Unfortunately, its not trivial to get DOWL to run on Mac OS X.
+Unfortunately, its not trivial to get YOWL to run on Mac OS X.
 
-You can either use MacPorts or Brew to install some of the components that DOWL needs.
+You can either use MacPorts or Brew to install some of the components that YOWL needs.
 
 ## MacPorts
 
@@ -27,7 +27,7 @@ sudo brew install graphviz wget
 
 ## Raptor 1
 
-DOWL depends on the Ruby package "ruby-rdf" which in turn depends on a C library called "raptor".
+YOWL depends on the Ruby package "ruby-rdf" which in turn depends on a C library called "raptor".
 Unfortunately, MacPorts recently dropped support for the older version of Raptor (version 1) that
 is used by ruby-rdf, so MacPorts can only install version 2, which is not compatible with ruby-rdf,
 so don't bother to install it.
@@ -60,7 +60,7 @@ sudo find /usr /opt /sw /Applications -name 'types.h' | grep curl
 
 ## Gems
 
-DOWL depends on various "ruby gems" that can be installed as follows:
+YOWL depends on various "ruby gems" that can be installed as follows:
 
 ```
 sudo gem install ffi rdf rdf-raptor rdf-json rdf-trix sxp sparql ruby-graphviz

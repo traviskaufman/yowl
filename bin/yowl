@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+$:.unshift File.join(File.dirname(__FILE__), "..", "lib")
+require 'rubygems'
+require 'getoptlong'
+require 'yowl'
+require 'erb'
+
+PROGRAM = File::basename $0
+
+options = YOWL::OptionsParser.parse(ARGV)
+if options
+  repository = YOWL::Repository.new(options)
+  YOWL::Generator.new(repository, options).run()
+end

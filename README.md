@@ -1,9 +1,8 @@
-
 # YOWL
 
 Yet another OWL documentor. YOWL is a command line utility that can read a number of
 RDFS/OWL files, called the repository, and generate a documentation website from it,
-with Class Diagrams (as SVG), Individuals Diagrams and Import Diagrams.
+with visualisations like Class Diagrams (as SVG), Individuals Diagrams and Import Diagrams.
 
 It also detects annotations from the following public ontologies:
 

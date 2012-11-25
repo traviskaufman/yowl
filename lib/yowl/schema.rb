@@ -53,59 +53,63 @@ module YOWL
       init_ontology()
       init_name()
 
-      puts "***********************************"
-      puts "* Instantiated Schema"
-      puts "* File: #{@fileName}"
-      puts "* URI : #{uri}"
-      puts "* Base: #{@base}"
-      puts "* Name: #{@name}"
-      puts "***********************************"
+      if not @options.quiet
+        puts "***********************************"
+        puts "* Instantiated Schema"
+        puts "* File: #{@fileName}"
+        puts "* URI : #{uri}"
+        puts "* Base: #{@base}"
+        puts "* Name: #{@name}"
+        puts "***********************************"
+      end
     end
     
     public
-    def Schema.fromFile(ontology_file_name, repository)
+    def Schema.fromFile(ontology_file_name_, repository_)
       
-      if repository.options.verbose
-        puts "Read Schema #{ontology_file_name}"
+      if repository_.options.verbose
+        puts "Read Schema #{ontology_file_name_}"
       end
-      prefixes, base = Schema::read_prefixes(ontology_file_name)
+      prefixes, base = Schema::read_prefixes(ontology_file_name_, repository_.options)
       
-      format = RDF::Format.for(ontology_file_name)
+      format = RDF::Format.for(ontology_file_name_)
       if format.nil?()
         format = RDF::Format.for(:file_extension => "rdf")
       end
       begin
-        model = RDF::Graph.load(ontology_file_name, { :format => format.to_sym, :prefixes => prefixes })
+        model = RDF::Graph.load(ontology_file_name_, { :format => format.to_sym, :prefixes => prefixes })
       rescue Addressable::URI::InvalidURIError => e
-        warn "ERROR: Invalid URI Error while parsing #{ontology_file_name}: #{e.to_s}"
+        warn "ERROR: Invalid URI Error while parsing #{ontology_file_name_}: #{e.to_s}"
         return nil
       rescue Exception => e
-        warn "ERROR: #{e.class.to_s} Error while parsing #{ontology_file_name}: #{e}"
+        warn "ERROR: #{e.class.to_s} Error while parsing #{ontology_file_name_}: #{e}"
         return nil
       end
       
-      return Schema.new(repository, model, prefixes, base, ontology_file_name)
+      return Schema.new(repository_, model, prefixes, base, ontology_file_name_)
     end
 
     #
     # Read the prefixes from the XML file using REXML
     #
     private
-    def Schema.read_prefixes(ontology_file_name)
+    def Schema.read_prefixes(ontology_file_name_, options_)
       prefixes = {}
       xmldoc = nil
       base = nil
       begin
-        xmldoc = REXML::Document.new(IO.read(ontology_file_name))
+        xmldoc = REXML::Document.new(IO.read(ontology_file_name_))
       rescue REXML::ParseException => bang
-        warn "WARNING: Error while parsing prefixes from #{ontology_file_name} (only works for RDF/XML format)"
+        if not options_.quiet
+          warn "WARNING: Could not parse prefixes from #{ontology_file_name_} (only works for RDF/XML format)"
+        end
         return prefixes
       end
       if xmldoc.doctype
         xmldoc.doctype.entities.each() do |prefix, entity|
           namespace = entity.normalized()
           if namespace.include?('://')
-            prefixes[prefix.to_sym] = Schema.isValidNamespace?(namespace, prefix, ontology_file_name)
+            prefixes[prefix.to_sym] = Schema.isValidNamespace?(namespace, prefix, ontology_file_name_)
           end
         end
       end
@@ -116,7 +120,7 @@ module YOWL
           #
           if prefix != "xmlns"
             #puts "@@@@@@@@@@@@ #{prefix} #{namespace}"
-            prefixes[prefix.to_sym] = Schema.isValidNamespace?(namespace, prefix, ontology_file_name)
+            prefixes[prefix.to_sym] = Schema.isValidNamespace?(namespace, prefix, ontology_file_name_)
           end
         end
         base = xmldoc.root.attribute('base')

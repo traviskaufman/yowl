@@ -2,7 +2,8 @@
 
 Unfortunately, its not trivial to get YOWL to run on Mac OS X.
 
-You can either use MacPorts or Brew to install some of the components that YOWL needs.
+You can either use MacPorts or HomeBrew to install some of the components that YOWL needs (graphviz
+and wget) and we also need Fink (for libraptor version 1).
 
 ## MacPorts
 
@@ -16,10 +17,11 @@ sudo port install graphviz wget
 
 ## HomeBrew
 
-As an alternative to MacPorts, you can install Brew and use that to install Graphviz,
-for installation instructions of Brew look here: https://github.com/mxcl/homebrew/wiki/Installation
+As an alternative to MacPorts, you can install HomeBrew and use that to install Graphviz,
+for installation instructions of HomeBrew look [here](https://github.com/mxcl/homebrew/wiki/Installation)
+or [here](http://mxcl.github.com/homebrew/).
 
-Once Brew is installed, install Graphviz and wget:
+Once Brew is installed, install Graphviz and wget as follows:
 
 ```
 sudo brew install graphviz wget

@@ -12,10 +12,12 @@ module YOWL
     attr_reader :templates
     
     attr_accessor :verbose
+    attr_accessor :quiet
 
     
     def initialize()
       @verbose = false
+      @quiet = false
       @ontology_file_names = []
       @output_dir = Dir.pwd()
       @template_dirs = []
@@ -24,7 +26,9 @@ module YOWL
     end
     
     def validate()
-      puts "Output will be generated in this directory: #{output_dir.to_s}"
+      if not @quiet
+        puts "Output will be generated in this directory: #{output_dir.to_s}"
+      end
       if ! validate_ontology_file_names()
         return false
       end
@@ -47,7 +51,9 @@ module YOWL
           warn "File does not exist: " + filename
           return false
         end
-        puts "Will process input file: #{filename}"
+        if not @quiet
+          puts "Will process input file: #{filename}"
+        end
       end
       return true
     end

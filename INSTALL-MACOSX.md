@@ -31,7 +31,12 @@ YOWL depends on the Ruby package "ruby-rdf" which in turn depends on a C library
 Unfortunately, MacPorts recently dropped support for the older version of Raptor (version 1) that
 is used by ruby-rdf, so MacPorts can only install version 2, which is not compatible with ruby-rdf,
 so don't bother to install it.
-The only solution (as far as I know) is to build that older version of Raptor 1 from source:
+Another well known package manager for Mac OS X, HomeBrew, also can only install version 2
+of libraptor.
+
+There are two solutions available at this point (unless you have a better idea):
+
+### Building libraptor version 1 from source
 
 ```
 mkdir -p ~/Work/build
@@ -56,6 +61,41 @@ Or
 
 ```
 sudo find /usr /opt /sw /Applications -name 'types.h' | grep curl
+```
+
+### Installing libraptor version 1 with Fink
+
+Besides MacPorts and HomeBrew, there's also Fink. Go to the Fink website, download
+and install Fink and then type:
+
+```
+sudo fink selfupdate
+sudo fink install raptor-bin
+```
+
+This will fail on Mac OS X Mountain Lion (10.8.x or later) because the raptor package
+as defined by Fink is dependent on an older version of curl, which does no longer have
+the "curl/types.h" file, which is needed by raptor, unless you configure it a bit
+differently:
+
+Open the Fink package file for raptor:
+
+```
+sudo vi /sw/fink/10.7/stable/main/finkinfo/libs/libraptor1-shlibs.info
+```
+
+Find the line that starts with "ConfigureParams:" and add the option --with-www=xml so
+that it looks as follows:
+```
+ConfigureParams: --enable-dependency-tracking --disable-static --enable-gtk-doc --with-www=xml
+```
+
+Then save the file and execute the following:
+
+```
+sudo fink rebuildpackage raptor-bin
+sudo fink install raptor-bin
+sudo ln -s /sw/lib/libraptor.1.dylib /usr/lib/libraptor.dylib
 ```
 
 ## Gems

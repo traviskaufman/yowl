@@ -14,7 +14,7 @@ Then use MacPorts to install GraphViz (which is used to generate the graphics) a
 sudo port install graphviz wget
 ```
 
-## Brew
+## HomeBrew
 
 As an alternative to MacPorts, you can install Brew and use that to install Graphviz,
 for installation instructions of Brew look here: https://github.com/mxcl/homebrew/wiki/Installation

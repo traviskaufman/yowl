@@ -1,3 +1,8 @@
 module YOWL
-  VERSION = "0.4.pre"
+  
+  NAME = "yowl"
+  VERSION = "0.4"
+  
+  NAME_AND_VERSION = "#{NAME} #{VERSION}"
+  
 end

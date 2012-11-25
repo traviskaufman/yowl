@@ -18,7 +18,7 @@ This is a fork of the original DOWL project at https://github.com/ldodds/dowl.
 
 ## Installation on Mac OS X:
 
-[Installation on Mac OS X](INSTALL-MACOSX.md)
+[Installation on Mac OS X](/jgeluk/yowl/blob/master/INSTALL-MACOSX.md)
 
 ## Installation on Ubuntu
 

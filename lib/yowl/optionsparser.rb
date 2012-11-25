@@ -19,7 +19,11 @@ module YOWL
           options.ontology_file_names << ontology
           if args_.size > 0
             for index in 0..(args_.size - 1)
-              options.ontology_file_names << args_[index]
+              arg = args_[index]
+              if arg[0,1] == '-'
+                break
+              end
+              options.ontology_file_names << arg
             end
           end
         end
@@ -51,6 +55,10 @@ module YOWL
 
         opts.on_tail("-v", "--verbose", "Show verbose logging") do
           options.verbose = true
+        end
+
+        opts.on_tail("-q", "--quiet", "Suppress most logging") do
+          options.quiet = true
         end
         
       end

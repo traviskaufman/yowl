@@ -1,5 +1,4 @@
 require 'rubygems'
-# for an explanation of this hack see https://github.com/rack/rack/issues/115
 require File.expand_path("../lib/yowl/version", __FILE__)
 
 RDOC_OPTS = ['--quiet', '--title', '#{YOWL::NAME} reference', '--main',

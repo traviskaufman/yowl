@@ -1,6 +1,6 @@
-# YOWL
+# YOWL: Yet another OWL documentor
 
-Yet another OWL documentor. YOWL is a command line utility that can read a number of
+YOWL is a command line utility that can read a number of
 RDFS/OWL files, called the repository, and generate a documentation website from it,
 with visualisations like Class Diagrams (as SVG), Individuals Diagrams and Import Diagrams.
 
@@ -14,7 +14,7 @@ It also detects annotations from the following public ontologies:
   
 This is a fork of the original DOWL project at https://github.com/ldodds/dowl.
 
-# INSTALLATION
+## INSTALLATION
 
 ### Install WGET, GraphViz, libraptor1:
 
@@ -55,13 +55,14 @@ $ gem build yowl.gemspec
 $ gem install yowl
 ```
 
-# Usage
+## Usage
 
 Execute `yowl -h` to see usage options:
 
 ```bash
-user@host:/opt/yowl# yowl 
-Output will be generated in this directory: /opt/yowl
+$ yowl
+yowl [VERSION_WILL_APPEAR_HERE]
+
 Usage: YOWL [<options>]
 
 Specific options:
@@ -74,6 +75,7 @@ Common options:
     -?, -h, --help                   Show this message
     -V, --version                    Show version
     -v, --verbose                    Show verbose logging
+    -q, --quiet                      Suppress most logging
 ```
 
 For example, to generate a site for the PROV ontology,

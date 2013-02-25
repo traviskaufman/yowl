@@ -37,11 +37,6 @@ SPEC = Gem::Specification.new do |s|
     'travis.kaufman@gmail.com'
   ]
   s.homepage = 'http://github.com/jgeluk/#{YOWL::NAME}'
-  s.files = PKG_FILES
-  s.require_path = "lib"
-  s.bindir = "bin"
-  s.executables = [YOWL::NAME]
-  s.test_file = "test/test_#{YOWL::NAME}.rb"
   s.add_dependency("ffi", ">= 1.2.0")
   s.add_dependency("json", ">= 1.7.5")
   s.add_dependency("rdf", ">= 0.3.8")
@@ -50,8 +45,13 @@ SPEC = Gem::Specification.new do |s|
   s.add_dependency("rdf-trix", ">= 0.3.0")
   s.add_dependency("rdf-xsd", ">= 0.3.8")
   s.add_dependency("sxp", ">= 0.0.14")
-  s.add_dependency("sparql", ">= 0.3.1")
+  s.add_dependency("sparql", "~> 0.3.1")
   s.add_dependency("ruby-graphviz", ">= 1.0.8")
+  s.files = PKG_FILES
+  s.require_path = "lib"
+  s.bindir = "bin"
+  s.executables = [YOWL::NAME]
+  s.test_file = "test/test_#{YOWL::NAME}.rb"
   s.rubyforge_project = 'nowarning'
 end
 

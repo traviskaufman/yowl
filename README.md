@@ -1,6 +1,6 @@
-# YOWL
+# YOWL: Yet another OWL documentor
 
-Yet another OWL documentor. YOWL is a command line utility that can read a number of
+YOWL is a command line utility that can read a number of
 RDFS/OWL files, called the repository, and generate a documentation website from it,
 with visualisations like Class Diagrams (as SVG), Individuals Diagrams and Import Diagrams.
 
@@ -14,60 +14,55 @@ It also detects annotations from the following public ontologies:
   
 This is a fork of the original DOWL project at https://github.com/ldodds/dowl.
 
-# INSTALLATION
+## INSTALLATION
 
-## Installation on Mac OS X:
+### Install WGET, GraphViz, libraptor1:
 
-[Installation on Mac OS X](/jgeluk/yowl/blob/master/INSTALL-MACOSX.md)
+#### OS X
+You can do this using [macports](http://www.macports.org/install.php) or [homebrew](http://mxcl.github.com/homebrew/).
 
-## Installation on Ubuntu
-
-```bash
-apt-get install ruby rake gem
+Macports:
+```sh
+$ sudo port install wget graphviz
 ```
 
-## General
-
-Install all libraries used by YOWL:
-
-```bash
-[sudo] gem install ffi rdf rdf-raptor rdf-json rdf-trix sxp sparql ruby-graphviz
+Homebrew:
+```sh
+$ sudo brew install wget graphviz
 ```
 
-This version of YOWL is not yet available as a "gem" itself so it needs to be downloaded from Github:
-
-```bash
-mkdir ~/downloads
-cd ~/downloads
-wget http://github.com/jgeluk/yowl/tarball/master -O yowl.tar.gz
-tar xvf yowl.tar.gz
-#
-# Remember the name of the root directory of the unpacked tarball
-# which looks like jgeluk-yowl-5ba77f5
-#
-sudo rm -rf /opt/yowl
-sudo mv ~/downloads/jgeluk-yowl-5ba77f5 /opt/yowl
-cd /opt/yowl
-sudo rake install
+Unfortunately, there is no clean way (as far as we know) to install libraptor1 via a package manager on OS X. Therefore we wrote a small shell script, `install-raptor.sh` to do it for you. 
+```sh
+$ sudo curl -k https://raw.github.com/refinery29/yowl/build-sanity/install-raptor.sh | bash
 ```
 
-Or get it with git:
+#### Ubuntu
 
 ```bash
-rm -rf /opt/yowl
-cd /opt
-git clone git@github.com:jgeluk/yowl.git
-cd /opt/yowl
-sudo rake install
+$ sudo apt-get install wget graphviz libraptor1
 ```
 
-# Usage
+### Install via RubyGems
+```sh
+$ gem install yowl
+```
 
-Execute bin/yowl to see usage options:
+### Bleeding Edge/Development Builds
+```sh
+$ git clone https://github.com/jgeluk/yowl.git
+$ cd yowl/
+$ gem build yowl.gemspec
+$ gem install yowl
+```
+
+## Usage
+
+Execute `yowl -h` to see usage options:
 
 ```bash
-user@host:/opt/yowl# /opt/yowl/bin/yowl 
-Output will be generated in this directory: /opt/yowl
+$ yowl
+yowl [VERSION_WILL_APPEAR_HERE]
+
 Usage: YOWL [<options>]
 
 Specific options:
@@ -80,13 +75,13 @@ Common options:
     -?, -h, --help                   Show this message
     -V, --version                    Show version
     -v, --verbose                    Show verbose logging
+    -q, --quiet                      Suppress most logging
 ```
 
 For example, to generate a site for the PROV ontology,
 download the prov owl file and run YOWL as follows:
 
 ```bash
-/opt/yowl/bin/yowl -i /root/downloads/prov/*.owl -o /var/www/prov
+$ yowl -i /path/to/prov/*.owl -o /var/www/prov
 ```
-
 

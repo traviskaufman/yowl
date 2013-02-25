@@ -5,7 +5,7 @@ wd="$(mktemp -dt raptor-build)"
 raptor_gz="$wd/raptor.tar.gz"
 
 mkdir -p $wd
-echo "Downloading raptor-1.4.21... to $wd"
+echo "Downloading raptor-1.4.21 to $wd..."
 curl --compressed http://download.librdf.org/source/raptor-1.4.21.tar.gz > $raptor_gz
 tar xf $raptor_gz -C $wd
 echo "Building library..."

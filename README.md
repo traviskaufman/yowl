@@ -39,7 +39,7 @@ $ sudo curl -k https://raw.github.com/refinery29/yowl/build-sanity/install-rapto
 #### Ubuntu
 
 ```bash
-$ sudo apt-get install wget graphviz libraptor1
+$ sudo apt-get install wget graphviz libraptor1 rubygems
 ```
 
 ### Install via RubyGems

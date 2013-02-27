@@ -4,7 +4,7 @@ require File.expand_path("../lib/yowl/version", __FILE__)
 RDOC_OPTS = ['--quiet', '--title', '#{YOWL::NAME} reference', '--main',
              ' README.md']
 
-PKG_FILES = %w(README.md INSTALL-MACOSX.md Rakefile CHANGES) +
+PKG_FILES = %w(README.md Rakefile CHANGES) +
   Dir.glob("{bin,test,examples,lib}/**/*")
 
 Gem::Specification.new do |s|
@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.version = YOWL::VERSION
   s.required_ruby_version = ">= 1.8.7"
   s.has_rdoc = true
-  s.extra_rdoc_files = ["README.md", "INSTALL-MACOSX.md", "CHANGES"]
+  s.extra_rdoc_files = ["README.md", "CHANGES"]
   s.rdoc_options = RDOC_OPTS
   s.authors = ['Leigh Dodds', 'Jacobus Geluk', 'Travis Kaufman']
   s.email = [

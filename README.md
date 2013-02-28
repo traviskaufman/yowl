@@ -33,7 +33,7 @@ $ sudo brew install wget graphviz
 
 Unfortunately, there is no clean way (as far as we know) to install libraptor1 via a package manager on OS X. Therefore we wrote a small shell script, `install-raptor.sh` to do it for you. 
 ```sh
-$ sudo curl -k https://raw.github.com/refinery29/yowl/build-sanity/install-raptor.sh | bash
+$ sudo curl -k https://raw.github.com/jgeluk/yowl/build-sanity/install-raptor.sh | bash
 ```
 
 #### Ubuntu

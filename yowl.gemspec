@@ -1,29 +1,35 @@
 require 'rubygems'
 require File.expand_path("../lib/yowl/version", __FILE__)
 
-RDOC_OPTS = ['--quiet', '--title', '#{YOWL::NAME} reference', '--main',
-             ' README.md']
+RDOC_OPTS = ['--quiet', '--title', '#{YOWL::NAME} reference', '--main', ' README.md']
 
 PKG_FILES = %w(README.md Rakefile CHANGES) +
   Dir.glob("{bin,test,examples,lib}/**/*")
 
 Gem::Specification.new do |s|
-  s.platform = Gem::Platform::RUBY
+  s.name = YOWL::NAME
+  s.version = YOWL::VERSION
+  s.date = '2013-02-27'
   s.summary = %q{OWL visualization and documentation generator}
   s.description = <<-EOF
     Yet another OWL documentor. YOWL is a command line utility that can read a number of RDFS/OWL files,
     called the repository, and generate a documentation website from it, with visualisations like
     Class Diagrams (as SVG), Individuals Diagrams and Import Diagrams.
   EOF
-  s.name = YOWL::NAME
-  s.version = YOWL::VERSION
-  s.required_ruby_version = ">= 1.8.7"
+  s.license = 'MIT'
+# s.platform = Gem::Platform::RUBY
+# s.required_ruby_version = ">= 1.8.7"
   s.has_rdoc = true
   s.extra_rdoc_files = ["README.md", "CHANGES"]
   s.rdoc_options = RDOC_OPTS
-  s.authors = ['Leigh Dodds', 'Jacobus Geluk', 'Travis Kaufman']
+  s.authors = [
+    'Leigh Dodds', 
+    'Jacobus Geluk', 
+    'Travis Kaufman'
+  ]
   s.email = [
-    'leigh.dodds@talis.com', 'jacobus.geluk@gmail.com',
+    'leigh.dodds@talis.com',
+    'jacobus.geluk@gmail.com',
     'travis.kaufman@gmail.com'
   ]
   s.homepage = 'http://github.com/jgeluk/#{YOWL::NAME}'

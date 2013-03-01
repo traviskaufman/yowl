@@ -39,7 +39,7 @@ $ sudo curl -k https://raw.github.com/jgeluk/yowl/master/install-raptor.sh | bas
 #### Ubuntu
 
 ```bash
-$ sudo apt-get install wget graphviz libraptor1 rubygems
+$ sudo apt-get install wget graphviz libraptor1-dev rubygems
 ```
 
 ### Install via RubyGems

@@ -45,7 +45,7 @@ $ sudo apt-get install wget graphviz libraptor1-dev rubygems
 ### Amazon Linux
 
 ```bash
-$ sudo yum -y install graphviz libraptor1-dev rubygems
+$ sudo yum -y install graphviz libraptor1-dev rubygems ruby-devel ffi-devel make gcc
 ```
 
 ### Install via RubyGems

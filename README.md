@@ -48,6 +48,12 @@ $ sudo apt-get install wget graphviz libraptor1-dev rubygems
 $ sudo yum -y install graphviz libraptor1-dev rubygems ruby-devel ffi-devel make gcc
 ```
 
+And then install Raptor 1.4.21 (which is required by rdf-raptor) like this:
+```bash
+$ sudo yum -y install http://download.librdf.org/binaries/redhat/fc12/raptor-1.4.21-1.fc12.x86_64.rpm
+$ sudo yum -y install http://download.librdf.org/binaries/redhat/fc12/raptor-devel-1.4.21-1.fc12.x86_64.rpm
+```
+
 ### Install via RubyGems
 ```sh
 $ gem install yowl

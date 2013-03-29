@@ -42,6 +42,12 @@ $ sudo curl -k https://raw.github.com/jgeluk/yowl/master/install-raptor.sh | bas
 $ sudo apt-get install wget graphviz libraptor1-dev rubygems
 ```
 
+### Amazon Linux
+
+```bash
+$ sudo yum -y install graphviz libraptor1-dev rubygems
+```
+
 ### Install via RubyGems
 ```sh
 $ gem install yowl

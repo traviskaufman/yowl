@@ -9,7 +9,7 @@ PKG_FILES = %w(README.md Rakefile CHANGES) +
 Gem::Specification.new do |s|
   s.name = YOWL::NAME
   s.version = YOWL::VERSION
-  s.date = '2013-02-27'
+  s.date = '2013-04-05'
   s.summary = %q{OWL visualization and documentation generator}
   s.description = <<-EOF
     Yet another OWL documentor. YOWL is a command line utility that can read a number of RDFS/OWL files,
@@ -32,7 +32,7 @@ Gem::Specification.new do |s|
     'jacobus.geluk@gmail.com',
     'travis.kaufman@gmail.com'
   ]
-  s.homepage = 'http://github.com/jgeluk/#{YOWL::NAME}'
+  s.homepage = 'http://github.com/modelfabric/#{YOWL::NAME}'
   s.add_dependency("ffi", ">= 1.2.0")
   s.add_dependency("json", ">= 1.7.5")
   s.add_dependency("rdf", ">= 0.3.8")

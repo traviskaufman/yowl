@@ -1,7 +1,7 @@
 module YOWL
   
   NAME = "yowl"
-  VERSION = "0.4.2"
+  VERSION = "0.4.3"
   
   NAME_AND_VERSION = "#{NAME} #{VERSION}"
   

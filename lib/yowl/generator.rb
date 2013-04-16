@@ -68,7 +68,7 @@ module YOWL
     def copyTemplateDir(src_, tgt_)
       return unless File.directory? "#{src_}"
 
-      Dir.mkdir "#{tgt_}" unless File.directory? "#{tgt_}"
+      Dir.mkdir tgt_ unless File.directory? tgt_
       puts "Copying #{src_} -> #{tgt_}"
       FileUtils.cp_r src_, tgt_
     end
